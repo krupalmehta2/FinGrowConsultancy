@@ -1,0 +1,57 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Dashboard | {{ admin_company.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}
+
+{% block content %}
+<div class="fg-admin-welcome">
+    <div>
+        <span class="fg-admin-eyebrow">Website control centre</span>
+        <h1>Welcome back{% if user.first_name %}, {{ user.first_name }}{% endif %}</h1>
+        <p>Manage your website content, enquiries and brand settings from one place.</p>
+    </div>
+    {% if admin_company.logo %}<img src="{{ admin_company.logo.url }}" alt="{{ admin_company.company_name }}" class="fg-admin-logo">{% endif %}
+</div>
+
+<div class="fg-admin-cards">
+    <a class="fg-admin-card fg-admin-card--navy" href="{% url 'admin:website_service_changelist' %}">
+        <span class="fg-admin-card__icon">&#128188;</span><span class="fg-admin-card__label">Services</span>
+        <strong>{{ admin_counts.services }}</strong><small>{{ admin_counts.active_services }} active on website</small>
+    </a>
+    <a class="fg-admin-card fg-admin-card--green" href="{% url 'admin:website_governmentscheme_changelist' %}">
+        <span class="fg-admin-card__icon">&#127963;</span><span class="fg-admin-card__label">Government Schemes</span>
+        <strong>{{ admin_counts.schemes }}</strong><small>{{ admin_counts.active_schemes }} active on website</small>
+    </a>
+    <a class="fg-admin-card fg-admin-card--blue" href="{% url 'admin:website_blogpost_changelist' %}">
+        <span class="fg-admin-card__icon">&#128221;</span><span class="fg-admin-card__label">Blog Posts</span>
+        <strong>{{ admin_counts.posts }}</strong><small>{{ admin_counts.active_posts }} published</small>
+    </a>
+    <a class="fg-admin-card fg-admin-card--orange" href="{% url 'admin:website_contactinquiry_changelist' %}">
+        <span class="fg-admin-card__icon">&#128231;</span><span class="fg-admin-card__label">Enquiries</span>
+        <strong>{{ admin_counts.inquiries }}</strong><small>{{ admin_counts.new_inquiries }} new enquiries</small>
+    </a>
+</div>
+
+<div class="fg-admin-grid">
+    <section class="fg-admin-panel">
+        <div class="fg-admin-panel__head"><div><span class="fg-admin-eyebrow">Quick actions</span><h2>Manage website</h2></div></div>
+        <div class="fg-admin-actions">
+            <a href="{% url 'admin:website_websitesettings_changelist' %}"><span>&#9881;</span><b>Website Settings</b><small>Logo, contact, SEO and social links</small></a>
+            <a href="{% url 'admin:website_service_add' %}"><span>&#43;</span><b>Add Service</b><small>Create a new service for the navbar</small></a>
+            <a href="{% url 'admin:website_governmentscheme_add' %}"><span>&#43;</span><b>Add Government Scheme</b><small>Add a scheme to the dynamic menu</small></a>
+            <a href="{% url 'admin:website_blogpost_add' %}"><span>&#43;</span><b>Write Blog Post</b><small>Publish a new article</small></a>
+        </div>
+    </section>
+    <section class="fg-admin-panel">
+        <div class="fg-admin-panel__head"><div><span class="fg-admin-eyebrow">Latest activity</span><h2>Recent enquiries</h2></div><a href="{% url 'admin:website_contactinquiry_changelist' %}">View all</a></div>
+        {% for inquiry in recent_inquiries %}
+        <a class="fg-admin-inquiry" href="{% url 'admin:website_contactinquiry_change' inquiry.pk %}"><span class="fg-admin-avatar">{{ inquiry.name|first|upper }}</span><span><b>{{ inquiry.name }}</b><small>{{ inquiry.subject|truncatechars:42 }}</small></span><em class="status-{{ inquiry.status }}">{{ inquiry.get_status_display }}</em></a>
+        {% empty %}<p class="fg-admin-empty">No enquiries received yet.</p>{% endfor %}
+    </section>
+</div>
+
+<div class="fg-admin-apps">
+    <div class="fg-admin-panel__head"><div><span class="fg-admin-eyebrow">Content management</span><h2>All sections</h2></div></div>
+    {% for app in app_list %}{% for model in app.models %}<a href="{{ model.admin_url }}"><span>{{ model.name }}</span><small>Open management</small></a>{% endfor %}{% endfor %}
+</div>
+{% endblock %}

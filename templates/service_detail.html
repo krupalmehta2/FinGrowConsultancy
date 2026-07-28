@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ service.title }} | FinGrow Consultancy Services{% endblock %}
+{% block meta_description %}{{ service.short_description|truncatechars:155 }}{% endblock %}
+{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}
+{% block og_title %}{{ service.title }}{% endblock %}
+{% block og_description %}{{ service.short_description|truncatechars:155 }}{% endblock %}
+{% block og_image %}{% if service.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ service.featured_image.url }}{% else %}{% static 'images/og-default-banner.jpg' %}{% endif %}{% endblock %}
+{% block twitter_title %}{{ service.title }}{% endblock %}
+{% block twitter_description %}{{ service.short_description|truncatechars:155 }}{% endblock %}
+{% block twitter_image %}{% if service.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ service.featured_image.url }}{% else %}{% static 'images/og-default-banner.jpg' %}{% endif %}{% endblock %}
+{% block nav_services %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">{{ service.title }}</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'services' %}">Services</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">{{ service.title }}</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-6">
+                <span class="fg-eyebrow">{% if service.icon_class %}<i class="{{ service.icon_class }}"></i>{% endif %} Service</span>
+                <h2 class="fg-section-title">{{ service.title }}</h2>
+                <p class="fg-lead">{{ service.short_description }}</p>
+                <div>{{ service.description|default:service.short_description|linebreaks }}</div>
+            </div>
+            {% if service.featured_image %}
+            <div class="col-lg-6">
+                <img src="{{ service.featured_image.url }}" alt="{{ service.title }}" class="fg-radius-2xl" loading="lazy" decoding="async">
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row g-4 mt-5">
+            <div class="col-lg-6">
+                <div class="fg-card">
+                    <h3>Benefits</h3>
+                    <div>{{ service.benefits|default:"Our team will guide you with practical advisory, documentation support and timely execution."|linebreaks }}</div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="fg-card">
+                    <h3>Process</h3>
+                    <div>{{ service.process|default:"Consultation, document review, application or execution, and follow-up support."|linebreaks }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 mt-5">
+            <div class="col-lg-7">
+                <div class="fg-contact-card">
+                    <h3 class="mb-4">Send Service Inquiry</h3>
+                    <form method="post" action="{% url 'service_detail' service.slug %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="page_type" value="Service">
+                        <input type="hidden" name="page_title" value="{{ service.title }}">
+                        <input type="hidden" name="current_url" value="{{ request.build_absolute_uri }}">
+                        <input type="hidden" name="subject" value="Inquiry for {{ service.title }}">
+                        <div class="row g-4">
+                            <div class="col-md-6"><input type="text" name="name" class="fg-form-control" placeholder="Full Name" required></div>
+                            <div class="col-md-6"><input type="tel" name="phone" class="fg-form-control" placeholder="Phone" required></div>
+                            <div class="col-md-6"><input type="email" name="email" class="fg-form-control" placeholder="Email" required></div>
+                            <div class="col-12"><textarea name="message" class="fg-form-control" placeholder="Message" required></textarea></div>
+                            <div class="col-12"><button type="submit" class="btn fg-btn fg-btn--primary">Send Inquiry <i class="fa-solid fa-paper-plane"></i></button></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <aside class="col-lg-5">
+                <div class="fg-sidebar-widget">
+                    <h5 class="fg-sidebar-widget__title">Latest Blogs</h5>
+                    {% for post in latest_posts %}
+                    <div class="fg-sidebar-post">
+                        {% if post.featured_image %}<img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">{% endif %}
+                        <div><h6><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h6><span>{{ post.published_date|date:"M d, Y" }}</span></div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </aside>
+        </div>
+
+        <div class="fg-cta mt-5">
+            <h2>Ready to discuss {{ service.title }}?</h2>
+            <p>Book a consultation with a FinGrow advisor today.</p>
+            <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Get Consultation <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="row g-4 mt-5">
+            {% for related in related_services %}
+            <div class="col-lg-4 col-md-6">
+                <div class="fg-service-card">
+                    <div class="fg-service-card__icon"><i class="{{ related.icon_class|default:'fa-solid fa-briefcase' }}"></i></div>
+                    <h4 class="fg-service-card__title">{{ related.title }}</h4>
+                    <p class="fg-service-card__text">{{ related.short_description }}</p>
+                    <a href="{% url 'service_detail' related.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

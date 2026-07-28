@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- ==========================================================
+         META / CHARSET / VIEWPORT
+    =========================================================== -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="theme-color" content="#071B3B">
+
+    <!-- ==========================================================
+         SEO META TAGS
+    =========================================================== -->
+    <title>{% block title %}{% if website_settings.meta_title %}{{ website_settings.meta_title }}{% else %}FinGrow Consultancy Services | Financial &amp; Government Scheme Advisory{% endif %}{% endblock %}</title>
+
+    <meta name="description"
+          content="{% block meta_description %}{% if website_settings.meta_description %}{{ website_settings.meta_description }}{% else %}FinGrow Consultancy Services offers expert financial advisory, business consulting and government scheme guidance to help individuals and enterprises grow with confidence.{% endif %}{% endblock %}">
+    <meta name="keywords"
+          content="{% block meta_keywords %}{% if website_settings.meta_keywords %}{{ website_settings.meta_keywords }}{% else %}financial consultancy, business advisory, government schemes, subsidy consultants, tax advisory, FinGrow{% endif %}{% endblock %}">
+    <meta name="author" content="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+
+    <!-- ==========================================================
+         OPEN GRAPH / SOCIAL SHARE PLACEHOLDERS
+    =========================================================== -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}FinGrow Consultancy Services{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Trusted financial &amp; government scheme advisory for individuals and businesses.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:site_name" content="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}FinGrow Consultancy Services{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Trusted financial &amp; government scheme advisory for individuals and businesses.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
+
+    <!-- ==========================================================
+         FAVICON
+    =========================================================== -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% if website_settings.favicon %}{{ website_settings.favicon.url }}{% else %}{% static 'images/favicon-32x32.png' %}{% endif %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+
+    <!-- ==========================================================
+         GOOGLE FONTS — POPPINS
+    =========================================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ==========================================================
+         BOOTSTRAP 5.3 CSS (CDN)
+    =========================================================== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <!-- ==========================================================
+         FONT AWESOME 6 (CDN)
+    =========================================================== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- ==========================================================
+         PROJECT MASTER STYLESHEET (STATIC)
+    =========================================================== -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% if website_settings.logo %}
+    <link rel="preload" as="image" href="{{ website_settings.logo.url }}">
+    {% endif %}
+
+    <!-- Page-specific extra CSS block -->
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+<!-- ==================================================================
+     PAGE LOADER
+=================================================================== -->
+<div class="fg-loader" id="fgLoader" aria-hidden="true">
+    <div class="fg-loader__inner">
+        <span class="fg-loader__logo">Fin<span class="text-accent-green">Grow</span></span>
+        <div class="fg-loader__bar"><span></span></div>
+    </div>
+</div>
+
+<!-- ==================================================================
+     SCROLL PROGRESS BAR
+=================================================================== -->
+<div class="fg-scroll-progress" id="fgScrollProgress" role="progressbar" aria-hidden="true">
+    <span id="fgScrollProgressBar"></span>
+</div>
+
+<!-- ==================================================================
+     SKIP TO CONTENT (ACCESSIBILITY)
+=================================================================== -->
+<a href="#fgMainContent" class="fg-skip-link">Skip to main content</a>
+
+<!-- ==================================================================
+     HEADER / NAVIGATION
+=================================================================== -->
+<header class="fg-header" id="fgHeader">
+    <nav class="navbar navbar-expand-lg fg-navbar" id="fgNavbar">
+        <div class="container fg-navbar__inner">
+
+            <!-- Logo -->
+            <a class="navbar-brand fg-logo" href="{% url 'home' %}">
+                {% if website_settings.logo %}
+                    <img src="{{ website_settings.logo.url }}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
+                {% else %}
+                    <img src="{% static 'images/logo.svg' %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
+                {% endif %}
+                <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
+            </a>
+
+            <!-- Mobile Hamburger -->
+            <button class="fg-hamburger" id="fgHamburgerBtn" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="fgMobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Desktop Menu (Center) -->
+            <div class="fg-nav-center d-none d-lg-flex">
+                <ul class="fg-nav-menu">
+
+                    <li class="fg-nav-item">
+                        <a href="{% url 'home' %}" class="fg-nav-link {% block nav_home %}{% endblock %}">Home</a>
+                    </li>
+
+                    <li class="fg-nav-item">
+                        <a href="{% url 'about' %}" class="fg-nav-link {% block nav_about %}{% endblock %}">About</a>
+                    </li>
+
+                    <!-- SERVICES — MEGA MENU -->
+                    <li class="fg-nav-item fg-has-mega">
+                        <a href="{% url 'services' %}" class="fg-nav-link {% block nav_services %}{% endblock %}">
+                            Services <i class="fa-solid fa-chevron-down fg-caret"></i>
+                        </a>
+
+                        <div class="fg-mega-menu">
+                            <div class="fg-mega-menu__inner">
+
+                                <div class="fg-mega-col">
+                                    <span class="fg-mega-col__title">Services</span>
+                            {% for service in nav_services %}
+                                    <a href="{% url 'service_detail' service.slug %}" class="fg-mega-link">
+                                        <i class="{{ service.icon_class|default:'fa-solid fa-briefcase' }}"></i>
+                                        <span>
+                                            <strong>{{ service.title }}</strong>
+                                            <small>{{ service.short_description|truncatechars:42 }}</small>
+                                        </span>
+                                    </a>
+                                    {% endfor %}
+                                    <a href="{% url 'services' %}" class="fg-mega-link fg-mega-link--all">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                        <span><strong>View All Services</strong></span>
+                                    </a>
+                                </div>
+
+                                <div class="fg-mega-promo">
+                                    <span class="fg-badge fg-badge--green">Featured</span>
+                                    <h5>Free 30-min Consultation</h5>
+                                    <p>Talk to our senior advisors before you commit to anything.</p>
+                                    <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--sm fg-btn--white">Book Now</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- GOVERNMENT SCHEMES — DROPDOWN -->
+                    <li class="fg-nav-item fg-has-dropdown">
+                        <a href="{% url 'government_schemes' %}" class="fg-nav-link {% block nav_schemes %}{% endblock %}">
+                            Government Schemes <i class="fa-solid fa-chevron-down fg-caret"></i>
+                        </a>
+                        <div class="fg-dropdown">
+                            {% for scheme in nav_schemes %}
+                            <a href="{% url 'government_scheme_detail' scheme.slug %}" class="fg-dropdown__link">
+                                <i class="fa-solid fa-landmark"></i> {{ scheme.title }}
+                            </a>
+                            {% endfor %}
+                            <div class="fg-dropdown__divider"></div>
+                            <a href="{% url 'government_schemes' %}" class="fg-dropdown__link fg-dropdown__link--all">
+                                <i class="fa-solid fa-list"></i> View All Schemes
+                            </a>
+                        </div>
+                    </li>
+
+                    <li class="fg-nav-item">
+                        <a href="{% url 'blog' %}" class="fg-nav-link {% block nav_blog %}{% endblock %}">Blog</a>
+                    </li>
+
+                    <li class="fg-nav-item">
+                        <a href="{% url 'contact' %}" class="fg-nav-link {% block nav_contact %}{% endblock %}">Contact</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <!-- CTA Button (Right) -->
+            <div class="fg-nav-right d-none d-lg-flex">
+                <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--primary">
+                    <i class="fa-solid fa-calendar-check"></i> Get Consultation
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- ==================================================================
+         MOBILE SLIDE MENU + OVERLAY
+    =================================================================== -->
+    <div class="fg-mobile-overlay" id="fgMobileOverlay"></div>
+
+    <aside class="fg-mobile-menu" id="fgMobileMenu" aria-hidden="true">
+        <div class="fg-mobile-menu__header">
+            <a href="{% url 'home' %}" class="fg-logo">
+                <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
+            </a>
+            <button class="fg-mobile-close" id="fgMobileCloseBtn" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <ul class="fg-mobile-menu__list">
+            <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About</a></li>
+
+            <li class="fg-mobile-accordion">
+                <button class="fg-mobile-accordion__toggle" type="button">
+                    <span><i class="fa-solid fa-briefcase"></i> Services</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="fg-mobile-accordion__panel">
+                    {% for service in nav_services %}
+                    <a href="{% url 'service_detail' service.slug %}">{{ service.title }}</a>
+                    {% endfor %}
+                    <a href="{% url 'services' %}">View All Services</a>
+                </div>
+            </li>
+
+            <li class="fg-mobile-accordion">
+                <button class="fg-mobile-accordion__toggle" type="button">
+                    <span><i class="fa-solid fa-landmark"></i> Government Schemes</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="fg-mobile-accordion__panel">
+                    {% for scheme in nav_schemes %}
+                    <a href="{% url 'government_scheme_detail' scheme.slug %}">{{ scheme.title }}</a>
+                    {% endfor %}
+                    <a href="{% url 'government_schemes' %}">View All Schemes</a>
+                </div>
+            </li>
+
+            <li><a href="{% url 'blog' %}"><i class="fa-solid fa-newspaper"></i> Blog</a></li>
+            <li><a href="{% url 'contact' %}"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+        </ul>
+
+        <div class="fg-mobile-menu__footer">
+            <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--primary w-100">
+                <i class="fa-solid fa-calendar-check"></i> Get Consultation
+            </a>
+            <div class="fg-mobile-socials">
+                {% if website_settings.facebook %}<a href="{{ website_settings.facebook }}" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>{% endif %}
+                {% if website_settings.linkedin %}<a href="{{ website_settings.linkedin }}" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>{% endif %}
+                {% if website_settings.instagram %}<a href="{{ website_settings.instagram }}" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>{% endif %}
+                {% if website_settings.youtube %}<a href="{{ website_settings.youtube }}" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>{% endif %}
+            </div>
+        </div>
+    </aside>
+</header>
+
+<!-- ==================================================================
+     BREADCRUMB PLACEHOLDER (each inner page overrides this block)
+=================================================================== -->
+{% block breadcrumb %}{% endblock %}
+
+<!-- ==================================================================
+     MAIN CONTENT
+=================================================================== -->
+<main id="fgMainContent" class="fg-main">
+    {% block content %}{% endblock %}
+</main>
+
+{% if messages %}
+<div class="fg-django-messages" data-fg-messages>
+    {% for message in messages %}
+        <div data-message="{{ message|escape }}" data-tags="{{ message.tags|default:'info' }}"></div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- ==================================================================
+     FOOTER
+=================================================================== -->
+<footer class="fg-footer">
+
+    <!-- Newsletter Strip -->
+    <div class="fg-footer__newsletter">
+        <div class="container">
+            <div class="fg-newsletter-box" data-aos="fade-up">
+                <div class="fg-newsletter-box__text">
+                    <h3>Stay ahead with FinGrow insights</h3>
+                    <p>Subscribe for the latest government scheme updates, tax deadlines &amp; financial tips.</p>
+                </div>
+                <form class="fg-newsletter-form" id="fgNewsletterForm" novalidate>
+                    {% csrf_token %}
+                    <input type="email" name="newsletter_email" class="fg-newsletter-form__input" placeholder="Enter your email address" required>
+                    <button type="submit" class="btn fg-btn fg-btn--green">
+                        Subscribe <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Footer -->
+    <div class="fg-footer__main">
+        <div class="container">
+            <div class="row gy-5">
+
+                <!-- Company Intro -->
+                <div class="col-lg-4 col-md-6">
+                    <a href="{% url 'home' %}" class="fg-logo fg-logo--footer">
+                        {% if website_settings.logo %}
+                            <img src="{{ website_settings.logo.url }}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
+                        {% endif %}
+                        <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
+                    </a>
+                    <p class="fg-footer__about">
+                        FinGrow Consultancy Services delivers premium financial advisory, business
+                        structuring and government scheme guidance — helping individuals and
+                        enterprises across India grow with clarity and confidence.
+                    </p>
+                    <ul class="fg-footer__contact-list">
+                        <li><i class="fa-solid fa-location-dot"></i> {{ website_settings.address|default:"4th Floor, Prestige Tower, Ahmedabad, Gujarat, India" }}</li>
+                        <li><i class="fa-solid fa-phone"></i> <a href="tel:{{ website_settings.phone|default:'+911234567890' }}">{{ website_settings.phone|default:"+91 12345 67890" }}</a></li>
+                        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:{{ website_settings.email|default:'contact@fingrowconsultancy.com' }}">{{ website_settings.email|default:"contact@fingrowconsultancy.com" }}</a></li>
+                    </ul>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="fg-footer__heading">Quick Links</h5>
+                    <ul class="fg-footer__links">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'services' %}">Services</a></li>
+                        <li><a href="{% url 'blog' %}">Blog</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div class="col-lg-3 col-md-6 col-6">
+                    <h5 class="fg-footer__heading">Services</h5>
+                    <ul class="fg-footer__links">
+                        {% for service in footer_services %}
+                        <li><a href="{% url 'service_detail' service.slug %}">{{ service.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Government Schemes + Socials -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fg-footer__heading">Government Schemes</h5>
+                    <ul class="fg-footer__links">
+                        {% for scheme in footer_schemes %}
+                        <li><a href="{% url 'government_scheme_detail' scheme.slug %}">{{ scheme.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                    <h5 class="fg-footer__heading fg-footer__heading--social">Follow Us</h5>
+                    <div class="fg-social-icons">
+                        {% if website_settings.facebook %}<a href="{{ website_settings.facebook }}" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>{% endif %}
+                        {% if website_settings.linkedin %}<a href="{{ website_settings.linkedin }}" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>{% endif %}
+                        {% if website_settings.instagram %}<a href="{{ website_settings.instagram }}" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>{% endif %}
+                        {% if website_settings.youtube %}<a href="{{ website_settings.youtube }}" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>{% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<!-- Copyright Bar -->
+<div class="fg-footer__bottom">
+    <div class="container fg-footer__bottom-inner">
+        <p class="fg-footer__copyright">
+            {% if website_settings.copyright %}
+                {{ website_settings.copyright }}
+            {% else %}
+                &copy; {% now "Y" %} FinGrow Consultancy Services. All rights reserved.
+            {% endif %}
+            <span class="fg-footer__credit">
+                | Designed & Developed by
+                <a href="https://a2zclicksdigital.in" target="_blank" rel="noopener noreferrer">
+                    A2Z Clicks Digital
+                </a>
+            </span>
+        </p>
+
+        <ul class="fg-footer__legal">
+            <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+            <li><a href="{% url 'terms' %}">Terms &amp; Conditions</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- ==================================================================
+     FLOATING WHATSAPP BUTTON
+=================================================================== -->
+<a href="https://wa.me/{{ website_settings.whatsapp|default:'911234567890' }}" target="_blank" rel="noopener noreferrer" class="fg-whatsapp-float" aria-label="Chat with us on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<!-- ==================================================================
+     BACK TO TOP BUTTON
+=================================================================== -->
+<button class="fg-back-to-top" id="fgBackToTop" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<!-- ==================================================================
+     COOKIE CONSENT
+=================================================================== -->
+<section class="fg-cookie-consent" id="fgCookieConsent" aria-label="Cookie consent" aria-hidden="true">
+    <div class="fg-cookie-consent__content">
+        <h2>Cookie Preferences</h2>
+        <p>We use necessary cookies to keep this website working. Functional cookies improve your experience. Analytics and marketing stay off unless you allow them later.</p>
+        <div class="fg-cookie-consent__options">
+            <label class="fg-checkbox">
+                <input type="checkbox" checked disabled>
+                <span>Necessary</span>
+            </label>
+            <label class="fg-checkbox">
+                <input type="checkbox" id="fgCookieFunctional">
+                <span>Functional</span>
+            </label>
+            <label class="fg-checkbox">
+                <input type="checkbox" id="fgCookieAnalytics">
+                <span>Analytics</span>
+            </label>
+            <label class="fg-checkbox">
+                <input type="checkbox" id="fgCookieMarketing">
+                <span>Marketing</span>
+            </label>
+        </div>
+    </div>
+    <div class="fg-cookie-consent__actions">
+        <button type="button" class="btn fg-btn fg-btn--outline" id="fgCookieReject">Necessary Only</button>
+        <button type="button" class="btn fg-btn fg-btn--primary" id="fgCookieSave">Save</button>
+        <button type="button" class="btn fg-btn fg-btn--green" id="fgCookieAccept">Accept All</button>
+    </div>
+</section>
+
+<!-- ==================================================================
+     TOAST NOTIFICATION CONTAINER
+=================================================================== -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3 fg-toast-container" id="fgToastContainer" aria-live="polite" aria-atomic="true"></div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{ website_settings.company_name|default:'FinGrow Consultancy Services'|escapejs }}",
+    "url": "{{ request.scheme }}://{{ request.get_host }}",
+    "email": "{{ website_settings.email|default:'contact@fingrowconsultancy.com'|escapejs }}",
+    "telephone": "{{ website_settings.phone|default:'+91 12345 67890'|escapejs }}",
+    "address": "{{ website_settings.address|default:'Ahmedabad, Gujarat, India'|escapejs }}",
+    "sameAs": [
+        {% if website_settings.facebook %}"{{ website_settings.facebook|escapejs }}"{% if website_settings.linkedin or website_settings.instagram or website_settings.youtube %},{% endif %}{% endif %}
+        {% if website_settings.linkedin %}"{{ website_settings.linkedin|escapejs }}"{% if website_settings.instagram or website_settings.youtube %},{% endif %}{% endif %}
+        {% if website_settings.instagram %}"{{ website_settings.instagram|escapejs }}"{% if website_settings.youtube %},{% endif %}{% endif %}
+        {% if website_settings.youtube %}"{{ website_settings.youtube|escapejs }}"{% endif %}
+    ]
+}
+</script>
+
+<!-- ==================================================================
+     JAVASCRIPT — CDN LIBRARIES
+=================================================================== -->
+
+<!-- ==================================================================
+     PROJECT MASTER JAVASCRIPT (STATIC)
+=================================================================== -->
+<script src="{% static 'js/main.js' %}" defer></script>
+
+<!-- Page-specific extra JS block -->
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

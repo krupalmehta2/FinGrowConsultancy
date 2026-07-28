@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ scheme.title }} | FinGrow Consultancy Services{% endblock %}
+{% block meta_description %}{{ scheme.short_description|truncatechars:155 }}{% endblock %}
+{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}
+{% block og_title %}{{ scheme.title }}{% endblock %}
+{% block og_description %}{{ scheme.short_description|truncatechars:155 }}{% endblock %}
+{% block og_image %}{% if scheme.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ scheme.featured_image.url }}{% else %}{% static 'images/og-default-banner.jpg' %}{% endif %}{% endblock %}
+{% block twitter_title %}{{ scheme.title }}{% endblock %}
+{% block twitter_description %}{{ scheme.short_description|truncatechars:155 }}{% endblock %}
+{% block twitter_image %}{% if scheme.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ scheme.featured_image.url }}{% else %}{% static 'images/og-default-banner.jpg' %}{% endif %}{% endblock %}
+{% block nav_schemes %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">{{ scheme.title }}</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'government_schemes' %}">Government Schemes</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">{{ scheme.title }}</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-6">
+                <span class="fg-eyebrow"><i class="fa-solid fa-landmark"></i> Government Scheme</span>
+                <h2 class="fg-section-title">{{ scheme.title }}</h2>
+                <p class="fg-lead">{{ scheme.short_description }}</p>
+                <div>{{ scheme.description|default:scheme.short_description|linebreaks }}</div>
+            </div>
+            {% if scheme.featured_image %}
+            <div class="col-lg-6">
+                <img src="{{ scheme.featured_image.url }}" alt="{{ scheme.title }}" class="fg-radius-2xl" loading="lazy" decoding="async">
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row g-4 mt-5">
+            <div class="col-lg-4"><div class="fg-card"><h3>Eligibility</h3><div>{{ scheme.eligibility|default:"Eligibility details can be reviewed by our advisory team based on your profile."|linebreaks }}</div></div></div>
+            <div class="col-lg-4"><div class="fg-card"><h3>Benefits</h3><div>{{ scheme.benefits|default:"Guidance on applicable benefits, subsidy support and documentation readiness."|linebreaks }}</div></div></div>
+            <div class="col-lg-4"><div class="fg-card"><h3>Required Documents</h3><div>{{ scheme.required_documents|default:"Document requirements vary by scheme. Our team will share a precise checklist during consultation."|linebreaks }}</div></div></div>
+        </div>
+
+        <div class="fg-contact-card mt-5">
+            <h3 class="mb-4">Send Scheme Inquiry</h3>
+            <form method="post" action="{% url 'government_scheme_detail' scheme.slug %}">
+                {% csrf_token %}
+                <input type="hidden" name="page_type" value="Scheme">
+                <input type="hidden" name="page_title" value="{{ scheme.title }}">
+                <input type="hidden" name="current_url" value="{{ request.build_absolute_uri }}">
+                <input type="hidden" name="subject" value="Inquiry for {{ scheme.title }}">
+                <div class="row g-4">
+                    <div class="col-md-4"><input type="text" name="name" class="fg-form-control" placeholder="Full Name" required></div>
+                    <div class="col-md-4"><input type="tel" name="phone" class="fg-form-control" placeholder="Phone" required></div>
+                    <div class="col-md-4"><input type="email" name="email" class="fg-form-control" placeholder="Email" required></div>
+                    <div class="col-12"><textarea name="message" class="fg-form-control" placeholder="Message" required></textarea></div>
+                    <div class="col-12"><button type="submit" class="btn fg-btn fg-btn--primary">Send Inquiry <i class="fa-solid fa-paper-plane"></i></button></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="fg-cta mt-5">
+            <h2>Need help with {{ scheme.title }}?</h2>
+            <p>Talk to FinGrow for eligibility review and application guidance.</p>
+            <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Get Consultation <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="row g-4 mt-5">
+            {% for related in related_schemes %}
+            <div class="col-lg-4 col-md-6">
+                <div class="fg-scheme-card">
+                    <div class="fg-scheme-card__header">
+                        <i class="fa-solid fa-landmark"></i>
+                        <h4 class="mb-0 text-white">{{ related.title }}</h4>
+                    </div>
+                    <div class="fg-scheme-card__body">
+                        <p>{{ related.short_description }}</p>
+                        <a href="{% url 'government_scheme_detail' related.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

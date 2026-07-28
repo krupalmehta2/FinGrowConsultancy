@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Terms &amp; Conditions | FinGrow Consultancy Services{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Terms &amp; Conditions</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Terms &amp; Conditions</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="fg-card">
+            <span class="fg-eyebrow"><i class="fa-solid fa-file-contract"></i> Please read carefully</span>
+            <h2 class="fg-section-title">Terms &amp; Conditions</h2>
+            <p>By using this website, you agree to these terms. If you do not agree, please do not use the website or submit an enquiry.</p>
+            <h3>Website information</h3>
+            <p>Content on this website is provided for general information and should not be treated as legal, tax, investment or financial advice. Information may change without notice.</p>
+            <h3>Consultancy engagements</h3>
+            <p>Submitting an enquiry does not create a client relationship. Scope, fees, timelines, deliverables and responsibilities are confirmed separately in writing before work begins.</p>
+            <h3>Responsible use</h3>
+            <p>You agree to provide accurate information, use this website lawfully and avoid attempting to disrupt, copy or misuse any part of the website.</p>
+            <h3>Limitation</h3>
+            <p>We make reasonable efforts to keep website information accurate, but do not guarantee that it is complete, current or suitable for every individual situation. Please seek professional advice for decisions specific to your circumstances.</p>
+            <h3>Contact</h3>
+            <p>If you have questions about these terms, please use our <a href="{% url 'contact' %}">contact page</a>.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

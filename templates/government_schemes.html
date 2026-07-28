@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Government Schemes | FinGrow Consultancy Services{% endblock %}
+{% block nav_schemes %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Government Schemes</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Government Schemes</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="row g-4">
+
+            {% for scheme in schemes %}
+            <div id="{{ scheme.slug }}" class="col-lg-6" data-aos="fade-up">
+                <div class="fg-scheme-card">
+                    <div class="fg-scheme-card__header">
+                        <i class="fa-solid fa-landmark"></i>
+                        <h4 class="mb-0 text-white">{{ scheme.title }}</h4>
+                    </div>
+                    <div class="fg-scheme-card__body">
+                        <p>{{ scheme.short_description }}</p>
+                        <a href="{% url 'government_scheme_detail' scheme.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+{% endblock %}

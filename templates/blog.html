@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Blog | FinGrow Consultancy Services{% endblock %}
+{% block nav_blog %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Blog</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Blog</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="fg-section-header fg-section-header--center" data-aos="fade-up">
+            <span class="fg-eyebrow"><i class="fa-solid fa-newspaper"></i> Insights</span>
+            <h2 class="fg-section-title">Latest From FinGrow</h2>
+            <p class="fg-section-subtitle">Financial tips, scheme updates and compliance deadlines.</p>
+        </div>
+
+        <div class="row g-4">
+            {% for post in posts %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                <div class="fg-blog-card">
+                    <div class="fg-blog-card__img-wrap">
+                        {% if post.featured_image %}
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
+                        {% else %}
+                            <img src="{% static 'images/blog-placeholder-1.jpg' %}" alt="{{ post.title }}" loading="lazy" decoding="async">
+                        {% endif %}
+                        <span class="fg-blog-card__category">{{ post.published_date|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="fg-blog-card__body">
+                        <h3 class="fg-blog-card__title"><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h3>
+                        <p>{{ post.short_description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

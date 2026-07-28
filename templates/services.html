@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Our Services | FinGrow Consultancy Services{% endblock %}
+{% block nav_services %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Our Services</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Services</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+
+        {% for service in services %}
+        <div id="{{ service.slug }}" class="row align-items-center gy-5 fg-section--sm">
+            <div class="col-lg-6" data-aos="fade-right">
+                <span class="fg-eyebrow">{% if service.icon_class %}<i class="{{ service.icon_class }}"></i>{% endif %} Service</span>
+                <h2 class="fg-section-title">{{ service.title }}</h2>
+                <p>{{ service.short_description }}</p>
+                <a href="{% url 'service_detail' service.slug %}" class="btn fg-btn fg-btn--primary">
+                    Read More <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            {% if service.featured_image %}
+            <div class="col-lg-6" data-aos="fade-left">
+                <img src="{{ service.featured_image.url }}" alt="{{ service.title }}" class="fg-radius-2xl" loading="lazy" decoding="async">
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+{% endblock %}

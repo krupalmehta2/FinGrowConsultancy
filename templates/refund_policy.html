@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Refund Policy | FinGrow Consultancy Services{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Refund Policy</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Refund Policy</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <h2 class="fg-section-title">Refund Policy</h2>
+        <p>Refund eligibility depends on the confirmed service scope, stage of work and written agreement for the engagement.</p>
+    </div>
+</section>
+{% endblock %}

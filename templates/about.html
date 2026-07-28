@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us | FinGrow Consultancy Services{% endblock %}
+{% block nav_about %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">About Us</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">About</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="row align-items-center gy-6">
+            <div class="col-lg-6" data-aos="fade-right">
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
+                     alt="FinGrow Consultancy Services team"
+                     class="fg-radius-2xl" loading="lazy" decoding="async">
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <span class="fg-eyebrow"><i class="fa-solid fa-star"></i> About FinGrow</span>
+                <h2 class="fg-section-title">A Decade of Trusted Financial Guidance</h2>
+                <p>
+                    FinGrow Consultancy Services was founded to give individuals and
+                    businesses honest, practical financial advice — from tax planning
+                    to navigating government schemes.
+                </p>
+                <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--primary">
+                    Talk to Our Team <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

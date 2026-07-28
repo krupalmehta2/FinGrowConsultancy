@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy | FinGrow Consultancy Services{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Privacy Policy</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Privacy Policy</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="fg-card">
+            <span class="fg-eyebrow"><i class="fa-solid fa-shield-halved"></i> Your privacy matters</span>
+            <h2 class="fg-section-title">Privacy Policy</h2>
+            <p>FinGrow Consultancy Services respects your privacy and is committed to protecting the information you share with us.</p>
+            <h3>Information we collect</h3>
+            <p>When you contact us, we may collect your name, phone number, email address, business details and the information you include in your enquiry.</p>
+            <h3>How we use information</h3>
+            <p>We use enquiry information to respond to you, understand your requirements, provide requested consultancy support and improve our services. We do not sell your personal information.</p>
+            <h3>Data protection</h3>
+            <p>We take reasonable administrative and technical steps to protect information from unauthorised access, misuse or disclosure. You may contact us to request correction or deletion of information, subject to applicable legal requirements.</p>
+            <h3>Contact</h3>
+            <p>For privacy-related questions, please use our <a href="{% url 'contact' %}">contact page</a>.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Us | FinGrow Consultancy Services{% endblock %}
+{% block nav_contact %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Contact Us</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Contact</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="row g-5">
+
+            <div class="col-lg-5" data-aos="fade-right">
+                <div class="fg-contact-info-card">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <h6>Our Office</h6>
+                        <p class="mb-0">{{ website_settings.address|default:"4th Floor, Prestige Tower, Ahmedabad, Gujarat, India" }}</p>
+                    </div>
+                </div>
+                <div class="fg-contact-info-card">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <h6>Call Us</h6>
+                        <p class="mb-0"><a href="tel:{{ website_settings.phone|default:'+911234567890' }}">{{ website_settings.phone|default:"+91 12345 67890" }}</a></p>
+                    </div>
+                </div>
+                <div class="fg-contact-info-card">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <h6>Email Us</h6>
+                        <p class="mb-0"><a href="mailto:{{ website_settings.email|default:'contact@fingrowconsultancy.com' }}">{{ website_settings.email|default:"contact@fingrowconsultancy.com" }}</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7" data-aos="fade-left">
+                <div class="fg-contact-card">
+                    <h3 class="mb-4">Send Us a Message</h3>
+                    <form method="post" action="{% url 'contact' %}" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <div class="col-md-6 fg-form-group">
+                                <label class="fg-form-label" for="id_name">Full Name <span class="fg-required">*</span></label>
+                                <input type="text" name="name" id="id_name" class="fg-form-control{% if form.name.errors %} is-invalid{% endif %}" value="{{ form.name.value|default:'' }}" autocomplete="name" required>
+                                {% for error in form.name.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 fg-form-group">
+                                <label class="fg-form-label" for="id_phone">Phone <span class="fg-required">*</span></label>
+                                <input type="tel" name="phone" id="id_phone" class="fg-form-control{% if form.phone.errors %} is-invalid{% endif %}" value="{{ form.phone.value|default:'' }}" autocomplete="tel" required>
+                                {% for error in form.phone.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 fg-form-group">
+                                <label class="fg-form-label" for="id_email">Email <span class="fg-required">*</span></label>
+                                <input type="email" name="email" id="id_email" class="fg-form-control{% if form.email.errors %} is-invalid{% endif %}" value="{{ form.email.value|default:'' }}" autocomplete="email" required>
+                                {% for error in form.email.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-md-6 fg-form-group">
+                                <label class="fg-form-label" for="id_subject">Subject <span class="fg-required">*</span></label>
+                                <input type="text" name="subject" id="id_subject" class="fg-form-control{% if form.subject.errors %} is-invalid{% endif %}" value="{{ form.subject.value|default:'' }}" autocomplete="off" required>
+                                {% for error in form.subject.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-12 fg-form-group">
+                                <label class="fg-form-label" for="id_message">Message <span class="fg-required">*</span></label>
+                                <textarea name="message" id="id_message" class="fg-form-control{% if form.message.errors %} is-invalid{% endif %}" autocomplete="off" required>{{ form.message.value|default:'' }}</textarea>
+                                {% for error in form.message.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn fg-btn fg-btn--primary fg-btn--lg">
+                                    <i class="fa-solid fa-paper-plane"></i> Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

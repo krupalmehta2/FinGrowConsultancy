@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Django/runtime files
+*.log
+.env
+db.sqlite3
+staticfiles/
+
+# Keep media/ tracked because it contains demo uploads and images.
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
