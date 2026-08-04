@@ -20,24 +20,14 @@
 {% block content %}
 <section class="fg-section fg-section--white">
     <div class="container">
+        <div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-briefcase"></i> Complete Business Support</span><h2 class="fg-section-title">Solutions designed around your growth</h2><p class="fg-section-subtitle">Explore our full range of dynamically managed consultancy services.</p></div>
 
+        <div class="row g-4">
         {% for service in services %}
-        <div id="{{ service.slug }}" class="row align-items-center gy-5 fg-section--sm">
-            <div class="col-lg-6" data-aos="fade-right">
-                <span class="fg-eyebrow">{% if service.icon_class %}<i class="{{ service.icon_class }}"></i>{% endif %} Service</span>
-                <h2 class="fg-section-title">{{ service.title }}</h2>
-                <p>{{ service.short_description }}</p>
-                <a href="{% url 'service_detail' service.slug %}" class="btn fg-btn fg-btn--primary">
-                    Read More <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-            {% if service.featured_image %}
-            <div class="col-lg-6" data-aos="fade-left">
-                <img src="{{ service.featured_image.url }}" alt="{{ service.title }}" class="fg-radius-2xl" loading="lazy" decoding="async">
-            </div>
-            {% endif %}
-        </div>
+        <div id="{{ service.slug }}" class="col-lg-4 col-md-6" data-aos="fade-up"><div class="fg-service-card h-100"><div class="fg-service-card__icon fg-service-card__icon--image">{% if service.featured_image %}<img src="{{ service.featured_image.url }}" alt="{{ service.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div><span class="fg-eyebrow">FinGrow Service</span><h3 class="fg-service-card__title">{{ service.title }}</h3><p class="fg-service-card__text">{{ service.short_description }}</p><a href="{% url 'service_detail' service.slug %}" class="fg-service-card__link">Explore Service <i class="fa-solid fa-arrow-right"></i></a></div></div>
+        {% empty %}<div class="col-12"><p class="text-center">Services will be added shortly.</p></div>
         {% endfor %}
+        </div>
 
     </div>
 </section>

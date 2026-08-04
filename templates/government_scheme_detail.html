@@ -18,8 +18,8 @@
         <h1 class="fg-breadcrumb-section__title">{{ scheme.title }}</h1>
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <a href="{% url 'government_schemes' %}">Government Schemes</a>
+                <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'government_schemes' %}">Incubation Scheme</a>
             <i class="fa-solid fa-chevron-right"></i>
             <span class="fg-breadcrumb-current">{{ scheme.title }}</span>
         </nav>
@@ -30,18 +30,40 @@
 {% block content %}
 <section class="fg-section fg-section--white">
     <div class="container">
-        <div class="row align-items-center gy-5">
-            <div class="col-lg-6">
-                <span class="fg-eyebrow"><i class="fa-solid fa-landmark"></i> Government Scheme</span>
+        <div class="row align-items-center gy-5 fg-detail-hero">
+            <div class="col-lg-6 fg-detail-hero__content">
+                <span class="fg-eyebrow"><i class="fa-solid fa-seedling"></i> Incubation Scheme</span>
                 <h2 class="fg-section-title">{{ scheme.title }}</h2>
                 <p class="fg-lead">{{ scheme.short_description }}</p>
                 <div>{{ scheme.description|default:scheme.short_description|linebreaks }}</div>
             </div>
             {% if scheme.featured_image %}
-            <div class="col-lg-6">
+            <div class="col-lg-6 fg-detail-hero__media">
                 <img src="{{ scheme.featured_image.url }}" alt="{{ scheme.title }}" class="fg-radius-2xl" loading="lazy" decoding="async">
             </div>
             {% endif %}
+        </div>
+
+        <div class="fg-section-header fg-section-header--center mt-5" data-aos="fade-up">
+            <span class="fg-eyebrow"><i class="fa-solid fa-route"></i> Our Process</span>
+            <h2 class="fg-section-title">From idea to execution, with clarity at every step</h2>
+            <p class="fg-section-subtitle">A practical, founder-friendly journey designed around your eligibility, documents and goals.</p>
+        </div>
+        <div class="fg-process-grid mt-4">
+            <div class="fg-process-card"><span class="fg-process-card__step">01</span><h3>Understand</h3><p>We learn about your venture, goals and current stage.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">02</span><h3>Assess</h3><p>We review eligibility, opportunity and the right incubation route.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">03</span><h3>Prepare</h3><p>We organise the application, business information and supporting documents.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">04</span><h3>Support</h3><p>We guide submission, respond to requirements and follow up through the process.</p></div>
+        </div>
+
+        <div class="fg-section-header fg-section-header--center mt-5" data-aos="fade-up">
+            <span class="fg-eyebrow"><i class="fa-solid fa-circle-question"></i> Frequently Asked Questions</span>
+            <h2 class="fg-section-title">Incubation support, explained clearly</h2>
+        </div>
+        <div class="fg-faq-wrapper">
+            <details class="fg-faq-item"><summary>What does incubation support include?</summary><p>We help founders understand the opportunity, assess eligibility, prepare supporting information, organise documents and stay on track during submission and follow-up.</p></details>
+            <details class="fg-faq-item"><summary>Do I need an established business to apply?</summary><p>Requirements differ by programme and founder stage. We review your idea, entity status and documents first, then explain the most suitable route.</p></details>
+            <details class="fg-faq-item"><summary>Will FinGrow guarantee approval?</summary><p>No. Approval is decided by the relevant authority or incubator. Our role is to improve clarity, readiness and process discipline.</p></details>
         </div>
 
         <div class="row g-4 mt-5">
@@ -79,7 +101,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="fg-scheme-card">
                     <div class="fg-scheme-card__header">
-                        <i class="fa-solid fa-landmark"></i>
+                        {% if related.featured_image %}<img class="fg-scheme-card__thumb" src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img class="fg-scheme-card__thumb" src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img class="fg-scheme-card__thumb" src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}
                         <h4 class="mb-0 text-white">{{ related.title }}</h4>
                     </div>
                     <div class="fg-scheme-card__body">

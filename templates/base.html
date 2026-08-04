@@ -14,29 +14,30 @@
     <!-- ==========================================================
          SEO META TAGS
     =========================================================== -->
-    <title>{% block title %}{% if website_settings.meta_title %}{{ website_settings.meta_title }}{% else %}FinGrow Consultancy Services | Financial &amp; Government Scheme Advisory{% endif %}{% endblock %}</title>
+      <title>{% block title %}{% if website_settings.meta_title %}{{ website_settings.meta_title }}{% else %}FinGrow Consultancy Services | Financial &amp; Incubation Scheme Advisory{% endif %}{% endblock %}</title>
 
     <meta name="description"
-          content="{% block meta_description %}{% if website_settings.meta_description %}{{ website_settings.meta_description }}{% else %}FinGrow Consultancy Services offers expert financial advisory, business consulting and government scheme guidance to help individuals and enterprises grow with confidence.{% endif %}{% endblock %}">
-    <meta name="keywords"
-          content="{% block meta_keywords %}{% if website_settings.meta_keywords %}{{ website_settings.meta_keywords }}{% else %}financial consultancy, business advisory, government schemes, subsidy consultants, tax advisory, FinGrow{% endif %}{% endblock %}">
+           content="{% block meta_description %}{% if website_settings.meta_description %}{{ website_settings.meta_description }}{% else %}FinGrow Consultancy Services offers expert financial advisory, business consulting and incubation scheme guidance to help founders and enterprises grow with confidence.{% endif %}{% endblock %}">
+      <meta name="keywords"
+           content="{% block meta_keywords %}{% if website_settings.meta_keywords %}{{ website_settings.meta_keywords }}{% else %}financial consultancy, business advisory, incubation scheme, startup support, tax advisory, FinGrow{% endif %}{% endblock %}">
     <meta name="author" content="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}">
     <meta name="robots" content="index, follow">
+    <meta name="format-detection" content="telephone=no">
     <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
 
     <!-- ==========================================================
          OPEN GRAPH / SOCIAL SHARE PLACEHOLDERS
     =========================================================== -->
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
-    <meta property="og:title" content="{% block og_title %}FinGrow Consultancy Services{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Trusted financial &amp; government scheme advisory for individuals and businesses.{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}">
+      <meta property="og:description" content="{% block og_description %}Trusted financial and incubation scheme advisory for founders and businesses.{% endblock %}">
     <meta property="og:image" content="{% block og_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:site_name" content="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}FinGrow Consultancy Services{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Trusted financial &amp; government scheme advisory for individuals and businesses.{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}">
+      <meta name="twitter:description" content="{% block twitter_description %}Trusted financial and incubation scheme advisory for founders and businesses.{% endblock %}">
     <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
 
     <!-- ==========================================================
@@ -53,6 +54,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 
     <!-- ==========================================================
          BOOTSTRAP 5.3 CSS (CDN)
@@ -139,58 +141,60 @@
                     </li>
 
                     <!-- SERVICES — MEGA MENU -->
-                    <li class="fg-nav-item fg-has-mega">
+                    <li class="fg-nav-item fg-has-mega fg-has-dropdown group">
                         <a href="{% url 'services' %}" class="fg-nav-link {% block nav_services %}{% endblock %}">
                             Services <i class="fa-solid fa-chevron-down fg-caret"></i>
                         </a>
 
-                        <div class="fg-mega-menu">
-                            <div class="fg-mega-menu__inner">
+                        <div class="fg-saas-mega absolute left-1/2 top-full z-50 w-[min(1100px,calc(100vw-32px))] -translate-x-1/2 pt-4">
+                            <div class="rounded-[24px] border border-slate-200 bg-white p-6 shadow-2xl">
+                                <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+                                    <div>
+                                        <div class="mb-5 flex items-end justify-between gap-4">
+                                            <div>
+                                                <p class="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">FinGrow Consultancy</p>
+                                                <h3 class="text-2xl font-bold tracking-tight text-slate-900">All Services</h3>
+                                            </div>
+                                            <span class="hidden text-sm text-slate-500 sm:block">Practical support for ambitious businesses</span>
+                                        </div>
 
-                                <div class="fg-mega-col">
-                                    <span class="fg-mega-col__title">Services</span>
-                            {% for service in nav_services %}
-                                    <a href="{% url 'service_detail' service.slug %}" class="fg-mega-link">
-                                        <i class="{{ service.icon_class|default:'fa-solid fa-briefcase' }}"></i>
-                                        <span>
-                                            <strong>{{ service.title }}</strong>
-                                            <small>{{ service.short_description|truncatechars:42 }}</small>
-                                        </span>
-                                    </a>
-                                    {% endfor %}
-                                    <a href="{% url 'services' %}" class="fg-mega-link fg-mega-link--all">
-                                        <i class="fa-solid fa-arrow-right"></i>
-                                        <span><strong>View All Services</strong></span>
-                                    </a>
+                                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                                            {% for service in nav_services %}
+                                            <a href="{% url 'service_detail' service.slug %}" class="group/card flex min-h-[148px] flex-col rounded-2xl border border-slate-200 bg-white p-4 no-underline shadow-sm transition duration-200 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                                                <span class="mb-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 transition group-hover/card:bg-emerald-600 group-hover/card:text-white">
+                                                    <i class="{{ service.icon_class|default:'fa-solid fa-briefcase' }} text-[20px]" aria-hidden="true"></i>
+                                                </span>
+                                                <strong class="mb-1 line-clamp-1 text-[15px] font-semibold leading-5 text-slate-900">{{ service.title }}</strong>
+                                                <span class="line-clamp-2 text-xs leading-5 text-slate-500">{{ service.short_description }}</span>
+                                            </a>
+                                            {% empty %}
+                                            <p class="col-span-full text-sm text-slate-500">Services will be available shortly.</p>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <aside class="flex flex-col justify-between rounded-2xl bg-slate-950 p-6 text-white shadow-lg">
+                                        <div>
+                                            <span class="mb-5 inline-flex rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300">Expert guidance</span>
+                                            <h4 class="text-xl font-bold leading-7">Need help choosing the right service?</h4>
+                                            <p class="mt-3 text-sm leading-6 text-slate-300">Talk with our experts and we'll guide you.</p>
+                                        </div>
+                                        <div class="mt-6 flex flex-col gap-3">
+                                            <a href="{% url 'services' %}" class="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 no-underline transition hover:bg-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300">View All Services <i class="fa-solid fa-arrow-right ml-2" aria-hidden="true"></i></a>
+                                            <a href="{% url 'contact' %}" class="inline-flex items-center justify-center rounded-xl border border-slate-600 px-4 py-3 text-sm font-semibold text-white no-underline transition hover:border-emerald-400 hover:text-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-300">Book Free Consultation</a>
+                                        </div>
+                                    </aside>
                                 </div>
-
-                                <div class="fg-mega-promo">
-                                    <span class="fg-badge fg-badge--green">Featured</span>
-                                    <h5>Free 30-min Consultation</h5>
-                                    <p>Talk to our senior advisors before you commit to anything.</p>
-                                    <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--sm fg-btn--white">Book Now</a>
-                                </div>
-
                             </div>
                         </div>
                     </li>
 
                     <!-- GOVERNMENT SCHEMES — DROPDOWN -->
-                    <li class="fg-nav-item fg-has-dropdown">
+                    <li class="fg-nav-item fg-has-dropdown group">
                         <a href="{% url 'government_schemes' %}" class="fg-nav-link {% block nav_schemes %}{% endblock %}">
-                            Government Schemes <i class="fa-solid fa-chevron-down fg-caret"></i>
+          Incubation Scheme <i class="fa-solid fa-chevron-down fg-caret"></i>
                         </a>
-                        <div class="fg-dropdown">
-                            {% for scheme in nav_schemes %}
-                            <a href="{% url 'government_scheme_detail' scheme.slug %}" class="fg-dropdown__link">
-                                <i class="fa-solid fa-landmark"></i> {{ scheme.title }}
-                            </a>
-                            {% endfor %}
-                            <div class="fg-dropdown__divider"></div>
-                            <a href="{% url 'government_schemes' %}" class="fg-dropdown__link fg-dropdown__link--all">
-                                <i class="fa-solid fa-list"></i> View All Schemes
-                            </a>
-                        </div>
+                        <div class="fg-saas-mega absolute left-1/2 top-full z-50 w-[min(1100px,calc(100vw-32px))] -translate-x-1/2 pt-4"><div class="rounded-[24px] border border-slate-200 bg-white p-6 shadow-2xl"><div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]"><div><div class="mb-5 flex items-end justify-between gap-4"><div><p class="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">Funding &amp; incubation support</p><h3 class="text-2xl font-bold tracking-tight text-slate-900">All Incubation Schemes</h3></div><span class="hidden text-sm text-slate-500 sm:block">Find the right opportunity for your business</span></div><div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">{% for scheme in nav_schemes %}<a href="{% url 'government_scheme_detail' scheme.slug %}" class="group/card flex min-h-[148px] flex-col rounded-2xl border border-slate-200 bg-white p-4 no-underline shadow-sm transition duration-200 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"><span class="mb-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 transition group-hover/card:bg-emerald-600 group-hover/card:text-white"><i class="fa-solid fa-landmark text-[20px]" aria-hidden="true"></i></span><strong class="mb-1 line-clamp-1 text-[15px] font-semibold leading-5 text-slate-900">{{ scheme.title }}</strong><span class="line-clamp-2 text-xs leading-5 text-slate-500">{{ scheme.short_description }}</span></a>{% empty %}<p class="col-span-full text-sm text-slate-500">Incubation schemes will be available shortly.</p>{% endfor %}</div></div><aside class="flex flex-col justify-between rounded-2xl bg-slate-950 p-6 text-white shadow-lg"><div><span class="mb-5 inline-flex rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300">Scheme guidance</span><h4 class="text-xl font-bold leading-7">Not sure which scheme fits?</h4><p class="mt-3 text-sm leading-6 text-slate-300">Talk with our experts and understand your eligibility and next steps.</p></div><div class="mt-6 flex flex-col gap-3"><a href="{% url 'government_schemes' %}" class="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-3 text-sm font-semibold text-slate-950 no-underline transition hover:bg-emerald-400">View All Schemes <i class="fa-solid fa-arrow-right ml-2" aria-hidden="true"></i></a><a href="{% url 'contact' %}" class="inline-flex items-center justify-center rounded-xl border border-slate-600 px-4 py-3 text-sm font-semibold text-white no-underline transition hover:border-emerald-400 hover:text-emerald-300">Book Free Consultation</a></div></aside></div></div></div>
                     </li>
 
                     <li class="fg-nav-item">
@@ -248,14 +252,14 @@
 
             <li class="fg-mobile-accordion">
                 <button class="fg-mobile-accordion__toggle" type="button">
-                    <span><i class="fa-solid fa-landmark"></i> Government Schemes</span>
+                    <span><i class="fa-solid fa-landmark"></i> Incubation Scheme</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="fg-mobile-accordion__panel">
                     {% for scheme in nav_schemes %}
                     <a href="{% url 'government_scheme_detail' scheme.slug %}">{{ scheme.title }}</a>
                     {% endfor %}
-                    <a href="{% url 'government_schemes' %}">View All Schemes</a>
+                    <a href="{% url 'government_schemes' %}">View Incubation Scheme</a>
                 </div>
             </li>
 
@@ -308,7 +312,7 @@
             <div class="fg-newsletter-box" data-aos="fade-up">
                 <div class="fg-newsletter-box__text">
                     <h3>Stay ahead with FinGrow insights</h3>
-                    <p>Subscribe for the latest government scheme updates, tax deadlines &amp; financial tips.</p>
+                    <p>Subscribe for incubation scheme updates, tax deadlines &amp; financial tips.</p>
                 </div>
                 <form class="fg-newsletter-form" id="fgNewsletterForm" novalidate>
                     {% csrf_token %}
@@ -336,7 +340,7 @@
                     </a>
                     <p class="fg-footer__about">
                         FinGrow Consultancy Services delivers premium financial advisory, business
-                        structuring and government scheme guidance — helping individuals and
+                        structuring and incubation scheme guidance — helping founders and
                         enterprises across India grow with clarity and confidence.
                     </p>
                     <ul class="fg-footer__contact-list">
@@ -370,7 +374,7 @@
 
                 <!-- Government Schemes + Socials -->
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="fg-footer__heading">Government Schemes</h5>
+                    <h5 class="fg-footer__heading">Incubation Scheme</h5>
                     <ul class="fg-footer__links">
                         {% for scheme in footer_schemes %}
                         <li><a href="{% url 'government_scheme_detail' scheme.slug %}">{{ scheme.title }}</a></li>

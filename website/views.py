@@ -1,5 +1,8 @@
 from django.contrib import messages
+from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponse
+from django.urls import reverse
 
 from .forms import ContactInquiryForm
 from .models import BlogPost, GovernmentScheme, Service
@@ -20,6 +23,9 @@ def home(request):
 
 def about(request):
     return render(request, "about.html")
+
+def process(request):
+    return render(request, "process.html")
 
 def services(request):
     services = Service.objects.filter(active=True)
@@ -100,11 +106,9 @@ def blog_detail(request, slug):
 
 def contact(request):
     if request.method == "POST":
-        form = ContactInquiryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Thank you. We will contact you shortly.")
+        if save_inquiry(request):
             return redirect("contact")
+        form = ContactInquiryForm(request.POST)
     else:
         form = ContactInquiryForm()
     return render(request, "contact.html", {"form": form})
@@ -117,3 +121,19 @@ def terms(request):
 
 def refund_policy(request):
     return render(request, "refund_policy.html")
+
+def robots_txt(request):
+    sitemap_url = request.build_absolute_uri(reverse("sitemap_xml"))
+    return HttpResponse(
+        "User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /media/\n\nSitemap: " + sitemap_url + "\n",
+        content_type="text/plain",
+    )
+
+def sitemap_xml(request):
+    names = ["home", "about", "process", "services", "government_schemes", "blog", "contact", "privacy_policy", "terms", "refund_policy"]
+    urls = [request.build_absolute_uri(reverse(name)) for name in names]
+    items = "".join(f"<url><loc>{url}</loc></url>" for url in urls)
+    return HttpResponse('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + items + "</urlset>", content_type="application/xml")
+
+def custom_404(request, exception):
+    return render(request, "404.html", status=404)

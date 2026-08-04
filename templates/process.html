@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Our Process | FinGrow Consultancy Services{% endblock %}
+{% block meta_description %}See how FinGrow Consultancy Services understands your goals, assesses the opportunity, prepares your documents and supports you through every next step.{% endblock %}
+{% block og_title %}Our Process | FinGrow{% endblock %}
+{% block nav_process %}active{% endblock %}
+
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section">
+    <div class="container">
+        <h1 class="fg-breadcrumb-section__title">Our Process</h1>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <span class="fg-breadcrumb-current">Our Process</span>
+        </nav>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="fg-section-header fg-section-header--center">
+            <span class="fg-eyebrow"><i class="fa-solid fa-route"></i> Clear guidance at every step</span>
+            <h2 class="fg-section-title">How We Work</h2>
+            <p class="fg-section-subtitle">A structured approach designed to deliver clarity, strategy and measurable results at every step.</p>
+        </div>
+        <div class="fg-process-grid">
+            <div class="fg-process-card"><span class="fg-process-card__step">01</span><h3>Discover</h3><p>We understand your business, goals and challenges through in-depth discussions.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">02</span><h3>Analyze</h3><p>We study, research and analyze to identify the right opportunities and solutions.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">03</span><h3>Strategize</h3><p>We craft customized strategies tailored to your business needs and objectives.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">04</span><h3>Implement</h3><p>Our team executes the plan with precision, using best practices and proven tools.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">05</span><h3>Monitor</h3><p>We continuously track progress and measure performance against key metrics.</p></div>
+            <div class="fg-process-card"><span class="fg-process-card__step">06</span><h3>Deliver</h3><p>We ensure measurable results that drive growth and long-term success.</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="fg-section fg-section--gray">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4"><div class="fg-service-card h-100"><div class="fg-service-card__icon"><i class="fa-solid fa-user-tie"></i></div><h4 class="fg-service-card__title">Founder-led guidance</h4><p class="fg-service-card__text">Practical support built around your real business situation, not a one-size-fits-all checklist.</p></div></div>
+            <div class="col-md-4"><div class="fg-service-card h-100"><div class="fg-service-card__icon"><i class="fa-solid fa-file-shield"></i></div><h4 class="fg-service-card__title">Clear and responsible</h4><p class="fg-service-card__text">We explain requirements, timelines and limitations clearly. Approval decisions remain with the relevant authority.</p></div></div>
+            <div class="col-md-4"><div class="fg-service-card h-100"><div class="fg-service-card__icon"><i class="fa-solid fa-comments"></i></div><h4 class="fg-service-card__title">Easy to get started</h4><p class="fg-service-card__text">Begin with a conversation, understand your options and decide the next step with confidence.</p></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="fg-section fg-section--white">
+    <div class="container"><div class="fg-cta"><h2>Have a goal in mind?</h2><p>Tell us what you are working towards and let’s identify the right next step.</p><a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg"><i class="fa-solid fa-calendar-check"></i> Get Free Consultation</a></div></div>
+</section>
+{% endblock %}

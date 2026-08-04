@@ -1,3 +1,12 @@
+/* Founder vision feature */
+.fg-founder-portrait { position: relative; max-width: 440px; margin: 0 auto; padding: 0 1.25rem 1.25rem 0; }
+.fg-founder-portrait__frame { position: absolute; inset: 1.25rem 0 0 1.25rem; border: 2px solid var(--fg-green, #b8d83d); border-radius: 1.5rem; opacity: .7; }
+.fg-founder-portrait img { position: relative; display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 1.5rem; box-shadow: 0 1.5rem 3rem rgba(10, 35, 58, .18); }
+.fg-founder-portrait__badge { position: absolute; right: 0; bottom: 2rem; display: flex; align-items: center; gap: .7rem; padding: .9rem 1.1rem; color: #fff; background: var(--fg-navy, #092b49); border-radius: .85rem; box-shadow: 0 .75rem 1.5rem rgba(10, 35, 58, .2); font-size: .8rem; font-weight: 600; line-height: 1.35; }
+.fg-founder-portrait__badge i { color: var(--fg-green, #b8d83d); font-size: 1.1rem; }
+.fg-founder-signature { display: flex; align-items: center; gap: .75rem; margin-top: 1.5rem; color: var(--fg-navy, #092b49); font-size: .85rem; font-weight: 700; }
+.fg-founder-signature__line { width: 2.5rem; height: 2px; background: var(--fg-green, #b8d83d); }
+
 /* =========================================================================
    FINGROW CONSULTANCY SERVICES — MASTER STYLESHEET
    Author : Senior Frontend Team
@@ -2307,6 +2316,71 @@ select.fg-form-control {
     gap: var(--fg-space-6);
 }
 
+.fg-process-grid .fg-process-card { padding: var(--fg-space-5) var(--fg-space-3); }
+.fg-process-grid .fg-process-card:not(:last-child)::after {
+    content: "➜";
+    position: absolute;
+    right: -22px;
+    top: 38%;
+    color: var(--fg-green);
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+.fg-process-grid .fg-process-card h3 { font-size: 1rem; color: var(--fg-navy); text-transform: uppercase; margin-bottom: var(--fg-space-2); }
+.fg-process-grid .fg-process-card p { font-size: .82rem; line-height: 1.5; margin-bottom: 0; }
+
+.fg-home-trust .fg-service-card { border-top: 4px solid var(--fg-green); }
+.fg-proof-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.fg-proof-stats > div { background: var(--fg-navy); color: var(--fg-white); border-radius: var(--fg-radius-xl); padding: 1.5rem; min-height: 120px; display: flex; flex-direction: column; justify-content: center; box-shadow: var(--fg-shadow-md); }
+.fg-proof-stats strong { color: var(--fg-green-light); font-size: 2rem; line-height: 1; margin-bottom: .55rem; }
+.fg-proof-stats span { color: rgba(255,255,255,.8); font-size: .9rem; }
+@media (max-width: 575px) { .fg-proof-stats { grid-template-columns: 1fr; } }
+
+.fg-detail-hero { padding: 2rem; border: 1px solid var(--fg-border); border-radius: var(--fg-radius-3xl); background: linear-gradient(135deg, #fff, #f3faf7); box-shadow: var(--fg-shadow-sm); }
+.fg-service-card__icon--image { overflow: hidden; padding: 0; background: var(--fg-white); }
+.fg-service-card__icon--image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fg-scheme-card__thumb { width: 42px; height: 42px; object-fit: cover; border-radius: 10px; background: var(--fg-white); }
+.fg-detail-hero__content { padding: 1rem; }
+.fg-detail-hero__media img { width: 100%; min-height: 320px; object-fit: cover; border-radius: var(--fg-radius-2xl); box-shadow: var(--fg-shadow-md); }
+.fg-detail-hero + .row .fg-card { height: 100%; border-top: 3px solid var(--fg-green); }
+@media (max-width: 767px) { .fg-detail-hero { padding: 1rem; } .fg-detail-hero__media img { min-height: 220px; } }
+
+/* Navigation: spacious, scannable dynamic menus */
+.fg-mega-menu { width: min(780px, 90vw); }
+.fg-saas-mega { position: absolute; top: 100%; left: 50%; z-index: 50; display: none; width: min(1100px, calc(100vw - 32px)); padding-top: 16px; transform: translateX(-50%); }
+.fg-has-mega:hover > .fg-saas-mega,
+.fg-has-dropdown:hover > .fg-saas-mega { display: block; }
+.fg-saas-mega:hover { display: block; }
+.fg-saas-mega > div { border-radius: 24px; border: 1px solid var(--fg-border); background: var(--fg-white); padding: 24px; box-shadow: var(--fg-shadow-lg); }
+.fg-saas-mega > div > div { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; }
+.fg-saas-mega h3 { margin: 0; color: var(--fg-navy); font-size: 1.45rem; font-weight: 700; }
+.fg-saas-mega h4 { color: var(--fg-white); font-size: 1.15rem; line-height: 1.45; margin: 0; }
+.fg-saas-mega p { margin: 0; }
+.fg-saas-mega .grid.grid-cols-1 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.fg-saas-mega a.group\/card { display: flex; min-height: 148px; flex-direction: column; border: 1px solid var(--fg-border); border-radius: 16px; background: var(--fg-white); padding: 16px; text-decoration: none; box-shadow: var(--fg-shadow-sm); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.fg-saas-mega a.group\/card:hover { transform: translateY(-4px); border-color: var(--fg-green); box-shadow: var(--fg-shadow-lg); }
+.fg-saas-mega a.group\/card > span:first-child { display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; margin-bottom: 16px; border-radius: 12px; background: var(--fg-green-light); color: var(--fg-green-dark); }
+.fg-saas-mega a.group\/card:hover > span:first-child { background: var(--fg-green); color: var(--fg-white); }
+.fg-saas-mega a.group\/card strong { display: block; overflow: hidden; margin-bottom: 4px; color: var(--fg-navy); font-size: .92rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.fg-saas-mega a.group\/card > span:last-child { display: -webkit-box; overflow: hidden; color: var(--fg-gray); font-size: .75rem; line-height: 1.6; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.fg-saas-mega aside { display: flex; min-height: 100%; flex-direction: column; justify-content: space-between; border-radius: 16px; background: var(--fg-navy); padding: 24px; color: var(--fg-white); }
+.fg-saas-mega aside > div:last-child { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+.fg-saas-mega aside a { display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; padding: 12px 16px; font-size: .82rem; font-weight: 600; text-decoration: none; }
+.fg-saas-mega aside a:first-child { background: var(--fg-green); color: var(--fg-navy); }
+.fg-saas-mega aside a:last-child { border: 1px solid rgba(255,255,255,.3); color: var(--fg-white); }
+@media (max-width: 991px) { .fg-saas-mega { display: none !important; } }
+@media (max-width: 767px) { .fg-saas-mega > div > div { grid-template-columns: 1fr; } .fg-saas-mega .grid.grid-cols-1 { grid-template-columns: 1fr; } }
+.fg-mega-menu__inner { display: block; }
+.fg-mega-col--full { width: 100%; }
+.fg-mega-col--full { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; }
+.fg-mega-col--full .fg-mega-col__title { grid-column: 1 / -1; }
+.fg-mega-col--full .fg-mega-link--all { grid-column: 1 / -1; }
+.fg-dropdown--wide { width: 360px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; padding: 1rem; }
+.fg-dropdown--wide .fg-dropdown__divider { display: none; }
+.fg-dropdown--wide .fg-dropdown__link--all { grid-column: 1 / -1; margin-top: .35rem; }
+.fg-dropdown--wide .fg-dropdown__link { min-height: 48px; display: flex; align-items: center; gap: .5rem; }
+.fg-dropdown--wide .fg-dropdown__link span { line-height: 1.2; }
+
 .fg-process-card {
     text-align: center;
     padding: var(--fg-space-7) var(--fg-space-5);
@@ -3113,6 +3187,7 @@ select.fg-form-control {
 
 /* ---- Large Mobile (max-width: 767.98px) ---- */
 @media (max-width: 767.98px) {
+    .container { padding-left: 1rem; padding-right: 1rem; }
     .fg-section { padding: var(--fg-space-9) 0; }
     .fg-section--lg { padding: var(--fg-space-9) 0; }
 
@@ -3121,6 +3196,11 @@ select.fg-form-control {
     .fg-cta { padding: var(--fg-space-8) var(--fg-space-5); border-radius: var(--fg-radius-xl); }
 
     .fg-contact-card { padding: var(--fg-space-6); }
+
+    .fg-founder-portrait { max-width: 390px; padding-right: .75rem; }
+    .fg-founder-portrait__frame { inset: .75rem 0 0 .75rem; }
+    .fg-founder-portrait__badge { right: -.25rem; bottom: 1.5rem; }
+    .fg-founder-signature { align-items: flex-start; }
 
     .fg-whatsapp-float,
     .fg-back-to-top {
@@ -3141,6 +3221,7 @@ select.fg-form-control {
     }
 
     .fg-hero__title { font-size: 2.1rem; }
+    .fg-hero__subtitle { font-size: .95rem; }
     .fg-hero__actions { flex-direction: column; width: 100%; }
     .fg-hero__actions .fg-btn { width: 100%; }
 
@@ -3151,6 +3232,9 @@ select.fg-form-control {
     }
 
     .fg-mobile-menu { width: 100%; }
+
+    .fg-founder-portrait__badge { padding: .7rem .8rem; font-size: .72rem; }
+    .fg-founder-signature { font-size: .76rem; }
 
     .fg-toast { min-width: 0; width: 100%; }
 

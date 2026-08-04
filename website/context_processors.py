@@ -5,8 +5,8 @@ def website_settings(request):
     return {
         "website_settings": WebsiteSettings.objects.first(),
         # Keep navigation driven by the active records in the admin.
-        "nav_services": Service.objects.filter(active=True),
-        "nav_schemes": GovernmentScheme.objects.filter(active=True),
+        "nav_services": Service.objects.filter(active=True)[:5],
+        "nav_schemes": GovernmentScheme.objects.filter(active=True)[:5],
         "footer_services": Service.objects.filter(active=True)[:6],
         "footer_schemes": GovernmentScheme.objects.filter(active=True)[:6],
     }

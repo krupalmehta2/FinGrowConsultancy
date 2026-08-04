@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}FinGrow Consultancy Services | Financial &amp; Government Scheme Advisory{% endblock %}
+{% block title %}FinGrow Consultancy Services | Financial &amp; Incubation Scheme Advisory{% endblock %}
+{% block meta_description %}FinGrow Consultancy Services helps founders and businesses with financial planning, business advisory and incubation scheme guidance across India.{% endblock %}
+{% block og_title %}Financial &amp; Incubation Scheme Advisory | FinGrow{% endblock %}
 
 {% block nav_home %}active{% endblock %}
 
@@ -20,7 +22,7 @@
                     Grow Your Wealth with <span class="fg-highlight">FinGrow</span> Consultancy
                 </h1>
                 <p class="fg-hero__subtitle">
-                    Expert financial planning, business advisory and government scheme
+                    Expert financial planning, business advisory and incubation scheme
                     guidance — helping individuals and enterprises across India move
                     forward with clarity and confidence.
                 </p>
@@ -34,16 +36,16 @@
                 </div>
                 <div class="fg-hero__stats">
                     <div class="fg-hero__stat">
-                        <strong>500+</strong>
-                        <span>Clients Served</span>
+                        <strong>100+</strong>
+                        <span>Businesses Supported</span>
                     </div>
                     <div class="fg-hero__stat">
-                        <strong>12+</strong>
-                        <span>Years Experience</span>
+                        <strong>87%</strong>
+                        <span>Client Retention</span>
                     </div>
                     <div class="fg-hero__stat">
-                        <strong>50+</strong>
-                        <span>Govt. Schemes Handled</span>
+                        <strong>10+</strong>
+                        <span>Projects Guided</span>
                     </div>
                 </div>
             </div>
@@ -55,6 +57,12 @@
         </div>
     </div>
 </section>
+
+<section class="fg-section fg-section--white fg-home-trust">
+ <div class="container"><div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-shield-halved"></i> Why Choose FinGrow</span><h2 class="fg-section-title">Complete support under one roof</h2></div><div class="row g-4"><div class="col-md-4"><div class="fg-service-card h-100"><h4>Complete Solutions</h4><p>From registration to advisory, all under one roof.</p></div></div><div class="col-md-4"><div class="fg-service-card h-100"><h4>Expert Government Guidance</h4><p>We identify the right schemes and funding opportunities for you.</p></div></div><div class="col-md-4"><div class="fg-service-card h-100"><h4>Professional &amp; Transparent</h4><p>Clear communication and ethical practices.</p></div></div></div></div>
+</section>
+
+<section class="fg-section fg-section--gray fg-home-proof"><div class="container"><div class="row align-items-center g-5"><div class="col-lg-5"><span class="fg-eyebrow"><i class="fa-solid fa-chart-line"></i> Our Clients, Our Pride</span><h2 class="fg-section-title">Trusted by businesses across industries</h2><p class="fg-section-subtitle">From first registration to long-term growth, we help ambitious businesses move forward with clarity.</p></div><div class="col-lg-7"><div class="fg-proof-stats"><div><strong>100+</strong><span>Businesses</span></div><div><strong>87%</strong><span>Client Retention</span></div><div><strong>10+</strong><span>Projects Guided</span></div><div><strong>Pan India</strong><span>Service Provider</span></div></div></div></div></div></section>
 
 <!-- =====================================================================
      ABOUT SNAPSHOT
@@ -100,7 +108,7 @@
             {% for service in services %}
             <div class="col-lg-4 col-md-6" data-aos="fade-up">
                 <div class="fg-service-card">
-                    <div class="fg-service-card__icon"><i class="{{ service.icon_class|default:'fa-solid fa-briefcase' }}"></i></div>
+                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if service.featured_image %}<img src="{{ service.featured_image.url }}" alt="{{ service.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div>
                     <h4 class="fg-service-card__title">{{ service.title }}</h4>
                     <p class="fg-service-card__text">{{ service.short_description }}</p>
                     <a href="{% url 'service_detail' service.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
@@ -108,6 +116,7 @@
             </div>
             {% endfor %}
         </div>
+        <div class="text-center mt-5"><a href="{% url 'services' %}" class="btn fg-btn fg-btn--primary fg-btn--lg">Explore All Services <i class="fa-solid fa-arrow-right"></i></a></div>
     </div>
 </section>
 

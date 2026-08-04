@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found | FinGrow Consultancy Services{% endblock %}
+{% block content %}
+<section class="fg-section fg-section--white text-center">
+    <div class="container">
+        <span class="fg-eyebrow"><i class="fa-solid fa-compass"></i> Page Not Found</span>
+        <h1 class="fg-section-title">Let’s get you back on track</h1>
+        <p class="fg-section-subtitle">The page you’re looking for may have moved or no longer exists.</p>
+        <a href="{% url 'home' %}" class="btn fg-btn fg-btn--primary">Back to Home <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+</section>
+{% endblock %}

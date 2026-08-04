@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Government Schemes | FinGrow Consultancy Services{% endblock %}
+{% block title %}Incubation Scheme | FinGrow Consultancy Services{% endblock %}
+{% block meta_description %}Explore FinGrow’s incubation scheme guidance for founders, including eligibility review, documentation support and application follow-up.{% endblock %}
+{% block og_title %}Incubation Scheme Guidance | FinGrow{% endblock %}
 {% block nav_schemes %}active{% endblock %}
 
 {% block breadcrumb %}
 <section class="fg-breadcrumb-section">
     <div class="container">
-        <h1 class="fg-breadcrumb-section__title">Government Schemes</h1>
+        <h1 class="fg-breadcrumb-section__title">Incubation Scheme</h1>
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
-            <span class="fg-breadcrumb-current">Government Schemes</span>
+            <span class="fg-breadcrumb-current">Incubation Scheme</span>
         </nav>
     </div>
 </section>
@@ -20,13 +22,14 @@
 {% block content %}
 <section class="fg-section fg-section--white">
     <div class="container">
+        <div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-landmark"></i> Government Opportunities</span><h2 class="fg-section-title">Find the right incubation scheme</h2><p class="fg-section-subtitle">Explore available schemes and get practical guidance on eligibility, documentation and next steps.</p></div>
         <div class="row g-4">
 
             {% for scheme in schemes %}
-            <div id="{{ scheme.slug }}" class="col-lg-6" data-aos="fade-up">
-                <div class="fg-scheme-card">
+            <div id="{{ scheme.slug }}" class="col-lg-4 col-md-6" data-aos="fade-up">
+                <div class="fg-scheme-card h-100">
                     <div class="fg-scheme-card__header">
-                        <i class="fa-solid fa-landmark"></i>
+                        {% if scheme.featured_image %}<img class="fg-scheme-card__thumb" src="{{ scheme.featured_image.url }}" alt="{{ scheme.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img class="fg-scheme-card__thumb" src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img class="fg-scheme-card__thumb" src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}
                         <h4 class="mb-0 text-white">{{ scheme.title }}</h4>
                     </div>
                     <div class="fg-scheme-card__body">

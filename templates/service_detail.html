@@ -30,15 +30,15 @@
 {% block content %}
 <section class="fg-section fg-section--white">
     <div class="container">
-        <div class="row align-items-center gy-5">
-            <div class="col-lg-6">
+        <div class="row align-items-center gy-5 fg-detail-hero">
+            <div class="col-lg-6 fg-detail-hero__content">
                 <span class="fg-eyebrow">{% if service.icon_class %}<i class="{{ service.icon_class }}"></i>{% endif %} Service</span>
                 <h2 class="fg-section-title">{{ service.title }}</h2>
                 <p class="fg-lead">{{ service.short_description }}</p>
                 <div>{{ service.description|default:service.short_description|linebreaks }}</div>
             </div>
             {% if service.featured_image %}
-            <div class="col-lg-6">
+            <div class="col-lg-6 fg-detail-hero__media">
                 <img src="{{ service.featured_image.url }}" alt="{{ service.title }}" class="fg-radius-2xl" loading="lazy" decoding="async">
             </div>
             {% endif %}
@@ -102,7 +102,7 @@
             {% for related in related_services %}
             <div class="col-lg-4 col-md-6">
                 <div class="fg-service-card">
-                    <div class="fg-service-card__icon"><i class="{{ related.icon_class|default:'fa-solid fa-briefcase' }}"></i></div>
+                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if related.featured_image %}<img src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div>
                     <h4 class="fg-service-card__title">{{ related.title }}</h4>
                     <p class="fg-service-card__text">{{ related.short_description }}</p>
                     <a href="{% url 'service_detail' related.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
