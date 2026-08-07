@@ -13,9 +13,9 @@
 {% block nav_schemes %}active{% endblock %}
 
 {% block breadcrumb %}
-<section class="fg-breadcrumb-section">
+<section class="fg-breadcrumb-section fg-page-hero--scheme-detail">
     <div class="container">
-        <h1 class="fg-breadcrumb-section__title">{{ scheme.title }}</h1>
+        <span class="fg-page-hero__eyebrow">Opportunity profile</span><h1 class="fg-breadcrumb-section__title">{{ scheme.title }}</h1><p class="fg-page-hero__subtitle">{{ scheme.short_description }}</p>
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
                 <i class="fa-solid fa-chevron-right"></i>
@@ -76,6 +76,7 @@
             <h3 class="mb-4">Send Scheme Inquiry</h3>
             <form method="post" action="{% url 'government_scheme_detail' scheme.slug %}">
                 {% csrf_token %}
+                {{ form.website }}
                 <input type="hidden" name="page_type" value="Scheme">
                 <input type="hidden" name="page_title" value="{{ scheme.title }}">
                 <input type="hidden" name="current_url" value="{{ request.build_absolute_uri }}">
@@ -97,11 +98,18 @@
         </div>
 
         <div class="row g-4 mt-5">
+            <div class="col-12">
+                <div class="fg-section-header">
+                    <span class="fg-eyebrow"><i class="fa-solid fa-compass"></i> Explore further</span>
+                    <h2 class="fg-section-title">More opportunities for your business</h2>
+                    <p class="fg-section-subtitle">There may be another route that fits your stage, sector, or funding need.</p>
+                </div>
+            </div>
             {% for related in related_schemes %}
             <div class="col-lg-4 col-md-6">
                 <div class="fg-scheme-card">
                     <div class="fg-scheme-card__header">
-                        {% if related.featured_image %}<img class="fg-scheme-card__thumb" src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img class="fg-scheme-card__thumb" src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img class="fg-scheme-card__thumb" src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}
+                        {% if related.featured_image %}<img class="fg-scheme-card__thumb" src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img class="fg-scheme-card__thumb" src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img class="fg-scheme-card__thumb" src="{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}
                         <h4 class="mb-0 text-white">{{ related.title }}</h4>
                     </div>
                     <div class="fg-scheme-card__body">
@@ -110,6 +118,7 @@
                     </div>
                 </div>
             </div>
+            {% empty %}<div class="col-12"><p class="fg-empty-state">We can help you identify alternatives. <a href="{% url 'government_schemes' %}">View all schemes</a> or <a href="{% url 'contact' %}">request a review</a>.</p></div>
             {% endfor %}
         </div>
     </div>

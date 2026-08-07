@@ -5,9 +5,9 @@
 {% block nav_contact %}active{% endblock %}
 
 {% block breadcrumb %}
-<section class="fg-breadcrumb-section">
+<section class="fg-breadcrumb-section fg-page-hero--contact">
     <div class="container">
-        <h1 class="fg-breadcrumb-section__title">Contact Us</h1>
+        <span class="fg-page-hero__eyebrow">Let’s make progress</span><h1 class="fg-breadcrumb-section__title">Let’s build something<br><em>meaningful together.</em></h1><p class="fg-page-hero__subtitle">Whether you are starting from scratch or scaling with intent, we are here to help you make the next move clearer.</p>
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
@@ -23,27 +23,27 @@
         <div class="row g-5">
 
             <div class="col-lg-5" data-aos="fade-right">
-                <div class="fg-contact-info-card">
+                {% if website_settings.address %}<div class="fg-contact-info-card">
                     <i class="fa-solid fa-location-dot"></i>
                     <div>
                         <h6>Our Office</h6>
-                        <p class="mb-0">{{ website_settings.address|default:"4th Floor, Prestige Tower, Ahmedabad, Gujarat, India" }}</p>
+                    <p class="mb-0">{{ website_settings.address }}</p>
                     </div>
-                </div>
-                <div class="fg-contact-info-card">
+                </div>{% endif %}
+                {% if website_settings.phone %}<div class="fg-contact-info-card">
                     <i class="fa-solid fa-phone"></i>
                     <div>
                         <h6>Call Us</h6>
-                        <p class="mb-0"><a href="tel:{{ website_settings.phone|default:'+911234567890' }}">{{ website_settings.phone|default:"+91 12345 67890" }}</a></p>
+                    <p class="mb-0"><a href="tel:{{ website_settings.phone }}">{{ website_settings.phone }}</a></p>
                     </div>
-                </div>
-                <div class="fg-contact-info-card">
+                </div>{% endif %}
+                {% if website_settings.email %}<div class="fg-contact-info-card">
                     <i class="fa-solid fa-envelope"></i>
                     <div>
                         <h6>Email Us</h6>
-                        <p class="mb-0"><a href="mailto:{{ website_settings.email|default:'contact@fingrowconsultancy.com' }}">{{ website_settings.email|default:"contact@fingrowconsultancy.com" }}</a></p>
+                    <p class="mb-0"><a href="mailto:{{ website_settings.email }}">{{ website_settings.email }}</a></p>
                     </div>
-                </div>
+                </div>{% endif %}
             </div>
 
             <div class="col-lg-7" data-aos="fade-left">
@@ -51,6 +51,7 @@
                     <h3 class="mb-4">Send Us a Message</h3>
                     <form method="post" action="{% url 'contact' %}" novalidate>
                         {% csrf_token %}
+                        {{ form.website }}
                         <div class="row g-4">
                             <div class="col-md-6 fg-form-group">
                                 <label class="fg-form-label" for="id_name">Full Name <span class="fg-required">*</span></label>

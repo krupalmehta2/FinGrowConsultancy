@@ -14,9 +14,9 @@
 {% block nav_blog %}active{% endblock %}
 
 {% block breadcrumb %}
-<section class="fg-breadcrumb-section">
+<section class="fg-breadcrumb-section fg-page-hero--article">
     <div class="container">
-        <h1 class="fg-breadcrumb-section__title">{{ post.title }}</h1>
+        <span class="fg-page-hero__eyebrow">FinGrow insight</span><h1 class="fg-breadcrumb-section__title">{{ post.title }}</h1><p class="fg-page-hero__subtitle">{{ post.short_description }}</p>
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
@@ -45,6 +45,7 @@
                     <p>Send an inquiry and our advisory team will connect with you.</p>
                     <form method="post" action="{% url 'blog_detail' post.slug %}">
                         {% csrf_token %}
+                        {{ form.website }}
                         <input type="hidden" name="page_type" value="Blog">
                         <input type="hidden" name="page_title" value="{{ post.title }}">
                         <input type="hidden" name="current_url" value="{{ request.build_absolute_uri }}">
@@ -95,6 +96,13 @@
         </div>
 
         <div class="row g-4 mt-5">
+            <div class="col-12">
+                <div class="fg-section-header">
+                    <span class="fg-eyebrow"><i class="fa-solid fa-book-open"></i> Continue reading</span>
+                    <h2 class="fg-section-title">More insights from FinGrow</h2>
+                    <p class="fg-section-subtitle">Practical ideas to help you make the next decision with confidence.</p>
+                </div>
+            </div>
             {% for related in related_posts %}
             <div class="col-lg-4 col-md-6">
                 <div class="fg-blog-card">
@@ -104,6 +112,7 @@
                     </div>
                 </div>
             </div>
+            {% empty %}<div class="col-12"><p class="fg-empty-state">More insights are on the way. <a href="{% url 'contact' %}">Talk to our team</a> for practical guidance today.</p></div>
             {% endfor %}
         </div>
     </div>

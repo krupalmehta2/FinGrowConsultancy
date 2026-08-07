@@ -1,34 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Our Services | FinGrow Consultancy Services{% endblock %}
+{% block title %}Services | FinGrow Consultancy Services{% endblock %}
+{% block meta_description %}Explore FinGrow’s founder-led financial planning, business advisory, compliance and incubation scheme services.{% endblock %}
 {% block nav_services %}active{% endblock %}
-
-{% block breadcrumb %}
-<section class="fg-breadcrumb-section">
-    <div class="container">
-        <h1 class="fg-breadcrumb-section__title">Our Services</h1>
-        <nav class="fg-breadcrumb">
-            <a href="{% url 'home' %}">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span class="fg-breadcrumb-current">Services</span>
-        </nav>
-    </div>
-</section>
-{% endblock %}
-
 {% block content %}
-<section class="fg-section fg-section--white">
-    <div class="container">
-        <div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-briefcase"></i> Complete Business Support</span><h2 class="fg-section-title">Solutions designed around your growth</h2><p class="fg-section-subtitle">Explore our full range of dynamically managed consultancy services.</p></div>
-
-        <div class="row g-4">
-        {% for service in services %}
-        <div id="{{ service.slug }}" class="col-lg-4 col-md-6" data-aos="fade-up"><div class="fg-service-card h-100"><div class="fg-service-card__icon fg-service-card__icon--image">{% if service.featured_image %}<img src="{{ service.featured_image.url }}" alt="{{ service.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div><span class="fg-eyebrow">FinGrow Service</span><h3 class="fg-service-card__title">{{ service.title }}</h3><p class="fg-service-card__text">{{ service.short_description }}</p><a href="{% url 'service_detail' service.slug %}" class="fg-service-card__link">Explore Service <i class="fa-solid fa-arrow-right"></i></a></div></div>
-        {% empty %}<div class="col-12"><p class="text-center">Services will be added shortly.</p></div>
-        {% endfor %}
-        </div>
-
-    </div>
-</section>
+<main class="fg-editorial-page">
+    <section class="fg-editorial-hero fg-editorial-hero--dark"><div class="container"><div class="fg-editorial-hero__kicker"><span>02</span><span>Services</span></div><div class="row align-items-end gy-5"><div class="col-lg-8"><h1>Good advice should<br><em>create momentum.</em></h1></div><div class="col-lg-4"><p class="fg-editorial-hero__intro">Focused support for the financial, operational and strategic decisions that move a business forward.</p><a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green">Discuss your goals <i class="fa-solid fa-arrow-right"></i></a></div></div><div class="fg-editorial-hero__rule"></div></div></section>
+    <section class="fg-editorial-section fg-editorial-section--paper"><div class="container"><div class="fg-section-intro"><span class="fg-overline">The offering</span><h2>One trusted partner.<br>Several ways forward.</h2><p>Every engagement is shaped around your stage, your ambition and the decision in front of you.</p></div><div class="fg-service-list">{% for service in services %}<article class="fg-service-row" id="{{ service.slug }}"><div class="fg-service-row__number">{{ forloop.counter|stringformat:"02d" }}</div><div class="fg-service-row__icon"><i class="{{ service.icon_class|default:'fa-solid fa-arrow-up-right-dots' }}" aria-hidden="true"></i></div><div class="fg-service-row__main"><span class="fg-overline">Advisory service</span><h3>{{ service.title }}</h3><p>{{ service.short_description }}</p></div><a class="fg-circle-link" href="{% url 'service_detail' service.slug %}" aria-label="Explore {{ service.title }}"><i class="fa-solid fa-arrow-up-right"></i></a></article>{% empty %}<p>Services will be available shortly.</p>{% endfor %}</div></div></section>
+    <section class="fg-editorial-section fg-editorial-section--soft"><div class="container"><div class="row g-5"><div class="col-lg-5"><span class="fg-overline">Our approach</span><h2>From uncertainty to a plan you can act on.</h2></div><div class="col-lg-7"><div class="fg-step-list"><div><span>01</span><div><h3>Diagnose</h3><p>We understand your current position, constraints and desired outcome.</p></div></div><div><span>02</span><div><h3>Design</h3><p>We shape a practical route with clear priorities and realistic expectations.</p></div></div><div><span>03</span><div><h3>Deliver</h3><p>We help organise the details and stay close through the important next steps.</p></div></div></div></div></div></div></section>
+    <section class="fg-editorial-section fg-editorial-section--navy"><div class="container"><div class="fg-trust-panel"><span class="fg-overline">Why clients stay</span><h2>Clear thinking.<br>Human support.</h2><div class="fg-trust-points"><span>Founder-led attention</span><span>Practical, transparent advice</span><span>Support beyond the application</span></div><a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green">Talk to an advisor <i class="fa-solid fa-arrow-right"></i></a></div></div></section>
+</main>
 {% endblock %}

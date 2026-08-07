@@ -1,46 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Incubation Scheme | FinGrow Consultancy Services{% endblock %}
-{% block meta_description %}Explore FinGrow’s incubation scheme guidance for founders, including eligibility review, documentation support and application follow-up.{% endblock %}
-{% block og_title %}Incubation Scheme Guidance | FinGrow{% endblock %}
+{% block title %}Incubation Schemes | FinGrow Consultancy Services{% endblock %}
+{% block meta_description %}Find the right incubation and government scheme opportunity with FinGrow’s eligibility, documentation and application guidance.{% endblock %}
 {% block nav_schemes %}active{% endblock %}
-
-{% block breadcrumb %}
-<section class="fg-breadcrumb-section">
-    <div class="container">
-        <h1 class="fg-breadcrumb-section__title">Incubation Scheme</h1>
-        <nav class="fg-breadcrumb">
-            <a href="{% url 'home' %}">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span class="fg-breadcrumb-current">Incubation Scheme</span>
-        </nav>
-    </div>
-</section>
-{% endblock %}
-
 {% block content %}
-<section class="fg-section fg-section--white">
-    <div class="container">
-        <div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-landmark"></i> Government Opportunities</span><h2 class="fg-section-title">Find the right incubation scheme</h2><p class="fg-section-subtitle">Explore available schemes and get practical guidance on eligibility, documentation and next steps.</p></div>
-        <div class="row g-4">
-
-            {% for scheme in schemes %}
-            <div id="{{ scheme.slug }}" class="col-lg-4 col-md-6" data-aos="fade-up">
-                <div class="fg-scheme-card h-100">
-                    <div class="fg-scheme-card__header">
-                        {% if scheme.featured_image %}<img class="fg-scheme-card__thumb" src="{{ scheme.featured_image.url }}" alt="{{ scheme.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img class="fg-scheme-card__thumb" src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img class="fg-scheme-card__thumb" src="{% load static %}{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}
-                        <h4 class="mb-0 text-white">{{ scheme.title }}</h4>
-                    </div>
-                    <div class="fg-scheme-card__body">
-                        <p>{{ scheme.short_description }}</p>
-                        <a href="{% url 'government_scheme_detail' scheme.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-
-        </div>
-    </div>
-</section>
+<main class="fg-editorial-page">
+    <section class="fg-editorial-hero fg-editorial-hero--dark"><div class="container"><div class="fg-editorial-hero__kicker"><span>03</span><span>Opportunities</span></div><div class="row align-items-end gy-5"><div class="col-lg-8"><h1>Find the support<br><em>your business deserves.</em></h1></div><div class="col-lg-4"><p class="fg-editorial-hero__intro">Government schemes can unlock meaningful momentum. We help you find the right fit and approach it with confidence.</p></div></div><div class="fg-editorial-hero__rule"></div></div></section>
+    <section class="fg-editorial-section fg-editorial-section--paper"><div class="container"><div class="fg-section-intro"><span class="fg-overline">Scheme finder</span><h2>Opportunities, made easier to navigate.</h2><p>Review the active opportunities below, then speak with our team for a practical eligibility and documentation review.</p></div><div class="fg-plan-grid">{% for scheme in schemes %}<article class="fg-plan-card{% if forloop.counter == 1 %} fg-plan-card--featured{% endif %}" id="{{ scheme.slug }}">{% if forloop.counter == 1 %}<span class="fg-plan-card__badge">Featured opportunity</span>{% endif %}<div class="fg-plan-card__top"><span class="fg-plan-card__index">{{ forloop.counter|stringformat:"02d" }}</span><i class="fa-solid fa-landmark" aria-hidden="true"></i></div><h3>{{ scheme.title }}</h3><p>{{ scheme.short_description }}</p><ul><li><i class="fa-solid fa-check"></i> Eligibility review</li><li><i class="fa-solid fa-check"></i> Documentation roadmap</li><li><i class="fa-solid fa-check"></i> Application guidance</li></ul><a href="{% url 'government_scheme_detail' scheme.slug %}" class="fg-text-link">View opportunity <i class="fa-solid fa-arrow-right"></i></a></article>{% empty %}<p>No schemes are available at the moment.</p>{% endfor %}</div></div></section>
+    <section class="fg-editorial-section fg-editorial-section--soft"><div class="container"><div class="row g-5"><div class="col-lg-5"><span class="fg-overline">How it works</span><h2>A guided route, from eligibility to submission.</h2></div><div class="col-lg-7"><div class="fg-step-list"><div><span>01</span><div><h3>Match</h3><p>We understand your business and identify the most relevant opportunity.</p></div></div><div><span>02</span><div><h3>Prepare</h3><p>We organise the requirements, information and supporting documents.</p></div></div><div><span>03</span><div><h3>Move forward</h3><p>We guide your response to requirements and help you stay organised.</p></div></div></div></div></div></div></section>
+    <section class="fg-editorial-cta"><div class="container"><span class="fg-overline">Not sure where to begin?</span><h2>Let’s find the<br>right opportunity.</h2><a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Book a scheme review <i class="fa-solid fa-arrow-right"></i></a></div></section>
+</main>
 {% endblock %}

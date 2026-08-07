@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
+from django.core.cache import cache
+from django.utils.html import escape
 from django.urls import reverse
 
 from .forms import ContactInquiryForm
@@ -9,9 +11,14 @@ from .models import BlogPost, GovernmentScheme, Service
 
 
 def save_inquiry(request):
+    rate_key = f"contact-form:{request.META.get('REMOTE_ADDR', 'unknown')}"
+    if cache.get(rate_key):
+        messages.error(request, "Please wait a moment before sending another message.")
+        return False
     form = ContactInquiryForm(request.POST)
     if form.is_valid():
         form.save()
+        cache.set(rate_key, True, 60)
         messages.success(request, "Thank you. We will contact you shortly.")
         return True
     return False
@@ -132,8 +139,17 @@ def robots_txt(request):
 def sitemap_xml(request):
     names = ["home", "about", "process", "services", "government_schemes", "blog", "contact", "privacy_policy", "terms", "refund_policy"]
     urls = [request.build_absolute_uri(reverse(name)) for name in names]
-    items = "".join(f"<url><loc>{url}</loc></url>" for url in urls)
+    urls += [request.build_absolute_uri(reverse("service_detail", kwargs={"slug": item.slug})) for item in Service.objects.filter(active=True)]
+    urls += [request.build_absolute_uri(reverse("government_scheme_detail", kwargs={"slug": item.slug})) for item in GovernmentScheme.objects.filter(active=True)]
+    urls += [request.build_absolute_uri(reverse("blog_detail", kwargs={"slug": item.slug})) for item in BlogPost.objects.filter(active=True)]
+    items = "".join(f"<url><loc>{escape(url)}</loc></url>" for url in urls)
     return HttpResponse('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + items + "</urlset>", content_type="application/xml")
 
 def custom_404(request, exception):
     return render(request, "404.html", status=404)
+
+def custom_403(request, exception):
+    return render(request, "403.html", status=403)
+
+def custom_500(request):
+    return render(request, "500.html", status=500)

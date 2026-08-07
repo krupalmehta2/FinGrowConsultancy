@@ -1,124 +1,42 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}About Us | FinGrow Consultancy Services{% endblock %}
-{% block meta_description %}Learn how FinGrow Consultancy Services helps founders and businesses move from ambition to sustainable growth through practical financial and incubation guidance.{% endblock %}
-{% block og_title %}About FinGrow Consultancy Services{% endblock %}
+{% block title %}About FinGrow | Financial Guidance for Ambitious Businesses{% endblock %}
+{% block meta_description %}Meet FinGrow Consultancy Services — founder-led financial, business advisory and incubation scheme guidance for ambitious businesses across India.{% endblock %}
+{% block og_title %}The thinking behind FinGrow{% endblock %}
 {% block nav_about %}active{% endblock %}
 
-{% block breadcrumb %}
-<section class="fg-breadcrumb-section">
-    <div class="container">
-        <h1 class="fg-breadcrumb-section__title">About Us</h1>
-        <nav class="fg-breadcrumb">
-            <a href="{% url 'home' %}">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span class="fg-breadcrumb-current">About</span>
-        </nav>
-    </div>
-</section>
-{% endblock %}
-
 {% block content %}
-<section class="fg-section fg-section--white">
-    <div class="container">
-        <div class="row align-items-center gy-6">
-            <div class="col-lg-6" data-aos="fade-right">
-                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
-                     alt="FinGrow Consultancy Services team"
-                     class="fg-radius-2xl" loading="lazy" decoding="async">
+<main class="fg-editorial-page fg-about-page">
+    <section class="fg-editorial-hero fg-editorial-hero--light">
+        <div class="container">
+            <div class="fg-editorial-hero__kicker"><span>01</span><span>About FinGrow</span></div>
+            <div class="row align-items-end gy-5">
+                <div class="col-lg-8"><h1>Clarity for the decisions<br><em>that shape what’s next.</em></h1></div>
+                <div class="col-lg-4"><p class="fg-editorial-hero__intro">A founder-led consultancy helping ambitious people turn complex financial decisions into confident, sustainable progress.</p><a class="fg-text-link" href="{% url 'contact' %}">Start a conversation <i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
             </div>
-            <div class="col-lg-6" data-aos="fade-left">
-                <span class="fg-eyebrow"><i class="fa-solid fa-star"></i> About FinGrow</span>
-                <h2 class="fg-section-title">A Decade of Trusted Financial Guidance</h2>
-                <p>
-                    FinGrow Consultancy Services was founded to give individuals and
-                    businesses honest, practical financial advice — from tax planning
-                    to navigating incubation schemes and building stronger businesses.
-                </p>
-                <p class="fg-founder-signature"><strong>Founder &amp; Lead Consultant</strong><br>12+ years of practical financial and business advisory experience</p>
-                <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--primary">
-                    Talk to Our Team <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
+            <div class="fg-editorial-hero__rule"></div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="fg-section fg-section--gray">
-    <div class="container">
-        <div class="row align-items-center gy-5">
-            <div class="col-lg-5" data-aos="fade-right">
-                <div class="fg-founder-portrait">
-                    <div class="fg-founder-portrait__frame"></div>
-                    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1000&q=85"
-                         alt="Founder-led business discussion at FinGrow"
-                         loading="lazy" decoding="async">
-                    <div class="fg-founder-portrait__badge">
-                        <i class="fa-solid fa-quote-left"></i>
-                        <span>Built on trust.<br>Driven by impact.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-7" data-aos="fade-left">
-                <span class="fg-eyebrow"><i class="fa-solid fa-compass"></i> The Founder’s Vision</span>
-                <h2 class="fg-section-title">Turning ambition into meaningful, sustainable growth</h2>
-                <p class="fg-section-subtitle">
-                    FinGrow was built on a simple belief: the right guidance can turn a promising idea
-                    into a stronger enterprise. Our founder’s vision is to make financial and incubation
-                    support easier to understand, easier to access and genuinely useful for every founder
-                    we work with.
-                </p>
-                <p>
-                    We look beyond paperwork. By understanding your goals, assessing the opportunity
-                    clearly and supporting each next step, we help you move forward with confidence,
-                    compliance and purpose.
-                </p>
-                <div class="fg-founder-signature">
-                    <span class="fg-founder-signature__line"></span>
-                    <span>Founder-led guidance for ambitious businesses</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <section class="fg-editorial-section fg-editorial-section--paper">
+        <div class="container"><div class="row align-items-center g-5">
+            <div class="col-lg-7"><div class="fg-editorial-image fg-editorial-image--sketch"><img src="{% static 'images/about-growth-sketch.png' %}" alt="Business growth planning and sustainable growth illustration" loading="lazy" decoding="async"></div></div>
+            <div class="col-lg-5"><span class="fg-overline">The long view</span><h2>A decade of trusted financial guidance.</h2><p class="fg-copy-large">FinGrow was founded on a simple conviction: good advice should make the next decision feel clearer, not heavier.</p><p>We combine practical financial thinking, business context and hands-on support to help founders, enterprises and families move forward with confidence.</p><div class="fg-stat-line"><strong>12+</strong><span>years of practical advisory experience</span></div></div>
+        </div></div>
+    </section>
 
-<section class="fg-section fg-section--white" id="our-process">
-    <div class="container">
-        <div class="fg-section-header fg-section-header--center">
-            <span class="fg-eyebrow"><i class="fa-solid fa-route"></i> Our Process</span>
-            <h2 class="fg-section-title">A clear path from idea to expansion</h2>
-            <p class="fg-section-subtitle">Whether you need financial advice, business support or help understanding an incubation scheme, we keep the journey structured and easy to follow.</p>
-        </div>
-        <div class="fg-process-grid">
-            <div class="fg-process-card"><span class="fg-process-card__step">01</span><h3>Understand</h3><p>We listen to your goals, current position and the opportunity you want to pursue.</p></div>
-            <div class="fg-process-card"><span class="fg-process-card__step">02</span><h3>Assess</h3><p>We review eligibility, requirements, risks and the most suitable advisory route.</p></div>
-            <div class="fg-process-card"><span class="fg-process-card__step">03</span><h3>Prepare</h3><p>We organise the business information, application details and supporting documents.</p></div>
-            <div class="fg-process-card"><span class="fg-process-card__step">04</span><h3>Support</h3><p>We guide the next steps, respond to requirements and help you stay organised.</p></div>
-        </div>
-    </div>
-</section>
+    <section class="fg-editorial-section fg-editorial-section--navy">
+        <div class="container"><div class="row align-items-center g-5">
+            <div class="col-lg-5"><div class="fg-founder-portrait"><div class="fg-founder-portrait__frame"></div><img src="{% static 'images/founder-portrait.jpeg' %}" alt="Founder of FinGrow Consultancy Services" loading="lazy" decoding="async"><div class="fg-founder-portrait__badge"><i class="fa-solid fa-quote-left"></i><span>Built on trust.<br>Driven by impact.</span></div></div></div>
+            <div class="col-lg-7 fg-light-copy"><span class="fg-overline">The founder’s vision</span><h2>Turning ambition into meaningful, sustainable growth.</h2><p class="fg-copy-large">The right guidance does more than solve today’s paperwork. It gives a business the confidence, structure and perspective to make better decisions tomorrow.</p><p>That is the standard we bring to every engagement: personal attention, honest recommendations and a clear path from where you are to where you want to go.</p><div class="fg-signature-mark"><span></span>Founder-led guidance for ambitious businesses</div></div>
+        </div></div>
+    </section>
 
-<section class="fg-section fg-section--gray">
-    <div class="container">
-        <div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-compass"></i> Our Vision &amp; Mission</span><h2 class="fg-section-title">Building a stronger path for entrepreneurs</h2></div>
-        <div class="row g-4"><div class="col-lg-6"><div class="fg-service-card h-100"><h3>Our Vision</h3><p>To become India’s most trusted and reliable partner for startups, MSMEs and businesses by delivering strategic guidance, government opportunities and financial empowerment.</p></div></div><div class="col-lg-6"><div class="fg-service-card h-100"><h3>Our Mission</h3><p>To support entrepreneurs in building scalable businesses, bridge the gap between government schemes and businesses, simplify compliance and funding processes, and provide transparent, result-driven consultancy from idea to expansion.</p></div></div></div>
-        <div class="fg-section-header fg-section-header--center mt-5"><span class="fg-eyebrow"><i class="fa-solid fa-heart"></i> Our Core Values</span><p class="fg-section-subtitle">Integrity · Commitment · Innovation · Excellence · Empowerment</p></div>
-    </div>
-</section>
+    <section class="fg-editorial-section fg-editorial-section--paper" id="journey"><div class="container"><div class="fg-section-intro"><span class="fg-overline">How we got here</span><h2>A practice built one thoughtful decision at a time.</h2></div><div class="fg-timeline"><div><span>01</span><strong>Listen first</strong><p>Understand the real goal behind the immediate question.</p></div><div><span>02</span><strong>Make it clear</strong><p>Translate complexity into practical options and next steps.</p></div><div><span>03</span><strong>Stay close</strong><p>Support execution, not just the recommendation.</p></div><div><span>04</span><strong>Build forward</strong><p>Leave every client with stronger systems and confidence.</p></div></div></div></section>
 
+    <section class="fg-editorial-section fg-editorial-section--soft"><div class="container"><div class="row g-4"><div class="col-lg-5"><span class="fg-overline">What guides us</span><h2>Values with a point of view.</h2></div><div class="col-lg-7"><div class="fg-value-grid"><article><span>01</span><h3>Integrity</h3><p>Advice grounded in facts, clarity and responsibility.</p></article><article><span>02</span><h3>Empathy</h3><p>Every business has context. We take the time to understand it.</p></article><article><span>03</span><h3>Rigor</h3><p>Details matter when decisions have consequences.</p></article><article><span>04</span><h3>Momentum</h3><p>Good strategy should make action easier.</p></article></div></div></div></div></section>
 
-<section class="fg-section fg-section--gray">
-    <div class="container">
-        <div class="fg-section-header">
-            <span class="fg-eyebrow"><i class="fa-solid fa-shield-halved"></i> Why FinGrow</span>
-            <h2 class="fg-section-title">Practical advice built on trust</h2>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4"><div class="fg-service-card h-100"><div class="fg-service-card__icon"><i class="fa-solid fa-user-tie"></i></div><h4 class="fg-service-card__title">Founder-led guidance</h4><p class="fg-service-card__text">Personal attention and practical recommendations shaped around your goals.</p></div></div>
-            <div class="col-md-4"><div class="fg-service-card h-100"><div class="fg-service-card__icon"><i class="fa-solid fa-file-shield"></i></div><h4 class="fg-service-card__title">Transparent advice</h4><p class="fg-service-card__text">Clear requirements, realistic expectations and responsible guidance at every step.</p></div></div>
-            <div class="col-md-4"><div class="fg-service-card h-100"><div class="fg-service-card__icon"><i class="fa-solid fa-handshake"></i></div><h4 class="fg-service-card__title">Long-term support</h4><p class="fg-service-card__text">We help you make informed decisions that strengthen your business beyond one application.</p></div></div>
-        </div>
-    </div>
-</section>
+    <section class="fg-editorial-cta"><div class="container"><span class="fg-overline">A better next step</span><h2>Bring us the decision<br>you’ve been carrying.</h2><a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Book a private consultation <i class="fa-solid fa-arrow-right"></i></a></div></section>
+</main>
 {% endblock %}

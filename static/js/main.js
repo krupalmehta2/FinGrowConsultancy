@@ -23,6 +23,7 @@
         initNewsletterForm();
         initDjangoMessages();
         initCookieConsent();
+        initFormFeedback();
     });
 
     /* ---------------------------------------------------------------
@@ -256,6 +257,22 @@
             const tags = item.dataset.tags || "info";
             const type = tags.includes("success") ? "success" : tags.includes("error") ? "error" : "info";
             showToast(item.dataset.message || "", type);
+        });
+    }
+
+    /* Prevent double submits and give slower network requests clear feedback. */
+    function initFormFeedback() {
+        $$('form[method="post"]').forEach((form) => {
+            form.addEventListener("submit", () => {
+                const button = form.querySelector('button[type="submit"]');
+                if (!button || form.dataset.submitting === "true") return;
+                form.dataset.submitting = "true";
+                button.disabled = true;
+                button.setAttribute("aria-busy", "true");
+                const label = button.querySelector(".fg-btn-label");
+                if (label) label.textContent = "Sending…";
+                else button.dataset.originalText = button.textContent.trim();
+            });
         });
     }
 

@@ -31,22 +31,22 @@
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:title" content="{% block og_title %}{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}">
       <meta property="og:description" content="{% block og_description %}Trusted financial and incubation scheme advisory for founders and businesses.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/og-default-banner.webp' %}{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:site_name" content="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{% block twitter_title %}{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}">
       <meta name="twitter:description" content="{% block twitter_description %}Trusted financial and incubation scheme advisory for founders and businesses.{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-default-banner.webp' %}{% endblock %}">
 
     <!-- ==========================================================
          FAVICON
     =========================================================== -->
-    <link rel="icon" type="image/png" sizes="32x32" href="{% if website_settings.favicon %}{{ website_settings.favicon.url }}{% else %}{% static 'images/favicon-32x32.png' %}{% endif %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="icon" type="image/webp" sizes="32x32" href="{% if website_settings.favicon %}{{ website_settings.favicon.url }}{% else %}{% static 'images/favicon-32x32.webp' %}{% endif %}">
+    <link rel="icon" type="image/webp" sizes="16x16" href="{% static 'images/favicon-16x16.webp' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.webp' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.webp' %}">
 
     <!-- ==========================================================
          GOOGLE FONTS — POPPINS
@@ -116,7 +116,7 @@
                 {% if website_settings.logo %}
                     <img src="{{ website_settings.logo.url }}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
                 {% else %}
-                    <img src="{% static 'images/logo.svg' %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
+                    <img src="{% static 'images/logo.webp' %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
                 {% endif %}
                 <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
             </a>
@@ -271,12 +271,12 @@
             <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--primary w-100">
                 <i class="fa-solid fa-calendar-check"></i> Get Consultation
             </a>
-            <div class="fg-mobile-socials">
+            {% if website_settings.facebook or website_settings.linkedin or website_settings.instagram or website_settings.youtube %}<div class="fg-mobile-socials">
                 {% if website_settings.facebook %}<a href="{{ website_settings.facebook }}" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>{% endif %}
                 {% if website_settings.linkedin %}<a href="{{ website_settings.linkedin }}" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>{% endif %}
                 {% if website_settings.instagram %}<a href="{{ website_settings.instagram }}" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>{% endif %}
                 {% if website_settings.youtube %}<a href="{{ website_settings.youtube }}" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>{% endif %}
-            </div>
+            </div>{% endif %}
         </div>
     </aside>
 </header>
@@ -344,9 +344,9 @@
                         enterprises across India grow with clarity and confidence.
                     </p>
                     <ul class="fg-footer__contact-list">
-                        <li><i class="fa-solid fa-location-dot"></i> {{ website_settings.address|default:"4th Floor, Prestige Tower, Ahmedabad, Gujarat, India" }}</li>
-                        <li><i class="fa-solid fa-phone"></i> <a href="tel:{{ website_settings.phone|default:'+911234567890' }}">{{ website_settings.phone|default:"+91 12345 67890" }}</a></li>
-                        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:{{ website_settings.email|default:'contact@fingrowconsultancy.com' }}">{{ website_settings.email|default:"contact@fingrowconsultancy.com" }}</a></li>
+                        {% if website_settings.address %}<li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ website_settings.address }}</li>{% endif %}
+                        {% if website_settings.phone %}<li><i class="fa-solid fa-phone" aria-hidden="true"></i> <a href="tel:{{ website_settings.phone }}">{{ website_settings.phone }}</a></li>{% endif %}
+                        {% if website_settings.email %}<li><i class="fa-solid fa-envelope" aria-hidden="true"></i> <a href="mailto:{{ website_settings.email }}">{{ website_settings.email }}</a></li>{% endif %}
                     </ul>
                 </div>
 
@@ -381,13 +381,13 @@
                         {% endfor %}
                     </ul>
 
-                    <h5 class="fg-footer__heading fg-footer__heading--social">Follow Us</h5>
+                    {% if website_settings.facebook or website_settings.linkedin or website_settings.instagram or website_settings.youtube %}<h5 class="fg-footer__heading fg-footer__heading--social">Follow Us</h5>
                     <div class="fg-social-icons">
                         {% if website_settings.facebook %}<a href="{{ website_settings.facebook }}" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>{% endif %}
                         {% if website_settings.linkedin %}<a href="{{ website_settings.linkedin }}" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>{% endif %}
                         {% if website_settings.instagram %}<a href="{{ website_settings.instagram }}" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>{% endif %}
                         {% if website_settings.youtube %}<a href="{{ website_settings.youtube }}" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>{% endif %}
-                    </div>
+                    </div>{% endif %}
                 </div>
 
             </div>
@@ -421,9 +421,9 @@
 <!-- ==================================================================
      FLOATING WHATSAPP BUTTON
 =================================================================== -->
-<a href="https://wa.me/{{ website_settings.whatsapp|default:'911234567890' }}" target="_blank" rel="noopener noreferrer" class="fg-whatsapp-float" aria-label="Chat with us on WhatsApp">
+{% if website_settings.whatsapp %}<a href="https://wa.me/{{ website_settings.whatsapp }}" target="_blank" rel="noopener noreferrer" class="fg-whatsapp-float" aria-label="Chat with us on WhatsApp">
     <i class="fa-brands fa-whatsapp"></i>
-</a>
+</a>{% endif %}
 
 <!-- ==================================================================
      BACK TO TOP BUTTON
@@ -476,9 +476,9 @@
     "@type": "Organization",
     "name": "{{ website_settings.company_name|default:'FinGrow Consultancy Services'|escapejs }}",
     "url": "{{ request.scheme }}://{{ request.get_host }}",
-    "email": "{{ website_settings.email|default:'contact@fingrowconsultancy.com'|escapejs }}",
-    "telephone": "{{ website_settings.phone|default:'+91 12345 67890'|escapejs }}",
-    "address": "{{ website_settings.address|default:'Ahmedabad, Gujarat, India'|escapejs }}",
+    {% if website_settings.email %}"email": "{{ website_settings.email|escapejs }}",{% endif %}
+    {% if website_settings.phone %}"telephone": "{{ website_settings.phone|escapejs }}",{% endif %}
+    {% if website_settings.address %}"address": "{{ website_settings.address|escapejs }}",{% endif %}
     "sameAs": [
         {% if website_settings.facebook %}"{{ website_settings.facebook|escapejs }}"{% if website_settings.linkedin or website_settings.instagram or website_settings.youtube %},{% endif %}{% endif %}
         {% if website_settings.linkedin %}"{{ website_settings.linkedin|escapejs }}"{% if website_settings.instagram or website_settings.youtube %},{% endif %}{% endif %}
