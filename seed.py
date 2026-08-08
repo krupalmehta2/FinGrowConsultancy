@@ -170,14 +170,14 @@ for service in services:
 
     if is_created:
         created += 1
-        print(f"✅ Created: {obj.title}")
+        print(f"Created: {obj.title}")
     else:
         updated += 1
-        print(f"♻️ Updated: {obj.title}")
+        print(f"Updated: {obj.title}")
 
 print("\n" + "=" * 50)
 print(f"Total Services : {len(services)}")
 print(f"Created        : {created}")
 print(f"Updated        : {updated}")
 print("=" * 50)
-print("🎉 Seeding completed successfully!")
+print("Seeding completed successfully!")

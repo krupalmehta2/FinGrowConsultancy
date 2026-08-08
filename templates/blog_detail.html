@@ -7,10 +7,10 @@
 {% block og_type %}article{% endblock %}
 {% block og_title %}{{ post.title }}{% endblock %}
 {% block og_description %}{{ post.short_description|truncatechars:155 }}{% endblock %}
-{% block og_image %}{% if post.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}{% else %}{% static 'images/og-default-banner.jpg' %}{% endif %}{% endblock %}
+{% block og_image %}{% if post.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}{% else %}{% static 'images/og-default-banner.webp' %}{% endif %}{% endblock %}
 {% block twitter_title %}{{ post.title }}{% endblock %}
 {% block twitter_description %}{{ post.short_description|truncatechars:155 }}{% endblock %}
-{% block twitter_image %}{% if post.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}{% else %}{% static 'images/og-default-banner.jpg' %}{% endif %}{% endblock %}
+{% block twitter_image %}{% if post.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}{% else %}{% static 'images/og-default-banner.webp' %}{% endif %}{% endblock %}
 {% block nav_blog %}active{% endblock %}
 
 {% block breadcrumb %}

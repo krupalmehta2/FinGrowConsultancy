@@ -34,7 +34,7 @@
                         {% if post.featured_image %}
                             <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
                         {% else %}
-                            <img src="{% static 'images/blog-placeholder-1.jpg' %}" alt="{{ post.title }}" loading="lazy" decoding="async">
+                            <img src="{% static 'images/blog-placeholder-1.webp' %}" alt="{{ post.title }}" loading="lazy" decoding="async">
                         {% endif %}
                         <span class="fg-blog-card__category">{{ post.published_date|date:"M d, Y" }}</span>
                     </div>

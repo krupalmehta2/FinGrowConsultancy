@@ -108,7 +108,7 @@
             {% for service in services %}
             <div class="col-lg-4 col-md-6" data-aos="fade-up">
                 <div class="fg-service-card">
-                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if service.featured_image %}<img src="{{ service.featured_image.url }}" alt="{{ service.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% static 'images/logo.svg' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div>
+                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if service.featured_image %}<img src="{{ service.featured_image.url }}" alt="{{ service.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% static 'images/logo.webp' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div>
                     <h4 class="fg-service-card__title">{{ service.title }}</h4>
                     <p class="fg-service-card__text">{{ service.short_description }}</p>
                     <a href="{% url 'service_detail' service.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
