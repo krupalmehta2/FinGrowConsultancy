@@ -21,3 +21,7 @@ Run from the project directory: `gunicorn config.wsgi:application --bind 127.0.0
 ## SSL and operations
 
 Point DNS to the VPS, issue the certificate with Certbot, verify HTTP-to-HTTPS redirects, then enable HSTS. Back up `db.sqlite3` and `media/` regularly. Never commit `.env`, the database, virtual environments, or runtime static output.
+
+## Render demo deployment
+
+Create a Render Blueprint from `render.yaml`, or connect the `main` branch as a Python Web Service. The included SQLite database and local media are suitable for a temporary demo only; use PostgreSQL and durable/object storage before a client production launch.
