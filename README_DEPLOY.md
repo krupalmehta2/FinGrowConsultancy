@@ -25,3 +25,5 @@ Point DNS to the VPS, issue the certificate with Certbot, verify HTTP-to-HTTPS r
 ## Render demo deployment
 
 Create a Render Blueprint from `render.yaml`, or connect the `main` branch as a Python Web Service. The included SQLite database and local media are suitable for a temporary demo only; use PostgreSQL and durable/object storage before a client production launch.
+
+On Render Free, configure `DEMO_ADMIN_USERNAME`, `DEMO_ADMIN_EMAIL`, and `DEMO_ADMIN_PASSWORD` as Environment Variables. The build creates or updates that superuser without printing the password. Never commit the real password.
