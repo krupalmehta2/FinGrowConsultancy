@@ -31,22 +31,22 @@
     <meta property="og:type" content="{% block og_type %}website{% endblock %}">
     <meta property="og:title" content="{% block og_title %}{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}">
       <meta property="og:description" content="{% block og_description %}Trusted financial and incubation scheme advisory for founders and businesses.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}{% static 'images/og-default-banner.webp' %}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:site_name" content="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{% block twitter_title %}{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}">
       <meta name="twitter:description" content="{% block twitter_description %}Trusted financial and incubation scheme advisory for founders and businesses.{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-default-banner.webp' %}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-default-banner.jpg' %}{% endblock %}">
 
     <!-- ==========================================================
          FAVICON
     =========================================================== -->
-    <link rel="icon" type="image/webp" sizes="32x32" href="{% if website_settings.favicon %}{{ website_settings.favicon.url }}{% else %}{% static 'images/favicon-32x32.webp' %}{% endif %}">
-    <link rel="icon" type="image/webp" sizes="16x16" href="{% static 'images/favicon-16x16.webp' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% if website_settings.favicon %}{{ website_settings.favicon.url }}{% else %}{% static 'images/favicon-32x32.png' %}{% endif %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.webp' %}">
-    <link rel="shortcut icon" href="{% static 'images/favicon.webp' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
 
     <!-- ==========================================================
          GOOGLE FONTS — POPPINS
@@ -116,7 +116,7 @@
                 {% if website_settings.logo %}
                     <img src="{{ website_settings.logo.url }}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
                 {% else %}
-                    <img src="{% static 'images/logo.webp' %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
+                    <img src="{% static 'images/logo.svg' %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
                 {% endif %}
                 <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
             </a>
