@@ -26,4 +26,4 @@ Point DNS to the VPS, issue the certificate with Certbot, verify HTTP-to-HTTPS r
 
 Create a Render Blueprint from `render.yaml`, or connect the `main` branch as a Python Web Service. The included SQLite database and local media are suitable for a temporary demo only; use PostgreSQL and durable/object storage before a client production launch.
 
-On Render Free, configure `DEMO_ADMIN_USERNAME`, `DEMO_ADMIN_EMAIL`, and `DEMO_ADMIN_PASSWORD` as Environment Variables. The build creates or updates that superuser without printing the password. Never commit the real password.
+For this temporary demo, the existing `db.sqlite3` is deployed with the repository. Do not run seed or reset commands. Render Free uses ephemeral storage, so database changes can disappear after a rebuild or restart; use a persistent disk if this demo must retain changes.
