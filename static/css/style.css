@@ -320,6 +320,33 @@ img { image-rendering: auto; }
 @media (max-width: 1023.98px) { .fg-header { z-index:var(--fg-z-mobile-menu); } .fg-mobile-menu { width:min(390px,100vw); padding-top:76px; } .fg-mobile-menu__list { padding:1rem 1rem 0; } .fg-mobile-menu__list > li > a, .fg-mobile-accordion__toggle { min-height:48px; } .fg-mobile-menu__footer { padding:1.25rem 1rem 1.5rem; } .fg-mobile-menu__footer .fg-btn { min-height:50px; } }
 @media (max-width:575.98px) { .fg-logo { max-width:calc(100vw - 4.5rem); gap:.55rem; } .fg-logo__img { width:112px; height:auto; } .fg-logo__text { display:none; } .fg-logo::after { content:"FinGrow"; color:var(--nav-logo); font-size:1.05rem; font-weight:800; letter-spacing:-.035em; line-height:1; } .fg-navbar__inner { min-height:68px; } }
 
+/* Shared badge and mobile spacing system */
+.fg-eyebrow, .fg-overline { display:inline-flex; align-items:center; width:max-content; max-width:100%; gap:.6rem; margin-bottom:1.25rem; padding:.72rem 1.15rem; border-radius:var(--fg-radius-pill); background:var(--fg-green-light); color:var(--fg-green-dark); font-size:.76rem; font-weight:700; letter-spacing:.13em; line-height:1.2; text-transform:uppercase; }
+.fg-eyebrow i, .fg-overline i { flex:0 0 auto; font-size:.95rem; letter-spacing:0; }
+.fg-editorial-section--navy .fg-overline, .fg-editorial-cta .fg-overline { background:rgba(22,179,74,.14); color:var(--fg-green); }
+.fg-section-header .fg-eyebrow { margin-bottom:1rem; }
+.fg-section-title, .fg-editorial-section h2, .fg-editorial-cta h2 { text-wrap:balance; }
+@media (max-width:767.98px) {
+    .fg-section { padding-block:3.5rem; }
+    .fg-editorial-section { padding-block:4rem; }
+    .fg-hero { padding-block:4rem 3.5rem; }
+    .fg-section-header, .fg-section-intro { margin-bottom:2rem; }
+    .fg-section-title, .fg-editorial-section h2, .fg-editorial-cta h2 { font-size:clamp(2rem,9vw,3rem); line-height:1.08; }
+    .fg-section-subtitle, .fg-lead, .fg-section-intro p { font-size:.98rem; line-height:1.65; }
+    .fg-eyebrow, .fg-overline { margin-bottom:1rem; padding:.68rem 1rem; font-size:.7rem; letter-spacing:.105em; }
+    .fg-editorial-section > .container > .row { row-gap:2rem !important; }
+    .fg-service-catalogue, .fg-category-grid { gap:1rem; }
+    .fg-service-card, .fg-category-card, .fg-catalogue-card { border-radius:1rem; }
+    .fg-cta { padding:2rem 1.25rem; }
+    .fg-footer__main { padding-block:3.25rem 2.5rem; }
+}
+@media (max-width:400px) {
+    .container { padding-inline:.9rem; }
+    .fg-eyebrow, .fg-overline { padding-inline:.85rem; font-size:.66rem; letter-spacing:.08em; }
+    .fg-hero__title { font-size:clamp(2.25rem,12vw,3.25rem); }
+    .fg-editorial-hero h1 { font-size:clamp(2.5rem,13vw,4rem); }
+}
+
 /* Final navbar breakpoint: desktop starts at 1024px. */
 .fg-navbar { padding-block: 10px !important; }
 .fg-navbar__inner { min-height: 64px; gap: 1rem; }
