@@ -317,6 +317,8 @@ img { image-rendering: auto; }
 @media (max-width: 1100px) and (min-width: 992px) { .fg-nav-menu { gap: .8rem; } .fg-nav-link { font-size: .82rem; } }
 @media (max-width: 991.98px) { .fg-hero, .fg-editorial-hero, .fg-breadcrumb-section { min-height: 0; padding-block: 96px 72px; } }
 @media (max-width: 575.98px) { .fg-hero, .fg-editorial-hero, .fg-breadcrumb-section { padding-block: 76px 56px; } }
+@media (max-width: 1023.98px) { .fg-header { z-index:var(--fg-z-mobile-menu); } .fg-mobile-menu { width:min(390px,100vw); padding-top:76px; } .fg-mobile-menu__list { padding:1rem 1rem 0; } .fg-mobile-menu__list > li > a, .fg-mobile-accordion__toggle { min-height:48px; } .fg-mobile-menu__footer { padding:1.25rem 1rem 1.5rem; } .fg-mobile-menu__footer .fg-btn { min-height:50px; } }
+@media (max-width:575.98px) { .fg-logo { max-width:calc(100vw - 4.5rem); gap:.55rem; } .fg-logo__img { width:112px; height:auto; } .fg-logo__text { display:none; } .fg-logo::after { content:"FinGrow"; color:var(--nav-logo); font-size:1.05rem; font-weight:800; letter-spacing:-.035em; line-height:1; } .fg-navbar__inner { min-height:68px; } }
 
 /* Final navbar breakpoint: desktop starts at 1024px. */
 .fg-navbar { padding-block: 10px !important; }
@@ -1716,6 +1718,7 @@ select.fg-form-control {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    padding-top: 76px;
 }
 
 .fg-mobile-menu--open {

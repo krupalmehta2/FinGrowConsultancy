@@ -91,7 +91,10 @@
         const hamburger = $("#fgHamburgerBtn");
         const menu = $("#fgMobileMenu");
         const overlay = $("#fgMobileOverlay");
-        const closeBtn = $("#fgMobileCloseBtn");
+
+        // Keep a single source of truth for the mobile close control.
+        // Remove any legacy drawer close control left by cached/older markup.
+        $$("#fgMobileCloseBtn, .fg-mobile-close").forEach((control) => control.remove());
 
         if (!hamburger || !menu || !overlay) return;
 
@@ -100,6 +103,7 @@
             overlay.classList.add("fg-mobile-overlay--visible");
             hamburger.classList.add("fg-hamburger--active");
             hamburger.setAttribute("aria-expanded", "true");
+            hamburger.setAttribute("aria-label", "Close navigation menu");
             menu.setAttribute("aria-hidden", "false");
             document.body.classList.add("fg-no-scroll");
         };
@@ -109,6 +113,7 @@
             overlay.classList.remove("fg-mobile-overlay--visible");
             hamburger.classList.remove("fg-hamburger--active");
             hamburger.setAttribute("aria-expanded", "false");
+            hamburger.setAttribute("aria-label", "Open navigation menu");
             menu.setAttribute("aria-hidden", "true");
             document.body.classList.remove("fg-no-scroll");
         };
@@ -118,7 +123,6 @@
             isOpen ? closeMenu() : openMenu();
         });
 
-        if (closeBtn) closeBtn.addEventListener("click", closeMenu);
         overlay.addEventListener("click", closeMenu);
 
         // Close after choosing any destination in the mobile menu.

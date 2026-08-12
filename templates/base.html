@@ -122,7 +122,7 @@
             </a>
 
             <!-- Mobile Hamburger -->
-            <button class="fg-hamburger" id="fgHamburgerBtn" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="fgMobileMenu">
+            <button class="fg-hamburger" id="fgHamburgerBtn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="fgMobileMenu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -153,22 +153,22 @@
                                         <div class="mb-5 flex items-end justify-between gap-4">
                                             <div>
                                                 <p class="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600">FinGrow Consultancy</p>
-                                                <h3 class="text-2xl font-bold tracking-tight text-slate-900">All Services</h3>
+                                            <h3 class="text-2xl font-bold tracking-tight text-slate-900">Service Categories</h3>
                                             </div>
                                             <span class="hidden text-sm text-slate-500 sm:block">Practical support for ambitious businesses</span>
                                         </div>
 
                                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                                            {% for service in nav_services %}
-                                            <a href="{% url 'service_detail' service.slug %}" class="group/card flex min-h-[148px] flex-col rounded-2xl border border-slate-200 bg-white p-4 no-underline shadow-sm transition duration-200 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                                            {% for category in nav_categories %}
+                                            <a href="{% url 'service_category' category.slug %}" class="group/card flex min-h-[148px] flex-col rounded-2xl border border-slate-200 bg-white p-4 no-underline shadow-sm transition duration-200 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                                                 <span class="mb-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 transition group-hover/card:bg-emerald-600 group-hover/card:text-white">
-                                                    <i class="{{ service.icon_class|default:'fa-solid fa-briefcase' }} text-[20px]" aria-hidden="true"></i>
+                                                    <i class="fa-solid fa-layer-group text-[20px]" aria-hidden="true"></i>
                                                 </span>
-                                                <strong class="mb-1 line-clamp-1 text-[15px] font-semibold leading-5 text-slate-900">{{ service.title }}</strong>
-                                                <span class="line-clamp-2 text-xs leading-5 text-slate-500">{{ service.short_description }}</span>
+                                                <strong class="mb-1 line-clamp-2 text-[15px] font-semibold leading-5 text-slate-900">{{ category.name }}</strong>
+                                                <span class="line-clamp-2 text-xs leading-5 text-slate-500">{{ category.description|default:'Explore our business support services.' }}</span>
                                             </a>
                                             {% empty %}
-                                            <p class="col-span-full text-sm text-slate-500">Services will be available shortly.</p>
+                                            <p class="col-span-full text-sm text-slate-500">Service categories will be available shortly.</p>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -224,16 +224,6 @@
     <div class="fg-mobile-overlay" id="fgMobileOverlay"></div>
 
     <aside class="fg-mobile-menu" id="fgMobileMenu" aria-hidden="true">
-        <div class="fg-mobile-menu__header">
-            <a href="{% url 'home' %}" class="fg-logo">
-                <img src="{% if website_settings.logo %}{{ website_settings.logo.url }}{% else %}{% static 'images/logo.webp' %}{% endif %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
-                <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
-            </a>
-            <button class="fg-mobile-close" id="fgMobileCloseBtn" aria-label="Close menu">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-
         <ul class="fg-mobile-menu__list">
             <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a></li>
             <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About</a></li>
@@ -245,9 +235,6 @@
                 </button>
                 <div class="fg-mobile-accordion__panel">
                     {% for category in nav_categories %}<a href="{% url 'service_category' category.slug %}">{{ category.name }}</a>{% endfor %}
-                    {% for service in nav_services %}
-                    <a href="{% url 'service_detail' service.slug %}">{{ service.title }}</a>
-                    {% endfor %}
                     <a href="{% url 'services' %}">View All Services</a>
                 </div>
             </li>
@@ -368,8 +355,8 @@
                 <div class="col-lg-3 col-md-6 col-6">
                     <h5 class="fg-footer__heading">Services</h5>
                     <ul class="fg-footer__links">
-                        {% for service in footer_services %}
-                        <li><a href="{% url 'service_detail' service.slug %}">{{ service.title }}</a></li>
+                        {% for category in footer_categories %}
+                        <li><a href="{% url 'service_category' category.slug %}">{{ category.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
