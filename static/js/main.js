@@ -121,6 +121,14 @@
         if (closeBtn) closeBtn.addEventListener("click", closeMenu);
         overlay.addEventListener("click", closeMenu);
 
+        // Close after choosing any destination in the mobile menu.
+        $$("a", menu).forEach((link) => link.addEventListener("click", closeMenu));
+
+        // Keep menu state sane when resizing from mobile to desktop.
+        window.addEventListener("resize", () => {
+            if (window.innerWidth >= 1024) closeMenu();
+        }, { passive: true });
+
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") closeMenu();
         });
@@ -195,13 +203,10 @@
         if (!form) return;
 
         form.addEventListener("submit", (e) => {
-            e.preventDefault();
             const emailInput = $('input[name="newsletter_email"]', form);
 
-            if (emailInput && emailInput.value.trim() !== "") {
-                showToast("Thanks for subscribing! Check your inbox to confirm.", "success");
-                form.reset();
-            } else {
+            if (!emailInput || emailInput.value.trim() === "") {
+                e.preventDefault();
                 showToast("Please enter a valid email address.", "error");
             }
         });

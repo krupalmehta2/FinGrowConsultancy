@@ -1,7 +1,9 @@
+import csv
 from django.contrib import admin
+from django.http import HttpResponse
 from django.utils.html import format_html
 
-from .models import BlogPost, ContactInquiry, GovernmentScheme, Service, WebsiteSettings
+from .models import BlogPost, ContactInquiry, GovernmentScheme, NewsletterSubscriber, Service, ServiceCategory, WebsiteSettings
 
 admin.site.site_header = "FinGrow Administration"
 admin.site.site_title = "FinGrow Admin"
@@ -63,6 +65,9 @@ class WebsiteSettingsAdmin(admin.ModelAdmin):
 
 @admin.register(Service)
 class ServiceAdmin(ImagePreviewMixin, admin.ModelAdmin):
+    def get_fieldsets(self, request, obj=None):
+        return (("Content", {"fields": ("title", "slug", "category", "short_description", "description", "benefits", "process", "icon_class")}), ("Media", {"fields": ("featured_image", "image_preview")}), ("Publishing", {"fields": ("display_order", "active")}))
+
     list_display = ("title", "slug", "display_order", "active", "created_at", "updated_at")
     list_filter = ("active", "created_at", "updated_at")
     search_fields = ("title", "short_description")
@@ -73,6 +78,15 @@ class ServiceAdmin(ImagePreviewMixin, admin.ModelAdmin):
         ("Media", {"fields": ("featured_image", "image_preview")}),
         ("Publishing", {"fields": ("display_order", "active")}),
     )
+
+
+@admin.register(ServiceCategory)
+class ServiceCategoryAdmin(ImagePreviewMixin, admin.ModelAdmin):
+    list_display = ("name", "slug", "is_active", "updated_at")
+    list_filter = ("is_active",)
+    search_fields = ("name", "description")
+    prepopulated_fields = {"slug": ("name",)}
+    fieldsets = (("Content", {"fields": ("name", "slug", "description", "image", "image_preview")}), ("Publishing", {"fields": ("is_active",)}))
 
 
 @admin.register(GovernmentScheme)
@@ -123,3 +137,21 @@ class ContactInquiryAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+
+@admin.register(NewsletterSubscriber)
+class NewsletterSubscriberAdmin(admin.ModelAdmin):
+    list_display = ("email", "subscribed_at", "is_active")
+    list_filter = ("is_active", "subscribed_at")
+    search_fields = ("email",)
+    actions = ("export_csv",)
+
+    @admin.action(description="Download selected subscribers as CSV")
+    def export_csv(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="fingrow-newsletter-subscribers.csv"'
+        writer = csv.writer(response)
+        writer.writerow(["Email", "Subscribed at", "Active"])
+        for subscriber in queryset.order_by("email"):
+            writer.writerow([subscriber.email, subscriber.subscribed_at.isoformat(), "Yes" if subscriber.is_active else "No"])
+        return response

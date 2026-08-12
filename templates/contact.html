@@ -74,8 +74,8 @@
                                 {% for error in form.subject.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
                             </div>
                             <div class="col-12 fg-form-group">
-                                <label class="fg-form-label" for="id_message">Message <span class="fg-required">*</span></label>
-                                <textarea name="message" id="id_message" class="fg-form-control{% if form.message.errors %} is-invalid{% endif %}" autocomplete="off" required>{{ form.message.value|default:'' }}</textarea>
+                                <label class="fg-form-label" for="id_message">Message <span class="text-muted">(optional)</span></label>
+                                <textarea name="message" id="id_message" class="fg-form-control{% if form.message.errors %} is-invalid{% endif %}" autocomplete="off">{{ form.message.value|default:'' }}</textarea>
                                 {% for error in form.message.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
                             </div>
                             <div class="col-12">

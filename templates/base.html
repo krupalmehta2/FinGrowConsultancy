@@ -211,7 +211,7 @@
             <!-- CTA Button (Right) -->
             <div class="fg-nav-right d-none d-lg-flex">
                 <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--primary">
-                    <i class="fa-solid fa-calendar-check"></i> Get Consultation
+                    <i class="fa-solid fa-circle-check"></i> Check My Eligibility
                 </a>
             </div>
 
@@ -226,6 +226,7 @@
     <aside class="fg-mobile-menu" id="fgMobileMenu" aria-hidden="true">
         <div class="fg-mobile-menu__header">
             <a href="{% url 'home' %}" class="fg-logo">
+                <img src="{% if website_settings.logo %}{{ website_settings.logo.url }}{% else %}{% static 'images/logo.webp' %}{% endif %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
                 <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
             </a>
             <button class="fg-mobile-close" id="fgMobileCloseBtn" aria-label="Close menu">
@@ -243,6 +244,7 @@
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="fg-mobile-accordion__panel">
+                    {% for category in nav_categories %}<a href="{% url 'service_category' category.slug %}">{{ category.name }}</a>{% endfor %}
                     {% for service in nav_services %}
                     <a href="{% url 'service_detail' service.slug %}">{{ service.title }}</a>
                     {% endfor %}
@@ -269,7 +271,7 @@
 
         <div class="fg-mobile-menu__footer">
             <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--primary w-100">
-                <i class="fa-solid fa-calendar-check"></i> Get Consultation
+                <i class="fa-solid fa-circle-check"></i> Check My Eligibility
             </a>
             {% if website_settings.facebook or website_settings.linkedin or website_settings.instagram or website_settings.youtube %}<div class="fg-mobile-socials">
                 {% if website_settings.facebook %}<a href="{{ website_settings.facebook }}" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>{% endif %}
@@ -314,7 +316,7 @@
                     <h3>Stay ahead with FinGrow insights</h3>
                     <p>Subscribe for incubation scheme updates, tax deadlines &amp; financial tips.</p>
                 </div>
-                <form class="fg-newsletter-form" id="fgNewsletterForm" novalidate>
+                <form class="fg-newsletter-form" id="fgNewsletterForm" method="post" action="{% url 'newsletter_subscribe' %}">
                     {% csrf_token %}
                     <input type="email" name="newsletter_email" class="fg-newsletter-form__input" placeholder="Enter your email address" required>
                     <button type="submit" class="btn fg-btn fg-btn--green">

@@ -19,16 +19,14 @@
             <div class="col-lg-6 fg-hero__content" data-aos="fade-right">
                 <span class="fg-eyebrow"><i class="fa-solid fa-shield-halved"></i> Trusted Financial Advisory</span>
                 <h1 class="fg-hero__title">
-                    Grow Your Wealth with <span class="fg-highlight">FinGrow</span> Consultancy
+                    Grow Your Business with <span class="fg-highlight">FinGrow</span> Consultancy
                 </h1>
                 <p class="fg-hero__subtitle">
-                    Expert financial planning, business advisory and incubation scheme
-                    guidance — helping individuals and enterprises across India move
-                    forward with clarity and confidence.
+                    Expert support for startup funding, incubation, certifications and business advisory.
                 </p>
                 <div class="fg-hero__actions">
                     <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">
-                        <i class="fa-solid fa-calendar-check"></i> Get Free Consultation
+                        <i class="fa-solid fa-circle-check"></i> Check My Eligibility
                     </a>
                     <a href="{% url 'services' %}" class="btn fg-btn fg-btn--outline-white fg-btn--lg">
                         <i class="fa-solid fa-briefcase"></i> Explore Services
@@ -36,16 +34,20 @@
                 </div>
                 <div class="fg-hero__stats">
                     <div class="fg-hero__stat">
-                        <strong>100+</strong>
+                        <strong>127+</strong>
                         <span>Businesses Supported</span>
                     </div>
                     <div class="fg-hero__stat">
-                        <strong>87%</strong>
+                        <strong>73%</strong>
                         <span>Client Retention</span>
                     </div>
                     <div class="fg-hero__stat">
                         <strong>10+</strong>
-                        <span>Projects Guided</span>
+                        <span>Projects Consulted</span>
+                    </div>
+                    <div class="fg-hero__stat">
+                        <strong>Pan India</strong>
+                        <span>Service Provider</span>
                     </div>
                 </div>
             </div>
@@ -59,10 +61,8 @@
 </section>
 
 <section class="fg-section fg-section--white fg-home-trust">
- <div class="container"><div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-shield-halved"></i> Why Choose FinGrow</span><h2 class="fg-section-title">Complete support under one roof</h2></div><div class="row g-4"><div class="col-md-4"><div class="fg-service-card h-100"><h4>Complete Solutions</h4><p>From registration to advisory, all under one roof.</p></div></div><div class="col-md-4"><div class="fg-service-card h-100"><h4>Expert Government Guidance</h4><p>We identify the right schemes and funding opportunities for you.</p></div></div><div class="col-md-4"><div class="fg-service-card h-100"><h4>Professional &amp; Transparent</h4><p>Clear communication and ethical practices.</p></div></div></div></div>
+ <div class="container"><div class="fg-section-header fg-section-header--center"><span class="fg-eyebrow"><i class="fa-solid fa-shield-halved"></i> Why FinGrow Is Different</span><h2 class="fg-section-title">Complete support under one roof</h2></div><div class="row g-4"><div class="col-md-4"><div class="fg-service-card h-100"><h4>Complete Solutions</h4><p>From registration and compliance to funding, certifications, incubation and strategic advisory, all under one roof.</p></div></div><div class="col-md-4"><div class="fg-service-card h-100"><h4>Expert Incubation Guidance</h4><p>We identify relevant programs, opportunities and business support for your growth objectives.</p></div></div><div class="col-md-4"><div class="fg-service-card h-100"><h4>Professional &amp; Transparent</h4><p>Clear advice, realistic expectations and ethical communication at every step.</p></div></div></div></div>
 </section>
-
-<section class="fg-section fg-section--gray fg-home-proof"><div class="container"><div class="row align-items-center g-5"><div class="col-lg-5"><span class="fg-eyebrow"><i class="fa-solid fa-chart-line"></i> Our Clients, Our Pride</span><h2 class="fg-section-title">Trusted by businesses across industries</h2><p class="fg-section-subtitle">From first registration to long-term growth, we help ambitious businesses move forward with clarity.</p></div><div class="col-lg-7"><div class="fg-proof-stats"><div><strong>100+</strong><span>Businesses</span></div><div><strong>87%</strong><span>Client Retention</span></div><div><strong>10+</strong><span>Projects Guided</span></div><div><strong>Pan India</strong><span>Service Provider</span></div></div></div></div></div></section>
 
 <!-- =====================================================================
      ABOUT SNAPSHOT
@@ -75,7 +75,7 @@
                      alt="Business growth planning and sustainable growth illustration"
                      loading="lazy" decoding="async">
                 <div class="fg-about__experience-badge">
-                    <strong>12+</strong>
+                    <strong>6+</strong>
                     <span>Years of Trust</span>
                 </div>
             </div>
@@ -104,17 +104,8 @@
             <h2 class="fg-section-title">Our Core Services</h2>
             <p class="fg-section-subtitle">Comprehensive advisory built around your goals.</p>
         </div>
-        <div class="row g-4">
-            {% for service in services %}
-            <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                <div class="fg-service-card">
-                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if service.featured_image %}<img src="{{ service.featured_image.url }}" alt="{{ service.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% static 'images/logo.webp' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div>
-                    <h4 class="fg-service-card__title">{{ service.title }}</h4>
-                    <p class="fg-service-card__text">{{ service.short_description }}</p>
-                    <a href="{% url 'service_detail' service.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-            </div>
-            {% endfor %}
+        <div class="fg-category-grid">
+            {% for category in categories %}{% include 'partials/category_card.html' %}{% empty %}<p>Services will be available shortly.</p>{% endfor %}
         </div>
         <div class="text-center mt-5"><a href="{% url 'services' %}" class="btn fg-btn fg-btn--primary fg-btn--lg">Explore All Services <i class="fa-solid fa-arrow-right"></i></a></div>
     </div>
@@ -126,11 +117,11 @@
 <section class="fg-section fg-section--white">
     <div class="container">
         <div class="fg-cta" data-aos="zoom-in">
-            <h2>Ready to plan your next financial move?</h2>
-            <p>Book a free 30-minute consultation with a FinGrow advisor today.</p>
+            <h2>Ready to Plan Your Next Business Move?</h2>
+            <p>Let's identify the right funding, certification, or growth opportunity for your business.</p>
             <div class="fg-cta__actions">
                 <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">
-                    <i class="fa-solid fa-calendar-check"></i> Book Consultation
+                    <i class="fa-solid fa-circle-check"></i> Check My Eligibility
                 </a>
             </div>
         </div>

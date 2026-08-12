@@ -25,7 +25,4 @@ class ContactInquiryForm(forms.ModelForm):
         return value
 
     def clean_message(self):
-        message = self.cleaned_data["message"].strip()
-        if len(message) < 10:
-            raise forms.ValidationError("Please provide at least 10 characters.")
-        return message
+        return self.cleaned_data.get("message", "").strip()

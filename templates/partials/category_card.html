@@ -1,0 +1,6 @@
+{% load static %}
+<a class="fg-category-card" href="{% url 'service_category' category.slug %}">
+    <span class="fg-category-card__icon"><i class="{{ category.icon_class|default:'fa-solid fa-arrow-up-right-dots' }}" aria-hidden="true"></i></span>
+    <span class="fg-category-card__body"><span class="fg-overline">{{ category.services.count }} services</span><strong>{{ category.name }}</strong><span>{{ category.description|default:'Focused support for your business goals.'|truncatechars:150 }}</span></span>
+    <span class="fg-category-card__arrow"><i class="fa-solid fa-arrow-up-right" aria-hidden="true"></i></span>
+</a>

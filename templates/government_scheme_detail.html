@@ -85,7 +85,7 @@
                     <div class="col-md-4"><input type="text" name="name" class="fg-form-control" placeholder="Full Name" required></div>
                     <div class="col-md-4"><input type="tel" name="phone" class="fg-form-control" placeholder="Phone" required></div>
                     <div class="col-md-4"><input type="email" name="email" class="fg-form-control" placeholder="Email" required></div>
-                    <div class="col-12"><textarea name="message" class="fg-form-control" placeholder="Message" required></textarea></div>
+                    <div class="col-12"><textarea name="message" class="fg-form-control" placeholder="Message (optional)"></textarea></div>
                     <div class="col-12"><button type="submit" class="btn fg-btn fg-btn--primary">Send Inquiry <i class="fa-solid fa-paper-plane"></i></button></div>
                 </div>
             </form>
@@ -94,7 +94,7 @@
         <div class="fg-cta mt-5">
             <h2>Need help with {{ scheme.title }}?</h2>
             <p>Talk to FinGrow for eligibility review and application guidance.</p>
-            <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Get Consultation <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Check My Eligibility <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
         <div class="row g-4 mt-5">

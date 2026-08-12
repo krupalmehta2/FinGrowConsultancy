@@ -40,6 +40,27 @@ class WebsiteSettings(models.Model):
         return self.company_name
 
 
+class ServiceCategory(models.Model):
+    name = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=170, unique=True)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="service-categories/", blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "Service Category"
+        verbose_name_plural = "Service Categories"
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("service_category", kwargs={"slug": self.slug})
+
+
 class Service(models.Model):
     title = models.CharField(max_length=150)
     slug = models.SlugField(max_length=170, unique=True)
@@ -51,6 +72,7 @@ class Service(models.Model):
     featured_image = models.ImageField(upload_to="services/", blank=True, null=True)
     display_order = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
+    category = models.ForeignKey(ServiceCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name="services")
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -126,7 +148,7 @@ class ContactInquiry(models.Model):
     phone = models.CharField(max_length=30)
     email = models.EmailField()
     subject = models.CharField(max_length=180)
-    message = models.TextField()
+    message = models.TextField(blank=True)
     page_type = models.CharField(max_length=30, blank=True)
     page_title = models.CharField(max_length=200, blank=True)
     current_url = models.URLField(blank=True)
@@ -144,3 +166,17 @@ class ContactInquiry(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.subject}"
+
+
+class NewsletterSubscriber(models.Model):
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(default=timezone.now, editable=False)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["-subscribed_at"]
+        verbose_name = "Newsletter Subscriber"
+        verbose_name_plural = "Newsletter Subscribers"
+
+    def __str__(self):
+        return self.email

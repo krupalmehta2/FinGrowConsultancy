@@ -21,6 +21,7 @@
             <i class="fa-solid fa-chevron-right"></i>
             <a href="{% url 'services' %}">Services</a>
             <i class="fa-solid fa-chevron-right"></i>
+            {% if service.category %}<a href="{% url 'service_category' service.category.slug %}">{{ service.category.name }}</a><i class="fa-solid fa-chevron-right"></i>{% endif %}
             <span class="fg-breadcrumb-current">{{ service.title }}</span>
         </nav>
     </div>
@@ -74,7 +75,7 @@
                             <div class="col-md-6"><input type="text" name="name" class="fg-form-control" placeholder="Full Name" required></div>
                             <div class="col-md-6"><input type="tel" name="phone" class="fg-form-control" placeholder="Phone" required></div>
                             <div class="col-md-6"><input type="email" name="email" class="fg-form-control" placeholder="Email" required></div>
-                            <div class="col-12"><textarea name="message" class="fg-form-control" placeholder="Message" required></textarea></div>
+                            <div class="col-12"><textarea name="message" class="fg-form-control" placeholder="Message (optional)"></textarea></div>
                             <div class="col-12"><button type="submit" class="btn fg-btn fg-btn--primary">Send Inquiry <i class="fa-solid fa-paper-plane"></i></button></div>
                         </div>
                     </form>
@@ -95,8 +96,8 @@
 
         <div class="fg-cta mt-5">
             <h2>Ready to discuss {{ service.title }}?</h2>
-            <p>Book a consultation with a FinGrow advisor today.</p>
-            <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Get Consultation <i class="fa-solid fa-arrow-right"></i></a>
+                    <p>Check whether our support is right for your business.</p>
+                    <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Check My Eligibility <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
         <div class="row g-4 mt-5">

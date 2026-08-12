@@ -3,11 +3,12 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.utils.html import escape
 from django.urls import reverse
 
 from .forms import ContactInquiryForm
-from .models import BlogPost, GovernmentScheme, Service
+from .models import BlogPost, GovernmentScheme, NewsletterSubscriber, Service, ServiceCategory
 
 
 def save_inquiry(request):
@@ -24,9 +25,9 @@ def save_inquiry(request):
     return False
 
 def home(request):
-    services = Service.objects.filter(active=True)[:3]
+    categories = ServiceCategory.objects.filter(is_active=True)
     posts = BlogPost.objects.filter(active=True, featured=True)[:3]
-    return render(request, "home.html", {"services": services, "latest_posts": posts})
+    return render(request, "home.html", {"categories": categories, "latest_posts": posts})
 
 def about(request):
     return render(request, "about.html")
@@ -35,8 +36,11 @@ def process(request):
     return render(request, "process.html")
 
 def services(request):
-    services = Service.objects.filter(active=True)
-    return render(request, "services.html", {"services": services})
+    return render(request, "services.html", {"categories": ServiceCategory.objects.filter(is_active=True)})
+
+def service_category(request, slug):
+    category = get_object_or_404(ServiceCategory, slug=slug, is_active=True)
+    return render(request, "service_category.html", {"category": category, "services": category.services.filter(active=True)})
 
 
 def service_detail(request, slug):
@@ -119,6 +123,21 @@ def contact(request):
     else:
         form = ContactInquiryForm()
     return render(request, "contact.html", {"form": form})
+
+def newsletter_subscribe(request):
+    if request.method == "POST":
+        email = request.POST.get("newsletter_email", "").strip().lower()
+        if email:
+            from django.core.validators import validate_email
+            try:
+                validate_email(email)
+                NewsletterSubscriber.objects.get_or_create(email=email)
+                messages.success(request, "Thanks for subscribing to FinGrow insights.")
+            except ValidationError:
+                messages.error(request, "Please enter a valid email address.")
+        else:
+            messages.error(request, "Please enter your email address.")
+    return redirect(request.META.get("HTTP_REFERER", "/"))
 
 def privacy_policy(request):
     return render(request, "privacy_policy.html")
