@@ -7,6 +7,7 @@ def website_settings(request):
         # Keep navigation driven by the active records in the admin.
         "nav_services": Service.objects.filter(active=True)[:5],
         "nav_categories": ServiceCategory.objects.filter(is_active=True),
+        "footer_categories": ServiceCategory.objects.filter(is_active=True),
         "nav_schemes": GovernmentScheme.objects.filter(active=True)[:5],
         "footer_services": Service.objects.filter(active=True)[:6],
         "footer_schemes": GovernmentScheme.objects.filter(active=True)[:6],
