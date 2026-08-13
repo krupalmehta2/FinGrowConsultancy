@@ -178,8 +178,152 @@ img { image-rendering: auto; }
 .fg-methodology span { display:grid; place-items:center; width:2.5rem; height:2.5rem; border:1px solid var(--fg-green); border-radius:50%; background:var(--ed-paper); color:var(--fg-green-dark); }
 .fg-methodology > div:nth-child(3) span, .fg-methodology > div:nth-child(4) span { background:var(--fg-navy); color:var(--fg-green); }
 .fg-methodology strong { margin:1.5rem 0 .55rem; }
-.fg-methodology p { max-width:17rem; font-size:.88rem; line-height:1.65; }
+.fg-methodology p { max-width:20rem; font-size:.88rem; line-height:1.65; }
 @media (max-width:767.98px) { .fg-methodology { gap:0; } .fg-methodology::before { top:1.25rem; bottom:1.25rem; left:1.25rem; right:auto; width:1px; height:auto; background:linear-gradient(180deg,var(--fg-green),rgba(16,154,62,.15)); } .fg-methodology > div, .fg-methodology > div:last-child { display:grid; grid-template-columns:2.5rem 1fr; column-gap:1rem; padding:0 0 1.75rem; } .fg-methodology > div:last-child { padding-bottom:0; } .fg-methodology span { grid-row:span 2; } .fg-methodology strong { margin:.15rem 0 .4rem; } .fg-methodology p { max-width:none; } }
+
+/* Connected work-process visual for the four high-level methodology stages. */
+.fg-methodology {
+    isolation: isolate;
+    padding: 1.5rem 0 .5rem;
+}
+.fg-methodology::before {
+    top: 3.5rem;
+    left: 2.75rem;
+    right: 2.75rem;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--fg-green), rgba(16,154,62,.2));
+    z-index: -1;
+}
+.fg-methodology > div {
+    min-width: 0;
+    padding: 0 1.25rem 1.25rem 0;
+}
+.fg-methodology > div:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    top: 2.78rem;
+    right: -.35rem;
+    color: var(--fg-green-dark);
+    font-size: 1.15rem;
+    font-weight: 700;
+    background: var(--ed-paper);
+    padding: 0 .2rem;
+}
+.fg-methodology span {
+    width: 4rem;
+    height: 4rem;
+    border: 5px solid var(--ed-paper);
+    outline: 1px solid var(--fg-green);
+    box-shadow: 0 0 0 5px rgba(22,179,74,.08);
+    font-size: .8rem;
+    font-weight: 800;
+}
+.fg-methodology > div:nth-child(3) span,
+.fg-methodology > div:nth-child(4) span {
+    background: var(--fg-navy);
+    color: var(--fg-green-light);
+}
+.fg-methodology strong {
+    font-size: clamp(1rem, 1.35vw, 1.25rem);
+    letter-spacing: -.02em;
+}
+.fg-methodology p {
+    max-width: 22rem;
+    margin-bottom: 0;
+}
+@media (max-width: 767.98px) {
+    .fg-methodology { padding: .5rem 0 0; }
+    .fg-methodology::before { top: 2rem; bottom: 2rem; left: 2rem; right: auto; width: 2px; height: auto; }
+    .fg-methodology > div,
+    .fg-methodology > div:last-child {
+        grid-template-columns: 4rem minmax(0,1fr);
+        column-gap: 1rem;
+        padding: 0 0 2rem;
+    }
+    .fg-methodology > div:not(:last-child)::after { display: none; }
+    .fg-methodology span { width: 4rem; height: 4rem; }
+}
+
+/* Desktop orbit view: the four stages surround one central FinGrow hub. */
+@media (min-width: 992px) {
+    .fg-methodology {
+        max-width: 1040px;
+        min-height: 30rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(2, minmax(12rem, auto));
+        gap: 2.5rem 5rem;
+        padding: 2rem 3rem;
+        margin-inline: auto;
+    }
+    .fg-methodology::before {
+        inset: 4rem 8rem;
+        width: auto;
+        height: auto;
+        border: 2px dashed rgba(22,179,74,.42);
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(22,179,74,.08) 0 25%, transparent 25.5% 100%);
+        box-shadow: 0 0 0 1rem rgba(22,179,74,.035), inset 0 0 2rem rgba(22,179,74,.06);
+        animation: fg-orbit-pulse 5s ease-in-out infinite;
+    }
+    .fg-methodology::after {
+        content: "FinGrow\A work process";
+        white-space: pre;
+        position: absolute;
+        inset: 50% auto auto 50%;
+        transform: translate(-50%, -50%);
+        display: grid;
+        place-items: center;
+        width: 8.5rem;
+        height: 8.5rem;
+        border: 1px solid rgba(22,179,74,.55);
+        border-radius: 50%;
+        background: var(--fg-navy);
+        color: var(--fg-green-light);
+        text-align: center;
+        font-size: .78rem;
+        font-weight: 700;
+        line-height: 1.35;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        box-shadow: 0 0 0 10px rgba(22,179,74,.08), 0 1rem 2rem rgba(7,27,59,.12);
+        z-index: 0;
+    }
+    .fg-methodology > div {
+        padding: 1.15rem 1.25rem 1.25rem;
+        border: 1px solid rgba(7,27,59,.08);
+        border-radius: 1.25rem;
+        background: rgba(255,255,255,.88);
+        box-shadow: 0 .75rem 1.5rem rgba(7,27,59,.07);
+        transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+        z-index: 1;
+    }
+    .fg-methodology > div:hover {
+        transform: translateY(-.45rem);
+        border-color: rgba(22,179,74,.4);
+        box-shadow: 0 1rem 2rem rgba(7,27,59,.12);
+    }
+    .fg-methodology > div:nth-child(2),
+    .fg-methodology > div:nth-child(4) { text-align: right; }
+    .fg-methodology > div:nth-child(2) p,
+    .fg-methodology > div:nth-child(4) p { margin-left: auto; }
+    .fg-methodology > div:not(:last-child)::after { display: none; }
+    .fg-methodology span {
+        margin-bottom: .75rem;
+        box-shadow: 0 0 0 5px var(--ed-paper), 0 0 0 7px rgba(22,179,74,.3), 0 .5rem 1rem rgba(7,27,59,.12);
+    }
+    .fg-methodology > div:nth-child(2) span,
+    .fg-methodology > div:nth-child(4) span { margin-left: auto; }
+}
+
+@keyframes fg-orbit-pulse {
+    0%, 100% { transform: scale(1); opacity: .82; }
+    50% { transform: scale(1.015); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fg-methodology::before { animation: none; }
+}
 .fg-value-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--ed-line); }
 .fg-value-grid article { background:#eef1ed; padding:1.5rem; min-height:12rem; }
 .fg-value-grid h3 { margin-top:2rem; }
@@ -3772,3 +3916,77 @@ textarea.fg-form-control { min-height:130px; resize:vertical; }
 @media (max-width: 1100px) and (min-width: 992px) { .fg-nav-menu { gap: .8rem; } .fg-nav-link { font-size: .82rem; } }
 @media (max-width: 991.98px) { .fg-hero, .fg-editorial-hero, .fg-breadcrumb-section { min-height: 0; padding-block: 96px 72px; } }
 @media (max-width: 575.98px) { .fg-hero, .fg-editorial-hero, .fg-breadcrumb-section { padding-block: 76px 56px; } }
+
+/* Header responsive system: keep the full navigation at comfortable desktop
+   widths and switch to the existing drawer before the layout becomes cramped. */
+.fg-header,
+.fg-header *,
+.fg-header *::before,
+.fg-header *::after { box-sizing: border-box; }
+
+.fg-navbar { padding: 10px 0; }
+.fg-header--compact .fg-navbar { padding-block: 4px; }
+.fg-header--compact .fg-navbar__inner { min-height: 64px; }
+.fg-header--compact .fg-logo__img { width: clamp(76px, 6.8vw, 112px); }
+.fg-navbar__inner {
+    width: min(100% - 2rem, 1440px);
+    min-height: 80px;
+    gap: clamp(.75rem, 1.5vw, 2rem);
+}
+.fg-logo {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: clamp(.55rem, .8vw, .9rem);
+    white-space: nowrap;
+}
+.fg-logo::after { content: none !important; }
+.fg-logo__img {
+    display: block;
+    width: clamp(88px, 8vw, 138px);
+    height: auto;
+    max-height: 138px;
+    object-fit: contain;
+    flex: 0 0 auto;
+}
+.fg-logo__text {
+    font-size: clamp(1.05rem, 1.35vw, 1.45rem);
+    line-height: 1.15;
+    white-space: nowrap;
+}
+.fg-nav-center { min-width: 0; }
+.fg-nav-menu {
+    justify-content: center;
+    gap: clamp(.55rem, 1.1vw, 1.35rem);
+    min-width: 0;
+}
+.fg-nav-link {
+    min-height: 44px;
+    font-size: clamp(.78rem, .82vw, .92rem);
+    white-space: nowrap;
+}
+.fg-nav-right { flex: 0 0 auto; }
+.fg-nav-right .fg-btn {
+    padding-inline: clamp(.75rem, 1.15vw, 1.25rem);
+    white-space: nowrap;
+    font-size: clamp(.76rem, .8vw, .9rem);
+}
+
+@media (max-width: 1199.98px) {
+    .fg-nav-center,
+    .fg-nav-right { display: none !important; }
+    .fg-hamburger {
+        display: flex;
+        flex: 0 0 44px;
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .fg-navbar__inner { width: min(100% - 1.5rem, 1440px); min-height: 64px; }
+    .fg-logo__img { width: clamp(72px, 22vw, 100px); max-height: 100px; }
+}
+
+@media (max-width: 360px) {
+    .fg-navbar__inner { width: calc(100% - 1rem); }
+    .fg-logo__img { width: 82px; }
+}

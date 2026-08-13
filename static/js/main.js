@@ -63,6 +63,12 @@
         // The header is intentionally always solid: this keeps navigation
         // readable and avoids scroll-driven layout/color changes.
         header.classList.add("fg-header--solid");
+
+        const updateHeader = () => {
+            header.classList.toggle("fg-header--compact", window.scrollY > 36);
+        };
+        updateHeader();
+        window.addEventListener("scroll", updateHeader, { passive: true });
     }
 
     /* ---------------------------------------------------------------
@@ -130,7 +136,7 @@
 
         // Keep menu state sane when resizing from mobile to desktop.
         window.addEventListener("resize", () => {
-            if (window.innerWidth >= 1024) closeMenu();
+            if (window.innerWidth >= 1200) closeMenu();
         }, { passive: true });
 
         document.addEventListener("keydown", (e) => {
