@@ -71,9 +71,7 @@
     =========================================================== -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    {% if website_settings.logo %}
-    <link rel="preload" as="image" href="{{ website_settings.logo.url }}">
-    {% endif %}
+    <link rel="preload" as="image" href="{% static 'images/fingrow-logo-transparent.png' %}">
 
     <!-- Page-specific extra CSS block -->
     {% block extra_css %}{% endblock %}
@@ -113,11 +111,7 @@
 
             <!-- Logo -->
             <a class="navbar-brand fg-logo" href="{% url 'home' %}">
-                {% if website_settings.logo %}
-                    <img src="{{ website_settings.logo.url }}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
-                {% else %}
-                    <img src="{% static 'images/logo.webp' %}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
-                {% endif %}
+                <img src="{% static 'images/fingrow-logo-transparent.png' %}" alt="FinGrow Consultancy Services" class="fg-logo__img">
             </a>
 
             <!-- Mobile Hamburger -->
@@ -321,10 +315,7 @@
                 <!-- Company Intro -->
                 <div class="col-lg-4 col-md-6">
                     <a href="{% url 'home' %}" class="fg-logo fg-logo--footer">
-                        {% if website_settings.logo %}
-                            <img src="{{ website_settings.logo.url }}" alt="{{ website_settings.company_name|default:'FinGrow Consultancy Services' }}" class="fg-logo__img">
-                        {% endif %}
-                        <span class="fg-logo__text">{{ website_settings.company_name|default:"FinGrow Consultancy Services" }}</span>
+                        <img src="{% static 'images/fingrow-logo-transparent.png' %}" alt="FinGrow Consultancy Services" class="fg-logo__img">
                     </a>
                     <p class="fg-footer__about">
                         FinGrow Consultancy Services delivers premium financial advisory, business

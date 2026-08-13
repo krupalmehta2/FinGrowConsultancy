@@ -111,7 +111,7 @@
             {% for related in related_services %}
             <div class="col-lg-4 col-md-6">
                 <div class="fg-service-card">
-                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if related.featured_image %}<img src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img src="{% static 'images/logo.webp' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div>
+                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if related.featured_image %}<img src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% else %}<img src="{% static 'images/fingrow-logo-transparent.png' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}</div>
                     <h4 class="fg-service-card__title">{{ related.title }}</h4>
                     <p class="fg-service-card__text">{{ related.short_description }}</p>
                     <a href="{% url 'service_detail' related.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>

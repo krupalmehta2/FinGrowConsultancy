@@ -109,7 +109,7 @@
             <div class="col-lg-4 col-md-6">
                 <div class="fg-scheme-card">
                     <div class="fg-scheme-card__header">
-                        {% if related.featured_image %}<img class="fg-scheme-card__thumb" src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% elif website_settings.logo %}<img class="fg-scheme-card__thumb" src="{{ website_settings.logo.url }}" alt="FinGrow logo" loading="lazy" decoding="async">{% else %}<img class="fg-scheme-card__thumb" src="{% static 'images/logo.webp' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}
+                        {% if related.featured_image %}<img class="fg-scheme-card__thumb" src="{{ related.featured_image.url }}" alt="{{ related.title }}" loading="lazy" decoding="async">{% else %}<img class="fg-scheme-card__thumb" src="{% static 'images/fingrow-logo-transparent.png' %}" alt="FinGrow logo" loading="lazy" decoding="async">{% endif %}
                         <h4 class="mb-0 text-white">{{ related.title }}</h4>
                     </div>
                     <div class="fg-scheme-card__body">
