@@ -32,8 +32,7 @@ staticfiles/
 media/tmp/
 backups/*.sqlite3
 
-# SQLite databases
-*.sqlite3
+# SQLite databases (the demo database is intentionally tracked)
 *.sqlite3-journal
 
 # ==============================
