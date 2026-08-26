@@ -4324,3 +4324,13 @@ p { font-size: 1rem; line-height: 1.65; }
     .fg-cta h2.fg-section-heading-badge + h3,
     .fg-home-page .fg-section-title { font-size: 1.3rem; }
 }
+
+/* Prevent badge clipping while preserving natural word-boundary wrapping. */
+.fg-section-heading-badge,
+.fg-editorial-section h2.fg-section-heading-badge,
+.fg-editorial-cta h2.fg-section-heading-badge,
+.fg-cta h2.fg-section-heading-badge {
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+}

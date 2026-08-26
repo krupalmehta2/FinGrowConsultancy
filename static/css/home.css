@@ -58,6 +58,27 @@
 }
 
 /* -------------------------------------------------------------------------
+   0b. CENTERED SECTION HEADERS (badge + title + subtitle)
+      Used by .fg-section-header--center wrapper (e.g. "Why FinGrow Is
+      Different" and "What We Offer" sections). Centers the pill badge,
+      the navy subheading, and the gray lead paragraph as a group.
+------------------------------------------------------------------------- */
+.fg-home-page .fg-section-header--center {
+    text-align: center;
+}
+
+.fg-home-page .fg-section-header--center .fg-section-heading-badge {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fg-home-page .fg-section-header--center .fg-section-title,
+.fg-home-page .fg-section-header--center .fg-section-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* -------------------------------------------------------------------------
    1. HERO SECTION
 ------------------------------------------------------------------------- */
 .fg-home-page .fg-hero {
@@ -373,3 +394,20 @@
 /* =========================================================================
    END OF home.css
    ========================================================================= */
+/* Home alignment polish */
+.fg-home-about-snapshot .fg-about__media { position: relative; }
+.fg-home-about-snapshot .fg-about__media img { transition: transform .35s ease; }
+.fg-home-about-snapshot .fg-about__media:hover img { transform: scale(1.02); }
+@media (max-width: 991.98px) {
+    .fg-home-about-snapshot .row > [data-aos="fade-left"] {
+        align-items: center;
+        text-align: center;
+    }
+    .fg-home-about-snapshot .fg-home-who-heading,
+    .fg-home-about-snapshot .fg-section-title,
+    .fg-home-about-snapshot .fg-lead { margin-left: auto; margin-right: auto; }
+}
+@media (max-width: 575.98px) {
+    .fg-home-about-snapshot .fg-home-who-heading { white-space: normal; max-width: 100%; }
+    .fg-home-about-snapshot .fg-about__media img { aspect-ratio: 1.15; }
+}
