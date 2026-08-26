@@ -1,0 +1,375 @@
+/* =========================================================================
+   HOME PAGE STYLESHEET — single source of truth for Home only
+   Loads AFTER style.css (via {% block extra_css %} in home.html), so every
+   rule here is final for the Home page. Nothing here touches About,
+   Services, Contact, Blog, or the shared header/footer — those keep using
+   style.css untouched.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   0. SHARED BADGE + SUBHEADING SYSTEM (matches the About-page "long view"
+      look: a large wrapped green pill badge, a bold navy subheading right
+      under it, then gray body copy)
+------------------------------------------------------------------------- */
+.fg-home-page .fg-section-heading-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .7rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 1.1rem;
+    padding: .55rem .9rem;
+    border-radius: var(--fg-radius-pill);
+    background: var(--fg-green-light);
+    color: var(--fg-green-dark);
+    font-size: clamp(1.3rem, 2.35vw, 1.9rem);
+    font-weight: var(--fg-fw-extrabold);
+    letter-spacing: 0;
+    line-height: 1.25;
+    text-transform: uppercase;
+    text-wrap: balance;
+}
+
+.fg-home-page .fg-section-heading-badge i {
+    color: var(--fg-green);
+    font-size: .85em;
+}
+
+.fg-home-page .fg-cta .fg-section-heading-badge {
+    background: rgba(22, 179, 74, 0.14);
+    color: var(--fg-green);
+}
+
+/* Bold navy subheading directly under a badge */
+.fg-home-page .fg-section-title {
+    color: var(--fg-navy);
+    font-weight: var(--fg-fw-extrabold);
+    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+/* Body copy under the subheading */
+.fg-home-page .fg-section-subtitle,
+.fg-home-page .fg-lead {
+    color: var(--fg-gray);
+    font-size: var(--fg-fs-lead);
+    line-height: 1.7;
+}
+
+/* -------------------------------------------------------------------------
+   1. HERO SECTION
+------------------------------------------------------------------------- */
+.fg-home-page .fg-hero {
+    position: relative;
+    background: var(--fg-gradient-navy);
+    overflow: hidden;
+    color: var(--fg-white);
+    min-height: 620px;
+    box-sizing: border-box;
+    padding-block: 120px;
+}
+
+.fg-home-page .fg-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 10% 15%, rgba(22, 179, 74, 0.22), transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(30, 94, 255, 0.22), transparent 45%);
+    pointer-events: none;
+}
+
+.fg-home-page .fg-hero__content { position: relative; z-index: 2; }
+
+.fg-home-page .fg-hero__title {
+    color: var(--fg-white);
+    font-size: clamp(2.8rem, 6vw, 5.6rem);
+    line-height: .95;
+    letter-spacing: 0;
+    max-width: 12ch;
+    margin-bottom: var(--fg-space-5);
+    text-wrap: balance;
+    text-transform: none;
+}
+
+.fg-home-page .fg-hero__title .fg-highlight { color: var(--fg-green); }
+
+.fg-home-page .fg-hero__subtitle {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: var(--fg-fs-lead);
+    max-width: 560px;
+    margin-bottom: var(--fg-space-7);
+}
+
+.fg-home-page .fg-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fg-space-4);
+    margin-bottom: var(--fg-space-8);
+}
+
+.fg-home-page .fg-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.fg-home-page .fg-hero__stat {
+    padding: 1.25rem 1rem 1.1rem 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.fg-home-page .fg-hero__stat:last-child { border-right: 0; padding-left: 1rem; }
+
+.fg-home-page .fg-hero__stat strong {
+    display: block;
+    color: var(--fg-green-light);
+    font-size: clamp(1.5rem, 2.5vw, 2.35rem);
+    line-height: 1;
+    margin-bottom: .45rem;
+    white-space: nowrap;
+}
+
+.fg-home-page .fg-hero__stat:last-child strong { font-size: clamp(1.35rem, 2.1vw, 2.1rem); }
+
+.fg-home-page .fg-hero__stat span {
+    display: block;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: .76rem;
+    line-height: 1.35;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.fg-home-page .fg-hero__media { position: relative; z-index: 2; }
+
+.fg-home-page .fg-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--fg-radius-2xl);
+    box-shadow: var(--fg-shadow-xl);
+}
+
+/* -------------------------------------------------------------------------
+   2. WHY FINGROW / TRUST STRIP
+------------------------------------------------------------------------- */
+.fg-home-page .fg-home-trust .fg-service-card {
+    height: 100%;
+    padding: var(--fg-space-7);
+    background: var(--fg-white);
+    border: 1px solid #E8EDF5;
+    border-top: 4px solid var(--fg-green);
+    border-radius: var(--fg-radius-xl);
+    box-shadow: 0 10px 28px rgba(7, 27, 59, 0.08);
+    transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+
+.fg-home-page .fg-home-trust .fg-service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 50px rgba(7, 27, 59, .14);
+}
+
+.fg-home-page .fg-home-trust .fg-service-card h4 {
+    margin-bottom: var(--fg-space-3);
+    color: var(--fg-navy);
+    font-weight: var(--fg-fw-bold);
+}
+
+.fg-home-page .fg-home-trust .fg-service-card p {
+    font-size: var(--fg-fs-sm);
+    color: var(--fg-gray);
+    margin-bottom: 0;
+}
+
+/* -------------------------------------------------------------------------
+   3. ABOUT SNAPSHOT — mirrors the About page "long view" badge treatment:
+      badge wraps into a bold blob inside the narrow column, navy subheading
+      directly under it, gray lead paragraph below that.
+------------------------------------------------------------------------- */
+.fg-home-about-snapshot .fg-about__media img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.2;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--fg-radius-2xl);
+    box-shadow: var(--fg-shadow-lg);
+}
+
+.fg-home-about-snapshot .fg-about__experience-badge {
+    position: absolute;
+    bottom: var(--fg-space-6);
+    right: -var(--fg-space-6);
+    background: var(--fg-navy);
+    color: var(--fg-white);
+    border-radius: var(--fg-radius-lg);
+    padding: 1.15rem 1.35rem;
+    text-align: center;
+    box-shadow: 0 1rem 2rem rgba(7, 27, 59, .22);
+}
+
+.fg-home-about-snapshot .fg-about__experience-badge strong {
+    display: block;
+    font-size: 1.8rem;
+    line-height: 1;
+    font-weight: var(--fg-fw-extrabold);
+}
+
+.fg-home-about-snapshot .fg-about__experience-badge span {
+    font-size: var(--fg-fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.fg-home-about-snapshot .row > [data-aos="fade-left"] {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.fg-home-about-snapshot .fg-home-who-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: .7rem;
+    width: fit-content;
+    max-width: 13ch;
+    margin-bottom: 1.1rem;
+    padding: .55rem .9rem;
+    border-radius: var(--fg-radius-pill);
+    background: var(--fg-green-light);
+    color: var(--fg-green-dark);
+    font-size: clamp(1.3rem, 2.35vw, 1.9rem);
+    font-weight: var(--fg-fw-extrabold);
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-wrap: balance;
+    white-space: nowrap;
+}
+
+.fg-home-about-snapshot .fg-home-who-heading i { color: var(--fg-green); font-size: .85em; }
+
+.fg-home-about-snapshot .fg-section-title {
+    max-width: 18ch;
+    margin-bottom: 1rem;
+    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    line-height: 1.3;
+    font-weight: var(--fg-fw-extrabold);
+    color: var(--fg-navy);
+}
+
+.fg-home-about-snapshot .fg-lead {
+    max-width: 34rem;
+    font-size: 1rem;
+    color: var(--fg-gray);
+    margin-bottom: 1.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   4. SERVICES PREVIEW (uses shared .fg-category-grid / .fg-category-card
+      component from style.css — badge + subheading inherit the shared
+      large treatment defined in section 0 above, nothing shrunk here)
+------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------
+   5. FINAL CTA
+------------------------------------------------------------------------- */
+.fg-home-page .fg-cta {
+    background: var(--fg-gradient-navy);
+    border-radius: var(--fg-radius-3xl);
+    padding: var(--fg-space-9) var(--fg-space-8);
+    position: relative;
+    overflow: hidden;
+    color: var(--fg-white);
+    text-align: center;
+}
+
+.fg-home-page .fg-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(22, 179, 74, 0.25), transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(30, 94, 255, 0.25), transparent 45%);
+}
+
+.fg-home-page .fg-cta > * { position: relative; z-index: 1; }
+
+.fg-home-page .fg-cta .fg-section-heading-badge {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fg-home-page .fg-cta p {
+    color: rgba(255, 255, 255, 0.75);
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fg-home-page .fg-cta__actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--fg-space-4);
+    margin-top: var(--fg-space-7);
+}
+
+/* -------------------------------------------------------------------------
+   6. RESPONSIVE — tablet
+------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .fg-home-page .fg-hero { min-height: 0; padding-block: 96px 72px; text-align: center; }
+    .fg-home-page .fg-hero__actions { justify-content: center; }
+    .fg-home-page .fg-hero__stats { justify-content: center; }
+    .fg-home-about-snapshot .fg-about__experience-badge { right: var(--fg-space-4); }
+    .fg-home-page .fg-section-heading-badge,
+    .fg-home-about-snapshot .fg-home-who-heading {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* -------------------------------------------------------------------------
+   7. RESPONSIVE — large mobile
+------------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+    .fg-home-page .fg-hero__title { font-size: clamp(2.2rem, 11vw, 3.6rem); max-width: 12ch; }
+    .fg-home-page .fg-hero__subtitle { font-size: .95rem; }
+    .fg-home-page .fg-hero__stats { grid-template-columns: repeat(2, 1fr); }
+    .fg-home-page .fg-hero__stat:nth-child(2) { border-right: 0; }
+    .fg-home-page .fg-hero__stat:nth-child(n+3) { border-top: 1px solid rgba(255, 255, 255, 0.18); }
+    .fg-home-page .fg-hero__stat:last-child { padding-left: 0; }
+    .fg-home-page .fg-hero__stat:last-child strong { font-size: clamp(1.25rem, 6vw, 1.8rem); }
+
+    .fg-home-page .fg-section-heading-badge { font-size: 1.1rem; padding: .5rem .8rem; }
+    .fg-home-page .fg-section-title { font-size: 1.35rem; }
+
+    .fg-home-about-snapshot .fg-home-who-heading { font-size: 1.1rem; padding: .5rem .8rem; max-width: 100%; }
+    .fg-home-about-snapshot .fg-section-title { font-size: 1.35rem; }
+
+    .fg-home-page .fg-cta { padding: var(--fg-space-8) var(--fg-space-5); border-radius: var(--fg-radius-xl); }
+}
+
+/* -------------------------------------------------------------------------
+   8. RESPONSIVE — mobile
+------------------------------------------------------------------------- */
+@media (max-width: 575.98px) {
+    .fg-home-page .fg-hero__actions { flex-direction: column; width: 100%; }
+    .fg-home-page .fg-hero__actions .fg-btn { width: 100%; }
+    .fg-home-about-snapshot .fg-about__experience-badge {
+        position: static;
+        margin-top: var(--fg-space-5);
+        display: inline-block;
+    }
+}
+
+/* =========================================================================
+   END OF home.css
+   ========================================================================= */

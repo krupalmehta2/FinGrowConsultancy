@@ -15,7 +15,7 @@ class ImagePreviewMixin:
 
     @admin.display(description="Image Preview")
     def image_preview(self, obj):
-        image = getattr(obj, "featured_image", None) or getattr(obj, "logo", None)
+        image = getattr(obj, "icon", None) or getattr(obj, "featured_image", None) or getattr(obj, "image", None) or getattr(obj, "logo", None)
         if image:
             return format_html(
                 '<img src="{}" style="max-width: 220px; max-height: 120px; border-radius: 8px;" />',
@@ -66,7 +66,7 @@ class WebsiteSettingsAdmin(admin.ModelAdmin):
 @admin.register(Service)
 class ServiceAdmin(ImagePreviewMixin, admin.ModelAdmin):
     def get_fieldsets(self, request, obj=None):
-        return (("Content", {"fields": ("title", "slug", "category", "short_description", "description", "benefits", "process", "icon_class")}), ("Media", {"fields": ("featured_image", "image_preview")}), ("Publishing", {"fields": ("display_order", "active")}))
+        return (("Content", {"fields": ("title", "slug", "category", "short_description", "description", "benefits", "process", "icon_class")}), ("Media", {"fields": ("icon", "featured_image", "image_preview")}), ("Publishing", {"fields": ("display_order", "active")}))
 
     list_display = ("title", "slug", "display_order", "active", "created_at", "updated_at")
     list_filter = ("active", "created_at", "updated_at")
@@ -75,18 +75,19 @@ class ServiceAdmin(ImagePreviewMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     fieldsets = (
         ("Content", {"fields": ("title", "slug", "short_description", "description", "benefits", "process", "icon_class")}),
-        ("Media", {"fields": ("featured_image", "image_preview")}),
+        ("Media", {"fields": ("icon", "featured_image", "image_preview")}),
         ("Publishing", {"fields": ("display_order", "active")}),
     )
 
 
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(ImagePreviewMixin, admin.ModelAdmin):
-    list_display = ("name", "slug", "is_active", "updated_at")
+    list_display = ("name", "slug", "display_order", "is_active", "updated_at")
     list_filter = ("is_active",)
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
-    fieldsets = (("Content", {"fields": ("name", "slug", "description", "image", "image_preview")}), ("Publishing", {"fields": ("is_active",)}))
+    ordering = ("display_order", "name")
+    fieldsets = (("Content", {"fields": ("name", "slug", "description", "image", "image_preview")}), ("Publishing", {"fields": ("display_order", "is_active")}))
 
 
 @admin.register(GovernmentScheme)

@@ -1,24 +1,79 @@
+# ==============================
 # Python
+# ==============================
 __pycache__/
 *.py[cod]
 *$py.class
 *.egg-info/
+*.egg
+*.pyo
+*.pyd
 
-# Virtual environment
+# ==============================
+# Virtual Environment
+# ==============================
 venv/
 .venv/
 env/
+ENV/
 
-# Django/runtime files
-*.log
+# ==============================
+# Environment / Secrets
+# ==============================
 .env
+.env.*
+!.env.example
+
+# ==============================
+# Django / Runtime
+# ==============================
+*.log
 staticfiles/
+media/tmp/
 backups/*.sqlite3
 
-# Keep media/ tracked because it contains demo uploads and images.
+# SQLite databases
+*.sqlite3
+*.sqlite3-journal
 
-# IDE and OS files
+# ==============================
+# IDE
+# ==============================
 .vscode/
 .idea/
+
+# ==============================
+# OS
+# ==============================
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# ==============================
+# Testing / Coverage
+# ==============================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# ==============================
+# Build / Distribution
+# ==============================
+build/
+dist/
+pip-wheel-metadata/
+
+# ==============================
+# Django / Tooling
+# ==============================
+.mypy_cache/
+.ruff_cache/
+
+# ==============================
+# Temporary Files
+# ==============================
+*.tmp
+*.temp
+*.swp
+*.swo

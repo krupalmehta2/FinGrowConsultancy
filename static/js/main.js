@@ -347,3 +347,31 @@
     }
 
 })();
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('registrationForm');
+    if (!form) return;
+    const fields = ['email', 'username', 'password', 'mobile_number'];
+    const csrf = form.querySelector('[name=csrfmiddlewaretoken]').value;
+    const timers = {};
+    fields.forEach(function (name) {
+        const input = document.getElementById('id_' + name);
+        if (!input) return;
+        input.addEventListener('input', function () {
+            clearTimeout(timers[name]);
+            const message = input.parentElement.querySelector('.fg-live-validation');
+            message.textContent = 'Checking…';
+            message.className = 'fg-live-validation is-checking';
+            timers[name] = setTimeout(function () {
+                const body = new URLSearchParams({field: name, value: input.value});
+                fetch(form.dataset.validationUrl, {method: 'POST', headers: {'X-CSRFToken': csrf, 'X-Requested-With': 'XMLHttpRequest'}, body: body})
+                    .then(function (response) { return response.json(); })
+                    .then(function (result) {
+                        message.textContent = result.message || (result.valid ? 'Looks good.' : 'Invalid value.');
+                        message.className = 'fg-live-validation ' + (result.valid ? 'is-valid' : 'is-invalid');
+                        input.classList.toggle('is-invalid', !result.valid);
+                        input.classList.toggle('is-valid', result.valid);
+                    });
+            }, 350);
+        });
+    });
+});

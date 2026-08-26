@@ -7,7 +7,7 @@
 {% block breadcrumb %}
 <section class="fg-breadcrumb-section fg-page-hero--blog">
     <div class="container">
-        <span class="fg-page-hero__eyebrow">Ideas for the road ahead</span><h1 class="fg-breadcrumb-section__title">The FinGrow<br><em>journal.</em></h1><p class="fg-page-hero__subtitle">Practical perspectives on finance, compliance, funding and building a stronger business.</p>
+        <span class="fg-eyebrow">Ideas for the road ahead</span><h1 class="fg-breadcrumb-section__title">The FinGrow <em>journal.</em></h1><p class="fg-page-hero__subtitle">Practical perspectives on finance, compliance, funding and building a stronger business.</p>
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
             <i class="fa-solid fa-chevron-right"></i>
@@ -21,8 +21,8 @@
 <section class="fg-section fg-section--white">
     <div class="container">
         <div class="fg-section-header fg-section-header--center" data-aos="fade-up">
-            <span class="fg-eyebrow"><i class="fa-solid fa-newspaper"></i> Insights</span>
-            <h2 class="fg-section-title">Latest From FinGrow</h2>
+            <h2 class="fg-section-heading-badge"><i class="fa-solid fa-newspaper"></i> Insights</h2>
+            <h3 class="fg-section-title">Latest From FinGrow</h3>
             <p class="fg-section-subtitle">Financial tips, scheme updates and compliance deadlines.</p>
         </div>
 
@@ -46,6 +46,12 @@
             </div>
             {% endfor %}
         </div>
+        {% if linkedin_posts %}
+        <div class="fg-section-header mt-5"><h2 class="fg-section-heading-badge"><i class="fa-brands fa-linkedin"></i> LinkedIn</h2><h3 class="fg-section-title">From our LinkedIn</h3></div>
+        <div class="row g-4">
+            {% for item in linkedin_posts %}<div class="col-lg-4 col-md-6"><article class="fg-blog-card"><div class="fg-blog-card__body"><span class="fg-blog-card__category">{{ item.published_at|date:"M d, Y" }}</span><p>{{ item.text|linebreaksbr|truncatechars:280 }}</p>{% if item.linkedin_url %}<a class="fg-text-link" href="{{ item.linkedin_url }}" target="_blank" rel="noopener">View on LinkedIn <i class="fa-solid fa-arrow-up-right-from-square"></i></a>{% endif %}</div></article></div>{% endfor %}
+        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

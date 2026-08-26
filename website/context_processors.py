@@ -1,4 +1,4 @@
-from .models import BlogPost, ContactInquiry, GovernmentScheme, Service, ServiceCategory, WebsiteSettings
+from .models import BlogPost, ContactInquiry, CustomerProfile, GovernmentScheme, LinkedInConnection, NewsletterSubscriber, Service, ServiceCategory, WebsiteSettings
 
 
 def website_settings(request):
@@ -6,8 +6,8 @@ def website_settings(request):
         "website_settings": WebsiteSettings.objects.first(),
         # Keep navigation driven by the active records in the admin.
         "nav_services": Service.objects.filter(active=True)[:5],
-        "nav_categories": ServiceCategory.objects.filter(is_active=True),
-        "footer_categories": ServiceCategory.objects.filter(is_active=True),
+        "nav_categories": ServiceCategory.objects.filter(is_active=True).order_by("display_order", "name"),
+        "footer_categories": ServiceCategory.objects.filter(is_active=True).order_by("display_order", "name"),
         "nav_schemes": GovernmentScheme.objects.filter(active=True)[:5],
         "footer_services": Service.objects.filter(active=True)[:6],
         "footer_schemes": GovernmentScheme.objects.filter(active=True)[:6],
@@ -29,6 +29,12 @@ def admin_dashboard(request):
             "active_posts": BlogPost.objects.filter(active=True).count(),
             "inquiries": ContactInquiry.objects.count(),
             "new_inquiries": ContactInquiry.objects.filter(status=ContactInquiry.Status.NEW).count(),
+            "customers": CustomerProfile.objects.count(),
+            "subscribers": NewsletterSubscriber.objects.count(),
+            "linkedin_connection": LinkedInConnection.objects.first(),
         },
         "recent_inquiries": ContactInquiry.objects.order_by("-created_at")[:5],
     }
+
+
+

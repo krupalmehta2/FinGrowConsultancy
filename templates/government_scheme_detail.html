@@ -15,7 +15,7 @@
 {% block breadcrumb %}
 <section class="fg-breadcrumb-section fg-page-hero--scheme-detail">
     <div class="container">
-        <span class="fg-page-hero__eyebrow">Opportunity profile</span><h1 class="fg-breadcrumb-section__title">{{ scheme.title }}</h1><p class="fg-page-hero__subtitle">{{ scheme.short_description }}</p>
+        <span class="fg-eyebrow">Opportunity profile</span><h1 class="fg-breadcrumb-section__title">{{ scheme.title }}</h1><p class="fg-page-hero__subtitle">{{ scheme.short_description }}</p>
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
                 <i class="fa-solid fa-chevron-right"></i>
@@ -32,8 +32,8 @@
     <div class="container">
         <div class="row align-items-center gy-5 fg-detail-hero">
             <div class="col-lg-6 fg-detail-hero__content">
-                <span class="fg-eyebrow"><i class="fa-solid fa-seedling"></i> Incubation Scheme</span>
-                <h2 class="fg-section-title">{{ scheme.title }}</h2>
+                <h2 class="fg-section-heading-badge"><i class="fa-solid fa-seedling"></i> Incubation Scheme</h2>
+                <h3 class="fg-section-title">{{ scheme.title }}</h3>
                 <p class="fg-lead">{{ scheme.short_description }}</p>
                 <div>{{ scheme.description|default:scheme.short_description|linebreaks }}</div>
             </div>
@@ -45,8 +45,8 @@
         </div>
 
         <div class="fg-section-header fg-section-header--center mt-5" data-aos="fade-up">
-            <span class="fg-eyebrow"><i class="fa-solid fa-route"></i> Our Process</span>
-            <h2 class="fg-section-title">From idea to execution, with clarity at every step</h2>
+            <h2 class="fg-section-heading-badge"><i class="fa-solid fa-route"></i> Our Process</h2>
+            <h3 class="fg-section-title">From idea to execution, with clarity at every step</h3>
             <p class="fg-section-subtitle">A practical, founder-friendly journey designed around your eligibility, documents and goals.</p>
         </div>
         <div class="fg-process-grid mt-4">
@@ -57,8 +57,8 @@
         </div>
 
         <div class="fg-section-header fg-section-header--center mt-5" data-aos="fade-up">
-            <span class="fg-eyebrow"><i class="fa-solid fa-circle-question"></i> Frequently Asked Questions</span>
-            <h2 class="fg-section-title">Incubation support, explained clearly</h2>
+            <h2 class="fg-section-heading-badge"><i class="fa-solid fa-circle-question"></i> Frequently Asked Questions</h2>
+            <h3 class="fg-section-title">Incubation support, explained clearly</h3>
         </div>
         <div class="fg-faq-wrapper">
             <details class="fg-faq-item"><summary>What does incubation support include?</summary><p>We help founders understand the opportunity, assess eligibility, prepare supporting information, organise documents and stay on track during submission and follow-up.</p></details>
@@ -100,8 +100,8 @@
         <div class="row g-4 mt-5">
             <div class="col-12">
                 <div class="fg-section-header">
-                    <span class="fg-eyebrow"><i class="fa-solid fa-compass"></i> Explore further</span>
-                    <h2 class="fg-section-title">More opportunities for your business</h2>
+                    <h2 class="fg-section-heading-badge"><i class="fa-solid fa-compass"></i> Explore further</h2>
+                    <h3 class="fg-section-title">More opportunities for your business</h3>
                     <p class="fg-section-subtitle">There may be another route that fits your stage, sector, or funding need.</p>
                 </div>
             </div>

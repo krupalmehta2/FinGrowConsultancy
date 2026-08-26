@@ -14,6 +14,10 @@
 </div>
 
 <div class="fg-admin-cards">
+    <a class="fg-admin-card fg-admin-card--blue" href="{% if linkedin_connection %}{% url 'admin:website_linkedinconnection_changelist' %}{% else %}{% url 'linkedin_connect' %}{% endif %}">
+        <span class="fg-admin-card__icon">in</span><span class="fg-admin-card__label">LinkedIn</span>
+        <strong>{% if linkedin_connection %}Connected{% else %}Not connected{% endif %}</strong><small>{% if linkedin_connection %}{{ linkedin_connection.member_name }}{% else %}Connect account{% endif %}</small>
+    </a>
     <a class="fg-admin-card fg-admin-card--navy" href="{% url 'admin:website_service_changelist' %}">
         <span class="fg-admin-card__icon">&#128188;</span><span class="fg-admin-card__label">Services</span>
         <strong>{{ admin_counts.services }}</strong><small>{{ admin_counts.active_services }} active on website</small>
@@ -55,3 +59,4 @@
     {% for app in app_list %}{% for model in app.models %}<a href="{{ model.admin_url }}"><span>{{ model.name }}</span><small>Open management</small></a>{% endfor %}{% endfor %}
 </div>
 {% endblock %}
+
