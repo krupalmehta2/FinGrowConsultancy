@@ -20,33 +20,42 @@ load_dotenv(BASE_DIR / ".env")
 
 
 def env_bool(name, default=False):
-    return os.getenv(name, str(int(default))).strip().lower() in {
-        "1",
-        "true",
-        "yes",
-        "on",
-    }
+    value = os.getenv(name)
+    if value is None:
+        return default
+    normalized = value.strip().lower()
+    if normalized not in {"0", "1", "false", "true", "no", "yes", "off", "on"}:
+        raise ValueError(f"{name} must be a boolean value")
+    return normalized in {"1", "true", "yes", "on"}
 
 
 def env_list(name, default=""):
     return [value.strip() for value in os.getenv(name, default).split(",") if value.strip()]
 
 
+# Production must always supply a new, long random key through the environment.
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "").strip()
+
+
+def is_unsafe_secret(secret):
+    return (
+        not secret
+        or len(secret) < 50
+        or secret.startswith("django-insecure-")
+        or secret.lower() in {"change-me", "replace-with-a-long-random-secret"}
+    )
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-change-me")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_bool("DJANGO_DEBUG")
-
-if not DEBUG and SECRET_KEY == "dev-only-change-me":
-    raise RuntimeError("DJANGO_SECRET_KEY must be set when DEBUG is disabled")
+if not DEBUG and is_unsafe_secret(SECRET_KEY):
+    raise RuntimeError("DJANGO_SECRET_KEY must be set to a new random value when DEBUG is disabled")
 
 ALLOWED_HOSTS = env_list(
     "DJANGO_ALLOWED_HOSTS",
-    "fingrow-xc3n.onrender.com,localhost,127.0.0.1",
+    "fingrowconsultancy.com,www.fingrowconsultancy.com,localhost,127.0.0.1",
 )
 
 # Application definition
@@ -158,9 +167,10 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
 SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", not DEBUG)
+# Keep HSTS opt-in until the HTTPS deployment has been verified end to end.
 SECURE_HSTS_SECONDS = int(os.getenv("DJANGO_SECURE_HSTS_SECONDS", "0"))
-SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_HSTS_SECONDS > 0
-SECURE_HSTS_PRELOAD = SECURE_HSTS_SECONDS > 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS")
+SECURE_HSTS_PRELOAD = env_bool("DJANGO_SECURE_HSTS_PRELOAD")
 SESSION_COOKIE_SECURE = env_bool("DJANGO_SESSION_COOKIE_SECURE", not DEBUG)
 CSRF_COOKIE_SECURE = env_bool("DJANGO_CSRF_COOKIE_SECURE", not DEBUG)
 CSRF_COOKIE_HTTPONLY = True
@@ -169,7 +179,10 @@ SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 1209600
 LOGIN_URL = "/login/"
-CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = env_list(
+    "DJANGO_CSRF_TRUSTED_ORIGINS",
+    "https://fingrowconsultancy.com,https://www.fingrowconsultancy.com",
+)
 if os.getenv("RENDER_EXTERNAL_HOSTNAME"):
     CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ['RENDER_EXTERNAL_HOSTNAME']}")
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
