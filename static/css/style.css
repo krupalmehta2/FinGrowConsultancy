@@ -142,7 +142,6 @@ img { image-rendering: auto; }
 .fg-editorial-hero--dark h1,.fg-editorial-hero--dark .fg-editorial-hero__intro { color:#fff; }
 .fg-editorial-hero h1 em { color:var(--fg-green); font-style:normal; }
 .fg-editorial-hero__kicker { display:flex; gap:1rem; align-items:center; margin-bottom:clamp(3rem,8vw,7rem); color:var(--fg-green); font-size:.7rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
-.fg-editorial-hero__kicker span:first-child { border:1px solid currentColor; border-radius:50%; width:2rem; height:2rem; display:grid; place-items:center; }
 .fg-editorial-hero__intro { color:var(--ed-muted); font-size:1.05rem; line-height:1.7; max-width:27rem; margin-bottom:1.5rem; }
 .fg-editorial-hero__rule { height:1px; background:currentColor; opacity:.2; margin-top:clamp(3rem,8vw,7rem); }
 .fg-editorial-section { padding:clamp(5.5rem,10vw,10rem) 0; }
