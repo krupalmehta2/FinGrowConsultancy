@@ -16,7 +16,6 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from .forms import ContactInquiryForm, LoginForm, RegistrationForm
 from .models import BlogPost, CustomerProfile, GovernmentScheme, LinkedInConnection, LinkedInPost, NewsletterSubscriber, Service, ServiceCategory, SocialIdentity
 from .linkedin import LinkedInError, authorization_url, connect
-from . import social_auth
 import secrets
 
 
@@ -42,7 +41,7 @@ def about(request):
     return render(request, "about.html")
 
 def _safe_next(request):
-    target = request.session.pop("linkedin_login_next", None) or request.GET.get("next")
+    target = request.GET.get("next")
     return target if target and url_has_allowed_host_and_scheme(target, {request.get_host()}, request.is_secure()) else "home"
 
 
@@ -67,48 +66,6 @@ def user_login(request):
         return redirect(_safe_next(request))
     return render(request, "login.html", {"form": form})
 
-
-def linkedin_login(request):
-    if not social_auth.configured():
-        messages.error(request, "LinkedIn sign-in is not configured yet.")
-        return redirect("login")
-    state = secrets.token_urlsafe(32)
-    request.session["linkedin_login_state"] = state
-    request.session["linkedin_login_next"] = request.GET.get("next", "")
-    return redirect(social_auth.authorization_url(state))
-
-
-def linkedin_callback(request):
-    expected_state = request.session.pop("linkedin_login_state", None)
-    if not expected_state or not secrets.compare_digest(request.GET.get("state", ""), expected_state):
-        messages.error(request, "Your LinkedIn sign-in session expired. Please try again.")
-        return redirect("login")
-    if request.GET.get("error"):
-        messages.error(request, "LinkedIn sign-in was cancelled or could not be completed.")
-        return redirect("login")
-    try:
-        profile = social_auth.userinfo(social_auth.exchange_code(request.GET["code"]))
-    except (KeyError, social_auth.LinkedInOIDCError):
-        messages.error(request, "LinkedIn sign-in could not be completed. Please try again.")
-        return redirect("login")
-    identity = SocialIdentity.objects.select_related("user").filter(provider="linkedin", provider_user_id=profile["sub"]).first()
-    email = (profile.get("email") or "").strip().lower() if profile.get("email_verified") is True else ""
-    if identity:
-        user = identity.user
-    elif email:
-        user = User.objects.filter(email__iexact=email).first()
-        if not user:
-            user = User.objects.create_user(username=email, email=email)
-            user.set_unusable_password()
-            user.first_name, user.last_name = profile.get("given_name", ""), profile.get("family_name", "")
-            user.save()
-            CustomerProfile.objects.create(user=user, full_name=profile.get("name") or " ".join(filter(None, (user.first_name, user.last_name))) or email)
-        SocialIdentity.objects.create(provider="linkedin", provider_user_id=profile["sub"], user=user, email=email, name=profile.get("name", ""), first_name=profile.get("given_name", ""), last_name=profile.get("family_name", ""), profile_picture=profile.get("picture", ""))
-    else:
-        messages.error(request, "LinkedIn did not share an email address. Please register with email first, then try again.")
-        return redirect("register")
-    login(request, user)
-    return redirect(_safe_next(request))
 
 def user_logout(request):
     logout(request)

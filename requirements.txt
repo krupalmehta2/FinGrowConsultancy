@@ -7,6 +7,4 @@ sqlparse==0.5.5
 tzdata==2026.3
 whitenoise==6.9.0
 
-PyJWT[crypto]>=2.10,<3
-
 python-dotenv>=1.0,<2

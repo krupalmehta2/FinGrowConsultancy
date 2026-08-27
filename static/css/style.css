@@ -4234,8 +4234,6 @@ p { font-size: 1rem; line-height: 1.65; }
 /* Customer authentication controls. */
 .fg-auth-divider { display:flex; align-items:center; gap:1rem; margin:1.25rem 0; color:var(--fg-gray); font-size:.85rem; }
 .fg-auth-divider::before,.fg-auth-divider::after { content:''; flex:1; height:1px; background:var(--fg-border); }
-.fg-btn--linkedin { width:100%; background:#fff; border:1px solid #0a66c2; color:#0a66c2; }
-.fg-btn--linkedin:hover { background:#0a66c2; color:#fff; }
 .fg-auth-link { display:inline-block; margin-top:1rem; color:var(--fg-navy); font-size:.9rem; font-weight:600; }
 
 /* -------------------------------------------------------------------------
