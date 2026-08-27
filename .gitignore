@@ -29,10 +29,13 @@ ENV/
 # ==============================
 *.log
 staticfiles/
+media/
 media/tmp/
 backups/*.sqlite3
 
-# SQLite databases (the demo database is intentionally tracked)
+# SQLite databases
+db.sqlite3
+*.sqlite3
 *.sqlite3-journal
 
 # ==============================

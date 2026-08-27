@@ -19,6 +19,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 
+def env_bool(name, default=False):
+    return os.getenv(name, str(int(default))).strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+
+def env_list(name, default=""):
+    return [value.strip() for value in os.getenv(name, default).split(",") if value.strip()]
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -26,19 +39,15 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-only-change-me")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DJANGO_DEBUG", "1") == "1"
+DEBUG = env_bool("DJANGO_DEBUG")
 
 if not DEBUG and SECRET_KEY == "dev-only-change-me":
     raise RuntimeError("DJANGO_SECRET_KEY must be set when DEBUG is disabled")
 
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv(
-        "DJANGO_ALLOWED_HOSTS",
-        "fingrow-xc3n.onrender.com,localhost,127.0.0.1"
-    ).split(",")
-    if host.strip()
-]
+ALLOWED_HOSTS = env_list(
+    "DJANGO_ALLOWED_HOSTS",
+    "fingrow-xc3n.onrender.com,localhost,127.0.0.1",
+)
 
 # Application definition
 
@@ -148,23 +157,22 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
-SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "1" if not DEBUG else "0") == "1"
+SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", not DEBUG)
 SECURE_HSTS_SECONDS = int(os.getenv("DJANGO_SECURE_HSTS_SECONDS", "0"))
 SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_HSTS_SECONDS > 0
 SECURE_HSTS_PRELOAD = SECURE_HSTS_SECONDS > 0
-SESSION_COOKIE_SECURE = os.getenv("DJANGO_SESSION_COOKIE_SECURE", "1" if not DEBUG else "0") == "1"
-CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "1" if not DEBUG else "0") == "1"
+SESSION_COOKIE_SECURE = env_bool("DJANGO_SESSION_COOKIE_SECURE", not DEBUG)
+CSRF_COOKIE_SECURE = env_bool("DJANGO_CSRF_COOKIE_SECURE", not DEBUG)
 CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_SAMESITE = "Lax"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 1209600
 LOGIN_URL = "/login/"
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if origin.strip()]
+CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 if os.getenv("RENDER_EXTERNAL_HOSTNAME"):
     CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ['RENDER_EXTERNAL_HOSTNAME']}")
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CROSS_ORIGIN_RESOURCE_POLICY = "same-origin"
 SECURE_CACHE_CONTROL = "no-cache, no-store, must-revalidate"
