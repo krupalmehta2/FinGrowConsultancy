@@ -7,7 +7,6 @@ from django.core.exceptions import ValidationError
 from django.utils.html import escape
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
@@ -89,21 +88,17 @@ def validate_registration_field(request):
         valid, message = False, "Unknown field."
     return JsonResponse({"valid": valid, "message": message})
 
-@login_required
 def process(request):
     return render(request, "process.html")
 
-@login_required
 def services(request):
     return render(request, "services.html", {"categories": ServiceCategory.objects.filter(is_active=True).order_by("display_order", "name")})
 
-@login_required
 def service_category(request, slug):
     category = get_object_or_404(ServiceCategory, slug=slug, is_active=True)
     return render(request, "service_category.html", {"category": category, "services": category.services.filter(active=True).order_by("display_order", "title")})
 
 
-@login_required
 def service_detail(request, slug):
     service = get_object_or_404(Service, slug=slug, active=True)
     form = ContactInquiryForm()
@@ -124,13 +119,11 @@ def service_detail(request, slug):
         },
     )
 
-@login_required
 def government_schemes(request):
     schemes = GovernmentScheme.objects.filter(active=True)
     return render(request, "government_schemes.html", {"schemes": schemes})
 
 
-@login_required
 def government_scheme_detail(request, slug):
     scheme = get_object_or_404(GovernmentScheme, slug=slug, active=True)
     form = ContactInquiryForm()
@@ -149,7 +142,6 @@ def government_scheme_detail(request, slug):
         },
     )
 
-@login_required
 def blog(request):
     posts = BlogPost.objects.filter(active=True)
     return render(request, "blog.html", {"posts": posts, "linkedin_posts": LinkedInPost.objects.all()})
@@ -183,7 +175,6 @@ def linkedin_disconnect(request):
     return redirect("admin:index")
 
 
-@login_required
 def blog_detail(request, slug):
     post = get_object_or_404(BlogPost, slug=slug, active=True)
     form = ContactInquiryForm()

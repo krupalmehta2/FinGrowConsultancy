@@ -28,16 +28,27 @@
 
     /* ---------------------------------------------------------------
        1. PAGE LOADER
-       Hides the branded loader once the window has fully loaded.
+       Hides the loader as soon as the page is usable, with a network fail-safe.
     ---------------------------------------------------------------- */
     function initPageLoader() {
         const loader = $("#fgLoader");
         if (!loader) return;
 
-        window.addEventListener("load", () => {
+        let finished = false;
+        const finish = () => {
+            if (finished) return;
+            finished = true;
             loader.classList.add("fg-loader--hidden");
             window.setTimeout(() => loader.remove(), 600);
-        });
+        };
+
+        if (document.readyState === "complete") finish();
+        else window.addEventListener("load", finish, { once: true });
+        window.addEventListener("error", finish, { once: true });
+        window.addEventListener("unhandledrejection", finish, { once: true });
+
+        // A network that never completes must not make the application unusable.
+        window.setTimeout(finish, 3500);
     }
 
     /* ---------------------------------------------------------------
@@ -321,15 +332,19 @@
             marketing: Boolean(marketing && marketing.checked)
         });
 
-        $("#fgCookieReject")?.addEventListener("click", () => {
+        const rejectButton = $("#fgCookieReject");
+        const saveButton = $("#fgCookieSave");
+        const acceptButton = $("#fgCookieAccept");
+
+        if (rejectButton) rejectButton.addEventListener("click", () => {
             setConsent({ necessary: true, functional: false, analytics: false, marketing: false });
         });
 
-        $("#fgCookieSave")?.addEventListener("click", () => {
+        if (saveButton) saveButton.addEventListener("click", () => {
             setConsent(selectedConsent());
         });
 
-        $("#fgCookieAccept")?.addEventListener("click", () => {
+        if (acceptButton) acceptButton.addEventListener("click", () => {
             setConsent({ necessary: true, functional: true, analytics: true, marketing: true });
         });
 

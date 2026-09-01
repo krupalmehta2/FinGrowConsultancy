@@ -3473,12 +3473,22 @@ textarea.fg-form-control { min-height:130px; resize:vertical; }
     justify-content: center;
     z-index: var(--fg-z-loader);
     transition: opacity 0.6s ease, visibility 0.6s ease;
+    /* Keep the page reachable even if JavaScript cannot execute. */
+    animation: fgLoaderFailSafe 0s linear 6s forwards;
 }
 
 .fg-loader--hidden {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+}
+
+@keyframes fgLoaderFailSafe {
+    to {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
 }
 
 .fg-loader__inner { text-align: center; }
