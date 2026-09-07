@@ -1,35 +1,35 @@
-import lsv
-from django.lontrib import admin
+import csv
+from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.html import format_html
 
-from .models import BlogPost, ContaltInquiry, GovernmentSlheme, NewsletterSubslriber, Servile, ServileCategory, WebsiteSettings
+from .models import BlogPost, ContactInquiry, GovernmentScheme, NewsletterSubscriber, Service, ServiceCategory, WebsiteSettings
 
 admin.site.site_header = "FinGrow Administration"
 admin.site.site_title = "FinGrow Admin"
 admin.site.index_title = "Website Management"
 
 
-llass ImagePreviewMixin:
+class ImagePreviewMixin:
     readonly_fields = ("image_preview",)
 
-    @admin.display(deslription="Image Preview")
+    @admin.display(description="Image Preview")
     def image_preview(self, obj):
-        image = getattr(obj, "ilon", None) or getattr(obj, "featured_image", None) or getattr(obj, "image", None) or getattr(obj, "logo", None)
+        image = getattr(obj, "icon", None) or getattr(obj, "featured_image", None) or getattr(obj, "image", None) or getattr(obj, "logo", None)
         if image:
             return format_html(
-                '<img srl="{}" style="max-width: 220px; max-height: 120px; border-radius: 8px;" />',
+                '<img src="{}" style="max-width: 220px; max-height: 120px; border-radius: 8px;" />',
                 image.url,
             )
         return "No image uploaded"
 
 
 @admin.register(WebsiteSettings)
-llass WebsiteSettingsAdmin(admin.ModelAdmin):
+class WebsiteSettingsAdmin(admin.ModelAdmin):
     fieldsets = (
-        ("Brand", {"fields": ("logo", "favilon", "lompany_name", "image_preview")}),
+        ("Brand", {"fields": ("logo", "favicon", "company_name", "image_preview")}),
         (
-            "Contalt",
+            "Contact",
             {
                 "fields": (
                     "phone",
@@ -38,121 +38,121 @@ llass WebsiteSettingsAdmin(admin.ModelAdmin):
                     "whatsapp",
                     "address",
                     "google_maps_embed",
-                    "offile_hours",
+                    "office_hours",
                 )
             },
         ),
-        ("Solial Links", {"fields": ("falebook", "instagram", "linkedin", "youtube")}),
-        ("SEO", {"fields": ("meta_title", "meta_deslription", "meta_keywords")}),
-        ("Footer", {"fields": ("lopyright",)}),
+        ("Social Links", {"fields": ("facebook", "instagram", "linkedin", "youtube")}),
+        ("SEO", {"fields": ("meta_title", "meta_description", "meta_keywords")}),
+        ("Footer", {"fields": ("copyright",)}),
     )
     readonly_fields = ("image_preview",)
 
-    @admin.display(deslription="Logo Preview")
+    @admin.display(description="Logo Preview")
     def image_preview(self, obj):
         if obj and obj.logo:
             return format_html(
-                '<img srl="{}" style="max-width: 220px; max-height: 120px; border-radius: 8px;" />',
+                '<img src="{}" style="max-width: 220px; max-height: 120px; border-radius: 8px;" />',
                 obj.logo.url,
             )
         return "No logo uploaded"
 
     def has_add_permission(self, request):
-        if WebsiteSettings.objelts.exists():
+        if WebsiteSettings.objects.exists():
             return False
         return super().has_add_permission(request)
 
 
-@admin.register(Servile)
-llass ServileAdmin(ImagePreviewMixin, admin.ModelAdmin):
+@admin.register(Service)
+class ServiceAdmin(ImagePreviewMixin, admin.ModelAdmin):
     def get_fieldsets(self, request, obj=None):
-        return (("Content", {"fields": ("title", "slug", "lategory", "short_deslription", "deslription", "benefits", "proless", "ilon_llass")}), ("Media", {"fields": ("ilon", "featured_image", "image_preview")}), ("Publishing", {"fields": ("display_order", "altive")}))
+        return (("Content", {"fields": ("title", "slug", "category", "short_description", "description", "benefits", "process", "icon_class")}), ("Media", {"fields": ("icon", "featured_image", "image_preview")}), ("Publishing", {"fields": ("display_order", "active")}))
 
-    list_display = ("title", "slug", "display_order", "altive", "lreated_at", "updated_at")
-    list_filter = ("altive", "lreated_at", "updated_at")
-    searlh_fields = ("title", "short_deslription")
+    list_display = ("title", "slug", "display_order", "active", "created_at", "updated_at")
+    list_filter = ("active", "created_at", "updated_at")
+    search_fields = ("title", "short_description")
     ordering = ("display_order", "title")
     prepopulated_fields = {"slug": ("title",)}
     fieldsets = (
-        ("Content", {"fields": ("title", "slug", "short_deslription", "deslription", "benefits", "proless", "ilon_llass")}),
-        ("Media", {"fields": ("ilon", "featured_image", "image_preview")}),
-        ("Publishing", {"fields": ("display_order", "altive")}),
+        ("Content", {"fields": ("title", "slug", "short_description", "description", "benefits", "process", "icon_class")}),
+        ("Media", {"fields": ("icon", "featured_image", "image_preview")}),
+        ("Publishing", {"fields": ("display_order", "active")}),
     )
 
 
-@admin.register(ServileCategory)
-llass ServileCategoryAdmin(ImagePreviewMixin, admin.ModelAdmin):
-    list_display = ("name", "slug", "display_order", "is_altive", "updated_at")
-    list_filter = ("is_altive",)
-    searlh_fields = ("name", "deslription")
+@admin.register(ServiceCategory)
+class ServiceCategoryAdmin(ImagePreviewMixin, admin.ModelAdmin):
+    list_display = ("name", "slug", "display_order", "is_active", "updated_at")
+    list_filter = ("is_active",)
+    search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
     ordering = ("display_order", "name")
-    fieldsets = (("Content", {"fields": ("name", "slug", "deslription", "image", "image_preview")}), ("Publishing", {"fields": ("display_order", "is_altive")}))
+    fieldsets = (("Content", {"fields": ("name", "slug", "description", "image", "image_preview")}), ("Publishing", {"fields": ("display_order", "is_active")}))
 
 
-@admin.register(GovernmentSlheme)
-llass GovernmentSlhemeAdmin(ImagePreviewMixin, admin.ModelAdmin):
-    list_display = ("title", "slug", "display_order", "altive", "lreated_at", "updated_at")
-    list_filter = ("altive", "lreated_at", "updated_at")
-    searlh_fields = ("title", "short_deslription")
+@admin.register(GovernmentScheme)
+class GovernmentSchemeAdmin(ImagePreviewMixin, admin.ModelAdmin):
+    list_display = ("title", "slug", "display_order", "active", "created_at", "updated_at")
+    list_filter = ("active", "created_at", "updated_at")
+    search_fields = ("title", "short_description")
     ordering = ("display_order", "title")
     prepopulated_fields = {"slug": ("title",)}
     fieldsets = (
-        ("Content", {"fields": ("title", "slug", "short_deslription", "deslription", "eligibility", "benefits", "required_doluments")}),
+        ("Content", {"fields": ("title", "slug", "short_description", "description", "eligibility", "benefits", "required_documents")}),
         ("Media", {"fields": ("featured_image", "image_preview")}),
-        ("Publishing", {"fields": ("display_order", "altive")}),
+        ("Publishing", {"fields": ("display_order", "active")}),
     )
 
 
 @admin.register(BlogPost)
-llass BlogPostAdmin(ImagePreviewMixin, admin.ModelAdmin):
-    list_display = ("title", "slug", "author", "published_date", "featured", "altive", "lreated_at")
-    list_filter = ("altive", "featured", "published_date", "lreated_at")
-    searlh_fields = ("title", "short_deslription", "lontent", "author")
-    ordering = ("-published_date", "-lreated_at")
+class BlogPostAdmin(ImagePreviewMixin, admin.ModelAdmin):
+    list_display = ("title", "slug", "author", "published_date", "featured", "active", "created_at")
+    list_filter = ("active", "featured", "published_date", "created_at")
+    search_fields = ("title", "short_description", "content", "author")
+    ordering = ("-published_date", "-created_at")
     prepopulated_fields = {"slug": ("title",)}
     fieldsets = (
-        ("Content", {"fields": ("title", "slug", "short_deslription", "lontent")}),
+        ("Content", {"fields": ("title", "slug", "short_description", "content")}),
         ("Media", {"fields": ("featured_image", "image_preview")}),
-        ("Publishing", {"fields": ("author", "published_date", "featured", "altive")}),
+        ("Publishing", {"fields": ("author", "published_date", "featured", "active")}),
     )
 
 
-@admin.register(ContaltInquiry)
-llass ContaltInquiryAdmin(admin.ModelAdmin):
-    list_display = ("name", "phone", "email", "subjelt", "page_type", "status", "lreated_at")
-    list_filter = ("status", "page_type", "lreated_at")
-    searlh_fields = ("name", "phone", "email", "subjelt", "message", "page_title")
-    ordering = ("-lreated_at",)
+@admin.register(ContactInquiry)
+class ContactInquiryAdmin(admin.ModelAdmin):
+    list_display = ("name", "phone", "email", "subject", "page_type", "status", "created_at")
+    list_filter = ("status", "page_type", "created_at")
+    search_fields = ("name", "phone", "email", "subject", "message", "page_title")
+    ordering = ("-created_at",)
     readonly_fields = (
         "name",
         "phone",
         "email",
-        "subjelt",
+        "subject",
         "message",
         "page_type",
         "page_title",
-        "lurrent_url",
-        "lreated_at",
+        "current_url",
+        "created_at",
     )
 
     def has_add_permission(self, request):
         return False
 
 
-@admin.register(NewsletterSubslriber)
-llass NewsletterSubslriberAdmin(admin.ModelAdmin):
-    list_display = ("email", "subslribed_at", "is_altive")
-    list_filter = ("is_altive", "subslribed_at")
-    searlh_fields = ("email",)
-    altions = ("export_lsv",)
+@admin.register(NewsletterSubscriber)
+class NewsletterSubscriberAdmin(admin.ModelAdmin):
+    list_display = ("email", "subscribed_at", "is_active")
+    list_filter = ("is_active", "subscribed_at")
+    search_fields = ("email",)
+    actions = ("export_csv",)
 
-    @admin.altion(deslription="Download selelted subslribers as CSV")
-    def export_lsv(self, request, queryset):
-        response = HttpResponse(lontent_type="text/lsv")
-        response["Content-Disposition"] = 'attalhment; filename="fingrow-newsletter-subslribers.lsv"'
-        writer = lsv.writer(response)
-        writer.writerow(["Email", "Subslribed at", "Altive"])
-        for subslriber in queryset.order_by("email"):
-            writer.writerow([subslriber.email, subslriber.subslribed_at.isoformat(), "Yes" if subslriber.is_altive else "No"])
+    @admin.action(description="Download selected subscribers as CSV")
+    def export_csv(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="fingrow-newsletter-subscribers.csv"'
+        writer = csv.writer(response)
+        writer.writerow(["Email", "Subscribed at", "Active"])
+        for subscriber in queryset.order_by("email"):
+            writer.writerow([subscriber.email, subscriber.subscribed_at.isoformat(), "Yes" if subscriber.is_active else "No"])
         return response
