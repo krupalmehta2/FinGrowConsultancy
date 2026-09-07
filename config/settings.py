@@ -218,6 +218,10 @@ LINKEDIN_ADMIN_REDIRECT_URI = os.getenv("LINKEDIN_ADMIN_REDIRECT_URI", "")
 LINKEDIN_ADMIN_SCOPES = os.getenv("LINKEDIN_ADMIN_SCOPES", "openid profile w_member_social")
 LINKEDIN_API_VERSION = os.getenv("LINKEDIN_API_VERSION", "202607")
 DEFAULT_FROM_EMAIL = os.getenv("DJANGO_DEFAULT_FROM_EMAIL", "webmaster@localhost")
+# Resend credentials are supplied only by the deployment environment.
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
+INQUIRY_NOTIFICATION_FROM = os.getenv("INQUIRY_NOTIFICATION_FROM", "")
+INQUIRY_NOTIFICATION_TO = os.getenv("INQUIRY_NOTIFICATION_TO", "fingrowconsultancyservices@gmail.com")
 
 LOGGING = {
     "version": 1,

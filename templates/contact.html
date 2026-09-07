@@ -49,7 +49,7 @@
             <div class="col-lg-7" data-aos="fade-left">
                 <div class="fg-contact-card">
                     <h3 class="mb-4">Send Us a Message</h3>
-                    <form method="post" action="{% url 'contact' %}" novalidate data-fg-mailto-inquiry>
+                    <form method="post" action="{% url 'contact' %}" novalidate data-fg-inquiry-form>
                         {% csrf_token %}
                         {{ form.website }}
                         <div class="row g-4">

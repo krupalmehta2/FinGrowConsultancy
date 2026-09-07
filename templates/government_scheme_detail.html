@@ -74,7 +74,7 @@
 
         <div class="fg-contact-card mt-5">
             <h3 class="mb-4">Send Scheme Inquiry</h3>
-            <form method="post" action="{% url 'incubation_scheme_detail' scheme.slug %}">
+            <form method="post" action="{% url 'incubation_scheme_detail' scheme.slug %}" data-fg-inquiry-form>
                 {% csrf_token %}
                 {{ form.website }}
                 <input type="hidden" name="page_type" value="Scheme">

@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from django.utils.html import escape
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -11,35 +12,54 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.utils.http import url_has_allowed_host_and_scheme
+import logging
 
 from .forms import ContactInquiryForm, LoginForm, RegistrationForm
 from .models import BlogPost, CustomerProfile, GovernmentScheme, LinkedInConnection, LinkedInPost, NewsletterSubscriber, Service, ServiceCategory, SocialIdentity
 from .linkedin import LinkedInError, authorization_url, connect
+from .notifications import send_inquiry_notification
 import secrets
 
+logger = logging.getLogger(__name__)
 
-def save_inquiry(request):
+
+def save_inquiry(request, *, page_type, page_title):
+    """Validate, persist, then notify for an inquiry submitted from this page."""
     rate_key = f"contact-form:{request.META.get('REMOTE_ADDR', 'unknown')}"
     if cache.get(rate_key):
         messages.error(request, "Please wait a moment before sending another message.")
         request.inquiry_errors = {"__all__": ["Please wait a moment before sending another message."]}
         return False
-    form = ContactInquiryForm(request.POST)
+
+    # Metadata comes from the resolved server view, never client-controlled fields.
+    data = request.POST.copy()
+    data["page_type"] = page_type
+    data["page_title"] = page_title
+    current_url = request.build_absolute_uri(request.path)
+    try:
+        URLValidator()(current_url)
+    except ValidationError:
+        # Local development hosts such as "testserver" are not public URLs.
+        current_url = ""
+    data["current_url"] = current_url
+    form = ContactInquiryForm(data)
     if form.is_valid():
-        form.save()
+        inquiry = form.save()
         cache.set(rate_key, True, 60)
-        messages.success(request, "Thank you. We will contact you shortly.")
+        request.inquiry_notification_sent = send_inquiry_notification(inquiry)
+        if not request.inquiry_notification_sent:
+            logger.warning("Inquiry %s was saved but its notification was not delivered.", inquiry.pk)
+        messages.success(request, "Your inquiry has been submitted successfully. We will contact you soon.")
         return True
     request.inquiry_errors = form.errors.get_json_data()
     return False
 
-
 def inquiry_json_response(request, saved):
-    """Return inquiry-save status for the JavaScript mailto enhancement."""
+    """Return the server-side inquiry result to AJAX form submissions."""
     if request.headers.get("X-Requested-With") != "XMLHttpRequest":
         return None
     return JsonResponse(
-        {"ok": saved, "errors": getattr(request, "inquiry_errors", {})},
+        {"ok": saved, "notification_sent": getattr(request, "inquiry_notification_sent", False), "message": "Your inquiry has been submitted successfully. We will contact you soon." if saved else "Please correct the highlighted fields and try again.", "errors": getattr(request, "inquiry_errors", {})},
         status=201 if saved else 400,
     )
 
@@ -115,7 +135,7 @@ def service_detail(request, slug):
     service = get_object_or_404(Service, slug=slug, active=True)
     form = ContactInquiryForm()
     if request.method == "POST":
-        saved = save_inquiry(request)
+        saved = save_inquiry(request, page_type="Service", page_title=service.title)
         if response := inquiry_json_response(request, saved):
             return response
         if saved:
@@ -143,7 +163,7 @@ def incubation_scheme_detail(request, slug):
     scheme = get_object_or_404(GovernmentScheme, slug=slug, active=True)
     form = ContactInquiryForm()
     if request.method == "POST":
-        saved = save_inquiry(request)
+        saved = save_inquiry(request, page_type="Incubation Scheme", page_title=scheme.title)
         if response := inquiry_json_response(request, saved):
             return response
         if saved:
@@ -197,7 +217,7 @@ def blog_detail(request, slug):
     post = get_object_or_404(BlogPost, slug=slug, active=True)
     form = ContactInquiryForm()
     if request.method == "POST":
-        saved = save_inquiry(request)
+        saved = save_inquiry(request, page_type="Blog", page_title=post.title)
         if response := inquiry_json_response(request, saved):
             return response
         if saved:
@@ -222,7 +242,7 @@ def blog_detail(request, slug):
 
 def contact(request):
     if request.method == "POST":
-        saved = save_inquiry(request)
+        saved = save_inquiry(request, page_type="General", page_title="Contact Us")
         if response := inquiry_json_response(request, saved):
             return response
         if saved:

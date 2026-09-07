@@ -43,7 +43,7 @@
                 <div class="fg-cta mt-5" data-aos="zoom-in">
                     <h2>Need guidance for your next step?</h2>
                     <p>Send an inquiry and our advisory team will connect with you.</p>
-                    <form method="post" action="{% url 'blog_detail' post.slug %}">
+                    <form method="post" action="{% url 'blog_detail' post.slug %}" data-fg-inquiry-form>
                         {% csrf_token %}
                         {{ form.website }}
                         <input type="hidden" name="page_type" value="Blog">

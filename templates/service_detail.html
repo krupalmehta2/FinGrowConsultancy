@@ -64,7 +64,7 @@
             <div class="col-lg-7">
                 <div class="fg-contact-card">
                     <h3 class="mb-4">Send Service Inquiry</h3>
-                    <form method="post" action="{% url 'service_detail' service.slug %}">
+                    <form method="post" action="{% url 'service_detail' service.slug %}" data-fg-inquiry-form>
                         {% csrf_token %}
                         {{ form.website }}
                         <input type="hidden" name="page_type" value="Service">

@@ -1,4 +1,7 @@
 from django.contrib.auth.models import User
+from unittest.mock import MagicMock, patch
+
+from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -111,3 +114,83 @@ class PublicContentAccessTests(TestCase):
         integration_response = self.client.get(reverse("linkedin_connect"))
         self.assertEqual(integration_response.status_code, 302)
         self.assertIn(reverse("login"), integration_response["Location"])
+
+
+@override_settings(
+    SECURE_SSL_REDIRECT=False,
+    RESEND_API_KEY="test-key",
+    INQUIRY_NOTIFICATION_FROM="FinGrow <notifications@example.com>",
+    INQUIRY_NOTIFICATION_TO="fingrowconsultancyservices@gmail.com",
+)
+class InquiryNotificationTests(TestCase):
+    def setUp(self):
+        cache.clear()
+        self.category = ServiceCategory.objects.create(name="Advisory", slug="advisory-notify")
+        self.service = Service.objects.create(title="Business advisory", slug="business-advisory-notify", category=self.category, short_description="Guidance")
+        self.scheme = GovernmentScheme.objects.create(title="Growth scheme", slug="growth-scheme-notify", short_description="Funding guidance")
+        self.post = BlogPost.objects.create(title="Planning guide", slug="planning-guide-notify", short_description="Guide", content="Content", author="FinGrow")
+        self.data = {"name": "Visitor", "phone": "9999999999", "email": "visitor@example.com", "subject": "Consultation", "message": "Please contact me."}
+
+    def _post(self, url, **headers):
+        return self.client.post(url, self.data, **headers)
+
+    @patch("website.views.send_inquiry_notification", return_value=True)
+    def test_general_service_and_incubation_inquiries_save_and_notify(self, notify):
+        cases = [
+            (reverse("contact"), "General", "Contact Us"),
+            (reverse("service_detail", args=[self.service.slug]), "Service", self.service.title),
+            (reverse("incubation_scheme_detail", args=[self.scheme.slug]), "Incubation Scheme", self.scheme.title),
+        ]
+        for url, page_type, page_title in cases:
+            cache.clear()
+            with self.subTest(page_type=page_type):
+                response = self._post(url)
+                self.assertEqual(response.status_code, 302)
+                inquiry = ContactInquiry.objects.filter(page_type=page_type).latest("created_at")
+                self.assertEqual(inquiry.page_title, page_title)
+        self.assertEqual(notify.call_count, 3)
+
+    @patch("website.views.send_inquiry_notification")
+    def test_invalid_inquiry_does_not_notify(self, notify):
+        response = self.client.post(reverse("contact"), {**self.data, "email": "not-an-email"}, HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["ok"])
+        self.assertEqual(ContactInquiry.objects.count(), 0)
+        notify.assert_not_called()
+
+    @patch("website.views.send_inquiry_notification", return_value=False)
+    def test_notification_failure_keeps_saved_inquiry_and_ajax_succeeds(self, notify):
+        response = self._post(reverse("contact"), HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(response.json()["ok"])
+        self.assertFalse(response.json()["notification_sent"])
+        self.assertEqual(ContactInquiry.objects.count(), 1)
+        notify.assert_called_once()
+
+    @patch("website.notifications.urlopen")
+    def test_resend_notification_uses_recipient_and_reply_to(self, mocked_urlopen):
+        response = MagicMock()
+        response.status = 202
+        mocked_urlopen.return_value.__enter__.return_value = response
+        from .notifications import send_inquiry_notification
+
+        inquiry = ContactInquiry.objects.create(**self.data, page_type="Service", page_title=self.service.title, current_url="https://example.com/services/business-advisory-notify/")
+        self.assertTrue(send_inquiry_notification(inquiry))
+        request = mocked_urlopen.call_args.args[0]
+        import json
+        payload = json.loads(request.data.decode("utf-8"))
+        self.assertEqual(payload["to"], ["fingrowconsultancyservices@gmail.com"])
+        self.assertEqual(payload["reply_to"], "visitor@example.com")
+        self.assertEqual(payload["from"], "FinGrow <notifications@example.com>")
+        self.assertIn("NEW LEAD", payload["subject"])
+        self.assertIn("Page Title: Business advisory", payload["text"])
+
+    @patch("website.views.send_inquiry_notification", return_value=True)
+    def test_ajax_success_and_blog_source(self, notify):
+        response = self._post(reverse("blog_detail", args=[self.post.slug]), HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(response.json()["ok"])
+        inquiry = ContactInquiry.objects.get()
+        self.assertEqual(inquiry.page_type, "Blog")
+        self.assertEqual(inquiry.page_title, self.post.title)
+        notify.assert_called_once_with(inquiry)

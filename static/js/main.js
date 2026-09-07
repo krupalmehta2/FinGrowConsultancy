@@ -24,7 +24,7 @@
         initDjangoMessages();
         initCookieConsent();
         initFormFeedback();
-        initMailtoInquiryForms();
+        initInquiryForms();
     });
 
     /* ---------------------------------------------------------------
@@ -289,7 +289,7 @@
 
     /* Prevent double submits and give slower network requests clear feedback. */
     function initFormFeedback() {
-        $$('form[method="post"]').forEach((form) => {
+        $$('form[method="post"]:not([data-fg-inquiry-form])').forEach((form) => {
             form.addEventListener("submit", () => {
                 const button = form.querySelector('button[type="submit"]');
                 if (!button || form.dataset.submitting === "true") return;
@@ -303,32 +303,36 @@
         });
     }
 
-    /* ---------------------------------------------------------------
-       12. COOKIE CONSENT
-    ---------------------------------------------------------------- */
-    function initMailtoInquiryForms() {
-        const recipient = "fingrowconsultancyservices@gmail.com";
-        const excludedFields = new Set(["csrfmiddlewaretoken", "website"]);
-
-        const labelFor = (field) => {
-            const label = field.id ? document.querySelector(`label[for="${field.id}"]`) : null;
-            return (label ? label.textContent : field.name).replace(/\*/g, "").replace(/\s+/g, " ").trim().replace(/_/g, " ");
-        };
-
-        $$("form[data-fg-mailto-inquiry]").forEach((form) => {
+    /* Submit inquiries to Django so delivery never depends on a mail client. */
+    function initInquiryForms() {
+        $$("form[data-fg-inquiry-form]").forEach((form) => {
             form.addEventListener("submit", (event) => {
                 event.preventDefault();
-                if (!form.reportValidity()) return;
-                const values = Array.from(form.elements)
-                    .filter((field) => field.name && !excludedFields.has(field.name) && field.type !== "submit" && field.type !== "button")
-                    .map((field) => [labelFor(field), field.value.trim()])
-                    .filter(([, value]) => value);
-                const message = values.find(([label]) => label.toLowerCase() === "message");
-                const details = values.filter(([label]) => label.toLowerCase() !== "message");
-                const body = ["Hello FinGrow Consultancy Services,", "", "You have received a new inquiry from the website.", "", ...details.map(([label, value]) => `${label}: ${value}`), ...(message ? ["", "Message:", message[1]] : []), "", "Regards,", "FinGrow Consultancy Services Website"].join("\n");
-                const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent("New Inquiry - FinGrow Consultancy Services")}&body=${encodeURIComponent(body)}`;
-                window.location.href = mailtoUrl;
-                showToast("Your email client has opened. Please click Send to complete your inquiry.", "info");
+                if (!form.reportValidity() || form.dataset.submitting === "true") return;
+                const button = form.querySelector('button[type="submit"]');
+                form.dataset.submitting = "true";
+                if (button) button.disabled = true;
+                fetch(form.action, {
+                    method: "POST",
+                    headers: {"X-Requested-With": "XMLHttpRequest"},
+                    body: new FormData(form),
+                })
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (!result.ok) throw result;
+                        form.reset();
+                        showToast(result.message || "Your inquiry has been submitted successfully. We will contact you soon.", "success");
+                    })
+                    .catch((result) => {
+                        const errors = result && result.errors ? result.errors : {};
+                        const firstError = Object.values(errors).flat()[0];
+                        const message = firstError && firstError.message ? firstError.message : "We could not submit your inquiry. Please try again.";
+                        showToast(message, "error");
+                    })
+                    .finally(() => {
+                        form.dataset.submitting = "false";
+                        if (button) button.disabled = false;
+                    });
             });
         });
     }
