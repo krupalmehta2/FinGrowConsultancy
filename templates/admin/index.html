@@ -23,7 +23,7 @@
         <strong>{{ admin_counts.services }}</strong><small>{{ admin_counts.active_services }} active on website</small>
     </a>
     <a class="fg-admin-card fg-admin-card--green" href="{% url 'admin:website_governmentscheme_changelist' %}">
-        <span class="fg-admin-card__icon">&#127963;</span><span class="fg-admin-card__label">Government Schemes</span>
+        <span class="fg-admin-card__icon">&#127963;</span><span class="fg-admin-card__label">Incubation Schemes</span>
         <strong>{{ admin_counts.schemes }}</strong><small>{{ admin_counts.active_schemes }} active on website</small>
     </a>
     <a class="fg-admin-card fg-admin-card--blue" href="{% url 'admin:website_blogpost_changelist' %}">
@@ -42,7 +42,7 @@
         <div class="fg-admin-actions">
             <a href="{% url 'admin:website_websitesettings_changelist' %}"><span>&#9881;</span><b>Website Settings</b><small>Logo, contact, SEO and social links</small></a>
             <a href="{% url 'admin:website_service_add' %}"><span>&#43;</span><b>Add Service</b><small>Create a new service for the navbar</small></a>
-            <a href="{% url 'admin:website_governmentscheme_add' %}"><span>&#43;</span><b>Add Government Scheme</b><small>Add a scheme to the dynamic menu</small></a>
+            <a href="{% url 'admin:website_governmentscheme_add' %}"><span>&#43;</span><b>Add Incubation Scheme</b><small>Add a scheme to the dynamic menu</small></a>
             <a href="{% url 'admin:website_blogpost_add' %}"><span>&#43;</span><b>Write Blog Post</b><small>Publish a new article</small></a>
         </div>
     </section>

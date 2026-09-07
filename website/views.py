@@ -22,6 +22,7 @@ def save_inquiry(request):
     rate_key = f"contact-form:{request.META.get('REMOTE_ADDR', 'unknown')}"
     if cache.get(rate_key):
         messages.error(request, "Please wait a moment before sending another message.")
+        request.inquiry_errors = {"__all__": ["Please wait a moment before sending another message."]}
         return False
     form = ContactInquiryForm(request.POST)
     if form.is_valid():
@@ -29,7 +30,18 @@ def save_inquiry(request):
         cache.set(rate_key, True, 60)
         messages.success(request, "Thank you. We will contact you shortly.")
         return True
+    request.inquiry_errors = form.errors.get_json_data()
     return False
+
+
+def inquiry_json_response(request, saved):
+    """Return inquiry-save status for the JavaScript mailto enhancement."""
+    if request.headers.get("X-Requested-With") != "XMLHttpRequest":
+        return None
+    return JsonResponse(
+        {"ok": saved, "errors": getattr(request, "inquiry_errors", {})},
+        status=201 if saved else 400,
+    )
 
 def home(request):
     categories = ServiceCategory.objects.filter(is_active=True).order_by("display_order", "name")
@@ -103,7 +115,10 @@ def service_detail(request, slug):
     service = get_object_or_404(Service, slug=slug, active=True)
     form = ContactInquiryForm()
     if request.method == "POST":
-        if save_inquiry(request):
+        saved = save_inquiry(request)
+        if response := inquiry_json_response(request, saved):
+            return response
+        if saved:
             return redirect("service_detail", slug=service.slug)
         form = ContactInquiryForm(request.POST)
     related_services = Service.objects.filter(active=True).exclude(pk=service.pk)[:3]
@@ -119,17 +134,20 @@ def service_detail(request, slug):
         },
     )
 
-def government_schemes(request):
+def incubation_schemes(request):
     schemes = GovernmentScheme.objects.filter(active=True)
     return render(request, "government_schemes.html", {"schemes": schemes})
 
 
-def government_scheme_detail(request, slug):
+def incubation_scheme_detail(request, slug):
     scheme = get_object_or_404(GovernmentScheme, slug=slug, active=True)
     form = ContactInquiryForm()
     if request.method == "POST":
-        if save_inquiry(request):
-            return redirect("government_scheme_detail", slug=scheme.slug)
+        saved = save_inquiry(request)
+        if response := inquiry_json_response(request, saved):
+            return response
+        if saved:
+            return redirect("incubation_scheme_detail", slug=scheme.slug)
         form = ContactInquiryForm(request.POST)
     related_schemes = GovernmentScheme.objects.filter(active=True).exclude(pk=scheme.pk)[:3]
     return render(
@@ -179,7 +197,10 @@ def blog_detail(request, slug):
     post = get_object_or_404(BlogPost, slug=slug, active=True)
     form = ContactInquiryForm()
     if request.method == "POST":
-        if save_inquiry(request):
+        saved = save_inquiry(request)
+        if response := inquiry_json_response(request, saved):
+            return response
+        if saved:
             return redirect("blog_detail", slug=post.slug)
         form = ContactInquiryForm(request.POST)
     related_posts = BlogPost.objects.filter(active=True).exclude(pk=post.pk)[:3]
@@ -201,7 +222,10 @@ def blog_detail(request, slug):
 
 def contact(request):
     if request.method == "POST":
-        if save_inquiry(request):
+        saved = save_inquiry(request)
+        if response := inquiry_json_response(request, saved):
+            return response
+        if saved:
             return redirect("contact")
         form = ContactInquiryForm(request.POST)
     else:
@@ -240,10 +264,10 @@ def robots_txt(request):
     )
 
 def sitemap_xml(request):
-    names = ["home", "about", "process", "services", "government_schemes", "blog", "contact", "privacy_policy", "terms", "refund_policy"]
+    names = ["home", "about", "process", "services", "incubation_schemes", "blog", "contact", "privacy_policy", "terms", "refund_policy"]
     urls = [request.build_absolute_uri(reverse(name)) for name in names]
     urls += [request.build_absolute_uri(reverse("service_detail", kwargs={"slug": item.slug})) for item in Service.objects.filter(active=True)]
-    urls += [request.build_absolute_uri(reverse("government_scheme_detail", kwargs={"slug": item.slug})) for item in GovernmentScheme.objects.filter(active=True)]
+    urls += [request.build_absolute_uri(reverse("incubation_scheme_detail", kwargs={"slug": item.slug})) for item in GovernmentScheme.objects.filter(active=True)]
     urls += [request.build_absolute_uri(reverse("blog_detail", kwargs={"slug": item.slug})) for item in BlogPost.objects.filter(active=True)]
     items = "".join(f"<url><loc>{escape(url)}</loc></url>" for url in urls)
     return HttpResponse('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + items + "</urlset>", content_type="application/xml")

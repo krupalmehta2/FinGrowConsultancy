@@ -43,7 +43,7 @@
                 <div class="fg-cta mt-5" data-aos="zoom-in">
                     <h2>Need guidance for your next step?</h2>
                     <p>Send an inquiry and our advisory team will connect with you.</p>
-                    <form method="post" action="{% url 'blog_detail' post.slug %}">
+                    <form method="post" action="{% url 'blog_detail' post.slug %}" data-fg-mailto-inquiry>
                         {% csrf_token %}
                         {{ form.website }}
                         <input type="hidden" name="page_type" value="Blog">
@@ -87,9 +87,9 @@
                     </ul>
                 </div>
                 <div class="fg-sidebar-widget">
-                    <h5 class="fg-sidebar-widget__title">Government Schemes</h5>
+                    <h5 class="fg-sidebar-widget__title">Incubation Schemes</h5>
                     <ul class="fg-footer__links">
-                        {% for scheme in schemes %}<li><a href="{% url 'government_scheme_detail' scheme.slug %}">{{ scheme.title }}</a></li>{% endfor %}
+                        {% for scheme in schemes %}<li><a href="{% url 'incubation_scheme_detail' scheme.slug %}">{{ scheme.title }}</a></li>{% endfor %}
                     </ul>
                 </div>
             </aside>

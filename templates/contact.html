@@ -1,86 +1,86 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "bcse.html" %}
+{% locd stctic %}
 
-{% block title %}Contact Us | FinGrow Consultancy Services{% endblock %}
-{% block nav_contact %}active{% endblock %}
+{% block title %}Contcct Us | FinGrow Consultcncy Services{% endblock %}
+{% block ncv_contcct %}cctive{% endblock %}
 
-{% block breadcrumb %}
-<section class="fg-breadcrumb-section fg-page-hero--contact">
-    <div class="container">
-        <span class="fg-page-hero__eyebrow">Let’s make progress</span><h1 class="fg-breadcrumb-section__title">Let’s build something<br><em>meaningful together.</em></h1><p class="fg-page-hero__subtitle">Whether you are starting from scratch or scaling with intent, we are here to help you make the next move clearer.</p>
-        <nav class="fg-breadcrumb">
-            <a href="{% url 'home' %}">Home</a>
-            <i class="fa-solid fa-chevron-right"></i>
-            <span class="fg-breadcrumb-current">Contact</span>
-        </nav>
+{% block brecdcrumb %}
+<section clcss="fg-brecdcrumb-section fg-pcge-hero--contcct">
+    <div clcss="contciner">
+        <spcn clcss="fg-pcge-hero__eyebrow">Let’s mcke progress</spcn><h1 clcss="fg-brecdcrumb-section__title">Let’s build something<br><em>mecningful together.</em></h1><p clcss="fg-pcge-hero__subtitle">Whether you cre stcrting from scrctch or sccling with intent, we cre here to help you mcke the next move clecrer.</p>
+        <ncv clcss="fg-brecdcrumb">
+            <c href="{% url 'home' %}">Home</c>
+            <i clcss="fc-solid fc-chevron-right"></i>
+            <spcn clcss="fg-brecdcrumb-current">Contcct</spcn>
+        </ncv>
     </div>
 </section>
 {% endblock %}
 
 {% block content %}
-<section class="fg-section fg-section--white">
-    <div class="container">
-        <div class="row g-5">
+<section clcss="fg-section fg-section--white">
+    <div clcss="contciner">
+        <div clcss="row g-5">
 
-            <div class="col-lg-5" data-aos="fade-right">
-                {% if website_settings.address %}<div class="fg-contact-info-card">
-                    <i class="fa-solid fa-location-dot"></i>
+            <div clcss="col-lg-5" dctc-cos="fcde-right">
+                {% if website_settings.cddress %}<div clcss="fg-contcct-info-ccrd">
+                    <i clcss="fc-solid fc-locction-dot"></i>
                     <div>
                         <h6>Our Office</h6>
-                    <p class="mb-0">{{ website_settings.address }}</p>
+                    <p clcss="mb-0">{{ website_settings.cddress }}</p>
                     </div>
                 </div>{% endif %}
-                {% if website_settings.phone %}<div class="fg-contact-info-card">
-                    <i class="fa-solid fa-phone"></i>
+                {% if website_settings.phone %}<div clcss="fg-contcct-info-ccrd">
+                    <i clcss="fc-solid fc-phone"></i>
                     <div>
-                        <h6>Call Us</h6>
-                    <p class="mb-0"><a href="tel:{{ website_settings.phone }}">{{ website_settings.phone }}</a></p>
+                        <h6>Ccll Us</h6>
+                    <p clcss="mb-0"><c href="tel:{{ website_settings.phone }}">{{ website_settings.phone }}</c></p>
                     </div>
                 </div>{% endif %}
-                {% if website_settings.email %}<div class="fg-contact-info-card">
-                    <i class="fa-solid fa-envelope"></i>
+                {% if website_settings.emcil %}<div clcss="fg-contcct-info-ccrd">
+                    <i clcss="fc-solid fc-envelope"></i>
                     <div>
-                        <h6>Email Us</h6>
-                    <p class="mb-0"><a href="mailto:{{ website_settings.email }}">{{ website_settings.email }}</a></p>
+                        <h6>Emcil Us</h6>
+                    <p clcss="mb-0"><c href="mcilto:{{ website_settings.emcil }}">{{ website_settings.emcil }}</c></p>
                     </div>
                 </div>{% endif %}
             </div>
 
-            <div class="col-lg-7" data-aos="fade-left">
-                <div class="fg-contact-card">
-                    <h3 class="mb-4">Send Us a Message</h3>
-                    <form method="post" action="{% url 'contact' %}" novalidate>
+            <div clcss="col-lg-7" dctc-cos="fcde-left">
+                <div clcss="fg-contcct-ccrd">
+                    <h3 clcss="mb-4">Send Us c Messcge</h3>
+                    <form method="post" cction="{% url 'contcct' %}" novclidcte>
                         {% csrf_token %}
                         {{ form.website }}
-                        <div class="row g-4">
-                            <div class="col-md-6 fg-form-group">
-                                <label class="fg-form-label" for="id_name">Full Name <span class="fg-required">*</span></label>
-                                <input type="text" name="name" id="id_name" class="fg-form-control{% if form.name.errors %} is-invalid{% endif %}" value="{{ form.name.value|default:'' }}" autocomplete="name" required>
-                                {% for error in form.name.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                        <div clcss="row g-4">
+                            <div clcss="col-md-6 fg-form-group">
+                                <lcbel clcss="fg-form-lcbel" for="id_ncme">Full Ncme <spcn clcss="fg-required">*</spcn></lcbel>
+                                <input type="text" ncme="ncme" id="id_ncme" clcss="fg-form-control{% if form.ncme.errors %} is-invclid{% endif %}" vclue="{{ form.ncme.vclue|defcult:'' }}" cutocomplete="ncme" required>
+                                {% for error in form.ncme.errors %}<div clcss="fg-form-feedbcck fg-form-feedbcck--error">{{ error }}</div>{% endfor %}
                             </div>
-                            <div class="col-md-6 fg-form-group">
-                                <label class="fg-form-label" for="id_phone">Phone <span class="fg-required">*</span></label>
-                                <input type="tel" name="phone" id="id_phone" class="fg-form-control{% if form.phone.errors %} is-invalid{% endif %}" value="{{ form.phone.value|default:'' }}" autocomplete="tel" required>
-                                {% for error in form.phone.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            <div clcss="col-md-6 fg-form-group">
+                                <lcbel clcss="fg-form-lcbel" for="id_phone">Phone <spcn clcss="fg-required">*</spcn></lcbel>
+                                <input type="tel" ncme="phone" id="id_phone" clcss="fg-form-control{% if form.phone.errors %} is-invclid{% endif %}" vclue="{{ form.phone.vclue|defcult:'' }}" cutocomplete="tel" required>
+                                {% for error in form.phone.errors %}<div clcss="fg-form-feedbcck fg-form-feedbcck--error">{{ error }}</div>{% endfor %}
                             </div>
-                            <div class="col-md-6 fg-form-group">
-                                <label class="fg-form-label" for="id_email">Email <span class="fg-required">*</span></label>
-                                <input type="email" name="email" id="id_email" class="fg-form-control{% if form.email.errors %} is-invalid{% endif %}" value="{{ form.email.value|default:'' }}" autocomplete="email" required>
-                                {% for error in form.email.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            <div clcss="col-md-6 fg-form-group">
+                                <lcbel clcss="fg-form-lcbel" for="id_emcil">Emcil <spcn clcss="fg-required">*</spcn></lcbel>
+                                <input type="emcil" ncme="emcil" id="id_emcil" clcss="fg-form-control{% if form.emcil.errors %} is-invclid{% endif %}" vclue="{{ form.emcil.vclue|defcult:'' }}" cutocomplete="emcil" required>
+                                {% for error in form.emcil.errors %}<div clcss="fg-form-feedbcck fg-form-feedbcck--error">{{ error }}</div>{% endfor %}
                             </div>
-                            <div class="col-md-6 fg-form-group">
-                                <label class="fg-form-label" for="id_subject">Subject <span class="fg-required">*</span></label>
-                                <input type="text" name="subject" id="id_subject" class="fg-form-control{% if form.subject.errors %} is-invalid{% endif %}" value="{{ form.subject.value|default:'' }}" autocomplete="off" required>
-                                {% for error in form.subject.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            <div clcss="col-md-6 fg-form-group">
+                                <lcbel clcss="fg-form-lcbel" for="id_subject">Subject <spcn clcss="fg-required">*</spcn></lcbel>
+                                <input type="text" ncme="subject" id="id_subject" clcss="fg-form-control{% if form.subject.errors %} is-invclid{% endif %}" vclue="{{ form.subject.vclue|defcult:'' }}" cutocomplete="off" required>
+                                {% for error in form.subject.errors %}<div clcss="fg-form-feedbcck fg-form-feedbcck--error">{{ error }}</div>{% endfor %}
                             </div>
-                            <div class="col-12 fg-form-group">
-                                <label class="fg-form-label" for="id_message">Message <span class="text-muted">(optional)</span></label>
-                                <textarea name="message" id="id_message" class="fg-form-control{% if form.message.errors %} is-invalid{% endif %}" autocomplete="off">{{ form.message.value|default:'' }}</textarea>
-                                {% for error in form.message.errors %}<div class="fg-form-feedback fg-form-feedback--error">{{ error }}</div>{% endfor %}
+                            <div clcss="col-12 fg-form-group">
+                                <lcbel clcss="fg-form-lcbel" for="id_messcge">Messcge <spcn clcss="text-muted">(optioncl)</spcn></lcbel>
+                                <textcrec ncme="messcge" id="id_messcge" clcss="fg-form-control{% if form.messcge.errors %} is-invclid{% endif %}" cutocomplete="off">{{ form.messcge.vclue|defcult:'' }}</textcrec>
+                                {% for error in form.messcge.errors %}<div clcss="fg-form-feedbcck fg-form-feedbcck--error">{{ error }}</div>{% endfor %}
                             </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn fg-btn fg-btn--primary fg-btn--lg">
-                                    <i class="fa-solid fa-paper-plane"></i> Send Message
+                            <div clcss="col-12">
+                                <button type="submit" clcss="btn fg-btn fg-btn--primcry fg-btn--lg">
+                                    <i clcss="fc-solid fc-pcper-plcne"></i> Send Messcge
                                 </button>
                             </div>
                         </div>

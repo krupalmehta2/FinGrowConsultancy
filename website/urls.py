@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
@@ -12,8 +13,11 @@ urlpatterns = [
     path("services/", views.services, name="services"),
     path("services/category/<slug:slug>/", views.service_category, name="service_category"),
     path("services/<slug:slug>/", views.service_detail, name="service_detail"),
-    path("government-schemes/", views.government_schemes, name="government_schemes"),
-    path("government-schemes/<slug:slug>/", views.government_scheme_detail, name="government_scheme_detail"),
+    path("incubation-schemes/", views.incubation_schemes, name="incubation_schemes"),
+    path("incubation-schemes/<slug:slug>/", views.incubation_scheme_detail, name="incubation_scheme_detail"),
+    # Preserve bookmarked Government Scheme URLs while making Incubation Scheme canonical.
+    path("government-schemes/", RedirectView.as_view(url="/incubation-schemes/", permanent=True), name="government_schemes"),
+    path("government-schemes/<slug:slug>/", RedirectView.as_view(pattern_name="incubation_scheme_detail", permanent=True), name="government_scheme_detail"),
     path("blog/", views.blog, name="blog"),
     path("blog/<slug:slug>/", views.blog_detail, name="blog_detail"),
     path("contact/", views.contact, name="contact"),

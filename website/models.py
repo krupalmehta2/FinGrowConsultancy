@@ -159,14 +159,14 @@ class GovernmentScheme(models.Model):
 
     class Meta:
         ordering = ["display_order", "title"]
-        verbose_name = "Government Scheme"
-        verbose_name_plural = "Government Schemes"
+        verbose_name = "Incubation Scheme"
+        verbose_name_plural = "Incubation Schemes"
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("government_scheme_detail", kwargs={"slug": self.slug})
+        return reverse("incubation_scheme_detail", kwargs={"slug": self.slug})
 
 
 class BlogPost(models.Model):

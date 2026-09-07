@@ -19,7 +19,7 @@
         <nav class="fg-breadcrumb">
             <a href="{% url 'home' %}">Home</a>
                 <i class="fa-solid fa-chevron-right"></i>
-            <a href="{% url 'government_schemes' %}">Incubation Scheme</a>
+            <a href="{% url 'incubation_schemes' %}">Incubation Schemes</a>
             <i class="fa-solid fa-chevron-right"></i>
             <span class="fg-breadcrumb-current">{{ scheme.title }}</span>
         </nav>
@@ -74,7 +74,7 @@
 
         <div class="fg-contact-card mt-5">
             <h3 class="mb-4">Send Scheme Inquiry</h3>
-            <form method="post" action="{% url 'government_scheme_detail' scheme.slug %}">
+            <form method="post" action="{% url 'incubation_scheme_detail' scheme.slug %}" data-fg-mailto-inquiry>
                 {% csrf_token %}
                 {{ form.website }}
                 <input type="hidden" name="page_type" value="Scheme">
@@ -114,11 +114,11 @@
                     </div>
                     <div class="fg-scheme-card__body">
                         <p>{{ related.short_description }}</p>
-                        <a href="{% url 'government_scheme_detail' related.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="{% url 'incubation_scheme_detail' related.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
-            {% empty %}<div class="col-12"><p class="fg-empty-state">We can help you identify alternatives. <a href="{% url 'government_schemes' %}">View all schemes</a> or <a href="{% url 'contact' %}">request a review</a>.</p></div>
+            {% empty %}<div class="col-12"><p class="fg-empty-state">We can help you identify alternatives. <a href="{% url 'incubation_schemes' %}">View all schemes</a> or <a href="{% url 'contact' %}">request a review</a>.</p></div>
             {% endfor %}
         </div>
     </div>
