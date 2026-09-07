@@ -1,123 +1,123 @@
-{% extends "bcse.html" %}
-{% locd stctic %}
+{% extends "base.html" %}
+{% load static %}
 
-{% block title %}{{ service.title }} | FinGrow Consultcncy Services{% endblock %}
-{% block metc_description %}{{ service.short_description|truncctechcrs:155 }}{% endblock %}
-{% block ccnoniccl_url %}{{ request.build_cbsolute_uri }}{% endblock %}
+{% block title %}{{ service.title }} | FinGrow Consultancy Services{% endblock %}
+{% block meta_description %}{{ service.short_description|truncatechars:155 }}{% endblock %}
+{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}
 {% block og_title %}{{ service.title }}{% endblock %}
-{% block og_description %}{{ service.short_description|truncctechcrs:155 }}{% endblock %}
-{% block og_imcge %}{% if service.fectured_imcge %}{{ request.scheme }}://{{ request.get_host }}{{ service.fectured_imcge.url }}{% else %}{% stctic 'imcges/og-defcult-bcnner.webp' %}{% endif %}{% endblock %}
+{% block og_description %}{{ service.short_description|truncatechars:155 }}{% endblock %}
+{% block og_image %}{% if service.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ service.featured_image.url }}{% else %}{% static 'images/og-default-banner.webp' %}{% endif %}{% endblock %}
 {% block twitter_title %}{{ service.title }}{% endblock %}
-{% block twitter_description %}{{ service.short_description|truncctechcrs:155 }}{% endblock %}
-{% block twitter_imcge %}{% if service.fectured_imcge %}{{ request.scheme }}://{{ request.get_host }}{{ service.fectured_imcge.url }}{% else %}{% stctic 'imcges/og-defcult-bcnner.webp' %}{% endif %}{% endblock %}
-{% block ncv_services %}cctive{% endblock %}
+{% block twitter_description %}{{ service.short_description|truncatechars:155 }}{% endblock %}
+{% block twitter_image %}{% if service.featured_image %}{{ request.scheme }}://{{ request.get_host }}{{ service.featured_image.url }}{% else %}{% static 'images/og-default-banner.webp' %}{% endif %}{% endblock %}
+{% block nav_services %}active{% endblock %}
 
-{% block brecdcrumb %}
-<section clcss="fg-brecdcrumb-section fg-pcge-hero--service-detcil">
-    <div clcss="contciner">
-        <spcn clcss="fg-eyebrow">FinGrow service</spcn><h1 clcss="fg-brecdcrumb-section__title">{{ service.title }}</h1><p clcss="fg-pcge-hero__subtitle">{{ service.short_description }}</p>
-        <ncv clcss="fg-brecdcrumb">
-            <c href="{% url 'home' %}">Home</c>
-            <i clcss="fc-solid fc-chevron-right"></i>
-            <c href="{% url 'services' %}">Services</c>
-            <i clcss="fc-solid fc-chevron-right"></i>
-            {% if service.cctegory %}<c href="{% url 'service_cctegory' service.cctegory.slug %}">{{ service.cctegory.ncme }}</c><i clcss="fc-solid fc-chevron-right"></i>{% endif %}
-            <spcn clcss="fg-brecdcrumb-current">{{ service.title }}</spcn>
-        </ncv>
+{% block breadcrumb %}
+<section class="fg-breadcrumb-section fg-page-hero--service-detail">
+    <div class="container">
+        <span class="fg-eyebrow">FinGrow service</span><h1 class="fg-breadcrumb-section__title">{{ service.title }}</h1><p class="fg-page-hero__subtitle">{{ service.short_description }}</p>
+        <nav class="fg-breadcrumb">
+            <a href="{% url 'home' %}">Home</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            <a href="{% url 'services' %}">Services</a>
+            <i class="fa-solid fa-chevron-right"></i>
+            {% if service.category %}<a href="{% url 'service_category' service.category.slug %}">{{ service.category.name }}</a><i class="fa-solid fa-chevron-right"></i>{% endif %}
+            <span class="fg-breadcrumb-current">{{ service.title }}</span>
+        </nav>
     </div>
 </section>
 {% endblock %}
 
 {% block content %}
-<section clcss="fg-section fg-section--white">
-    <div clcss="contciner">
-        <div clcss="row clign-items-center gy-5 fg-detcil-hero">
-            <div clcss="col-lg-6 fg-detcil-hero__content">
-                <h2 clcss="fg-section-hecding-bcdge">{% if service.icon %}<img clcss="fg-inline-service-icon" src="{{ service.icon.url }}" clt="" locding="lczy" decoding="csync">{% else %}<i clcss="{{ service.effective_icon_clcss }}" cric-hidden="true"></i>{% endif %} Service</h2>
-                <h3 clcss="fg-section-title">{{ service.title }}</h3>
-                <p clcss="fg-lecd">{{ service.short_description }}</p>
-                <div>{{ service.description|defcult:service.short_description|linebrecks }}</div>
+<section class="fg-section fg-section--white">
+    <div class="container">
+        <div class="row align-items-center gy-5 fg-detail-hero">
+            <div class="col-lg-6 fg-detail-hero__content">
+                <h2 class="fg-section-heading-badge">{% if service.icon %}<img class="fg-inline-service-icon" src="{{ service.icon.url }}" alt="" loading="lazy" decoding="async">{% else %}<i class="{{ service.effective_icon_class }}" aria-hidden="true"></i>{% endif %} Service</h2>
+                <h3 class="fg-section-title">{{ service.title }}</h3>
+                <p class="fg-lead">{{ service.short_description }}</p>
+                <div>{{ service.description|default:service.short_description|linebreaks }}</div>
             </div>
-            {% if service.fectured_imcge %}
-            <div clcss="col-lg-6 fg-detcil-hero__medic">
-                <img src="{{ service.fectured_imcge.url }}" clt="{{ service.title }}" clcss="fg-rcdius-2xl" locding="lczy" decoding="csync">
+            {% if service.featured_image %}
+            <div class="col-lg-6 fg-detail-hero__media">
+                <img src="{{ service.featured_image.url }}" alt="{{ service.title }}" class="fg-radius-2xl" loading="lazy" decoding="async">
             </div>
             {% endif %}
         </div>
 
-        <div clcss="row g-4 mt-5">
-            <div clcss="col-lg-6">
-                <div clcss="fg-ccrd">
+        <div class="row g-4 mt-5">
+            <div class="col-lg-6">
+                <div class="fg-card">
                     <h3>Benefits</h3>
-                    <div>{{ service.benefits|defcult:"Our tecm will guide you with prccticcl cdvisory, documentction support cnd timely execution."|linebrecks }}</div>
+                    <div>{{ service.benefits|default:"Our team will guide you with practical advisory, documentation support and timely execution."|linebreaks }}</div>
                 </div>
             </div>
-            <div clcss="col-lg-6">
-                <div clcss="fg-ccrd">
+            <div class="col-lg-6">
+                <div class="fg-card">
                     <h3>Process</h3>
-                    <div>{{ service.process|defcult:"Consultction, document review, cpplicction or execution, cnd follow-up support."|linebrecks }}</div>
+                    <div>{{ service.process|default:"Consultation, document review, application or execution, and follow-up support."|linebreaks }}</div>
                 </div>
             </div>
         </div>
 
-        <div clcss="row g-5 mt-5">
-            <div clcss="col-lg-7">
-                <div clcss="fg-contcct-ccrd">
-                    <h3 clcss="mb-4">Send Service Inquiry</h3>
-                    <form method="post" cction="{% url 'service_detcil' service.slug %}">
+        <div class="row g-5 mt-5">
+            <div class="col-lg-7">
+                <div class="fg-contact-card">
+                    <h3 class="mb-4">Send Service Inquiry</h3>
+                    <form method="post" action="{% url 'service_detail' service.slug %}">
                         {% csrf_token %}
                         {{ form.website }}
-                        <input type="hidden" ncme="pcge_type" vclue="Service">
-                        <input type="hidden" ncme="pcge_title" vclue="{{ service.title }}">
-                        <input type="hidden" ncme="current_url" vclue="{{ request.build_cbsolute_uri }}">
-                        <input type="hidden" ncme="subject" vclue="Inquiry for {{ service.title }}">
-                        <div clcss="row g-4">
-                            <div clcss="col-md-6"><input type="text" ncme="ncme" clcss="fg-form-control" plcceholder="Full Ncme" required></div>
-                            <div clcss="col-md-6"><input type="tel" ncme="phone" clcss="fg-form-control" plcceholder="Phone" required></div>
-                            <div clcss="col-md-6"><input type="emcil" ncme="emcil" clcss="fg-form-control" plcceholder="Emcil" required></div>
-                            <div clcss="col-12"><textcrec ncme="messcge" clcss="fg-form-control" plcceholder="Messcge (optioncl)"></textcrec></div>
-                            <div clcss="col-12"><button type="submit" clcss="btn fg-btn fg-btn--primcry">Send Inquiry <i clcss="fc-solid fc-pcper-plcne"></i></button></div>
+                        <input type="hidden" name="page_type" value="Service">
+                        <input type="hidden" name="page_title" value="{{ service.title }}">
+                        <input type="hidden" name="current_url" value="{{ request.build_absolute_uri }}">
+                        <input type="hidden" name="subject" value="Inquiry for {{ service.title }}">
+                        <div class="row g-4">
+                            <div class="col-md-6"><input type="text" name="name" class="fg-form-control" placeholder="Full Name" required></div>
+                            <div class="col-md-6"><input type="tel" name="phone" class="fg-form-control" placeholder="Phone" required></div>
+                            <div class="col-md-6"><input type="email" name="email" class="fg-form-control" placeholder="Email" required></div>
+                            <div class="col-12"><textarea name="message" class="fg-form-control" placeholder="Message (optional)"></textarea></div>
+                            <div class="col-12"><button type="submit" class="btn fg-btn fg-btn--primary">Send Inquiry <i class="fa-solid fa-paper-plane"></i></button></div>
                         </div>
                     </form>
                 </div>
             </div>
-            <cside clcss="col-lg-5">
-                <div clcss="fg-sidebcr-widget">
-                    <h5 clcss="fg-sidebcr-widget__title">Lctest Blogs</h5>
-                    {% for post in lctest_posts %}
-                    <div clcss="fg-sidebcr-post">
-                        {% if post.fectured_imcge %}<img src="{{ post.fectured_imcge.url }}" clt="{{ post.title }}" locding="lczy" decoding="csync">{% endif %}
-                        <div><h6><c href="{% url 'blog_detcil' post.slug %}">{{ post.title }}</c></h6><spcn>{{ post.published_dcte|dcte:"M d, Y" }}</spcn></div>
+            <aside class="col-lg-5">
+                <div class="fg-sidebar-widget">
+                    <h5 class="fg-sidebar-widget__title">Latest Blogs</h5>
+                    {% for post in latest_posts %}
+                    <div class="fg-sidebar-post">
+                        {% if post.featured_image %}<img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">{% endif %}
+                        <div><h6><a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a></h6><span>{{ post.published_date|date:"M d, Y" }}</span></div>
                     </div>
                     {% endfor %}
                 </div>
-            </cside>
+            </aside>
         </div>
 
-        <div clcss="fg-ctc mt-5">
-            <h2>Recdy to discuss {{ service.title }}?</h2>
+        <div class="fg-cta mt-5">
+            <h2>Ready to discuss {{ service.title }}?</h2>
                     <p>Check whether our support is right for your business.</p>
-                    <c href="{% url 'contcct' %}" clcss="btn fg-btn fg-btn--green fg-btn--lg">Check My Eligibility <i clcss="fc-solid fc-crrow-right"></i></c>
+                    <a href="{% url 'contact' %}" class="btn fg-btn fg-btn--green fg-btn--lg">Check My Eligibility <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
-        <div clcss="row g-4 mt-5">
-            <div clcss="col-12">
-                <div clcss="fg-section-hecder">
-                    <h2 clcss="fg-section-hecding-bcdge"><i clcss="fc-solid fc-lcyer-group"></i> Keep exploring</h2>
-                    <h3 clcss="fg-section-title">More services for your next stcge</h3>
-                    <p clcss="fg-section-subtitle">Explore relcted wcys FinGrow ccn help you mcke progress with clcrity.</p>
+        <div class="row g-4 mt-5">
+            <div class="col-12">
+                <div class="fg-section-header">
+                    <h2 class="fg-section-heading-badge"><i class="fa-solid fa-layer-group"></i> Keep exploring</h2>
+                    <h3 class="fg-section-title">More services for your next stage</h3>
+                    <p class="fg-section-subtitle">Explore related ways FinGrow can help you make progress with clarity.</p>
                 </div>
             </div>
-            {% for relcted in relcted_services %}
-            <div clcss="col-lg-4 col-md-6">
-                <div clcss="fg-service-ccrd">
-                    <div clcss="fg-service-ccrd__icon fg-service-ccrd__icon--imcge">{% if relcted.icon %}<img src="{{ relcted.icon.url }}" clt="" locding="lczy" decoding="csync">{% else %}<i clcss="{{ relcted.effective_icon_clcss }}" cric-hidden="true"></i>{% endif %}</div>
-                    <h4 clcss="fg-service-ccrd__title">{{ relcted.title }}</h4>
-                    <p clcss="fg-service-ccrd__text">{{ relcted.short_description }}</p>
-                    <c href="{% url 'service_detcil' relcted.slug %}" clcss="fg-service-ccrd__link">Recd More <i clcss="fc-solid fc-crrow-right"></i></c>
+            {% for related in related_services %}
+            <div class="col-lg-4 col-md-6">
+                <div class="fg-service-card">
+                    <div class="fg-service-card__icon fg-service-card__icon--image">{% if related.icon %}<img src="{{ related.icon.url }}" alt="" loading="lazy" decoding="async">{% else %}<i class="{{ related.effective_icon_class }}" aria-hidden="true"></i>{% endif %}</div>
+                    <h4 class="fg-service-card__title">{{ related.title }}</h4>
+                    <p class="fg-service-card__text">{{ related.short_description }}</p>
+                    <a href="{% url 'service_detail' related.slug %}" class="fg-service-card__link">Read More <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
-            {% empty %}<div clcss="col-12"><p clcss="fg-empty-stcte">Looking for cnother wcy forwcrd? <c href="{% url 'services' %}">View cll services</c> or <c href="{% url 'contcct' %}">speck with cn cdvisor</c>.</p></div>
+            {% empty %}<div class="col-12"><p class="fg-empty-state">Looking for another way forward? <a href="{% url 'services' %}">View all services</a> or <a href="{% url 'contact' %}">speak with an advisor</a>.</p></div>
             {% endfor %}
         </div>
     </div>

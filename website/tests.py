@@ -51,8 +51,8 @@ class PublicContentAccessTests(TestCase):
             reverse("services"),
             reverse("service_category", args=[self.category.slug]),
             reverse("service_detail", args=[self.service.slug]),
-            reverse("government_schemes"),
-            reverse("government_scheme_detail", args=[self.scheme.slug]),
+            reverse("incubation_schemes"),
+            reverse("incubation_scheme_detail", args=[self.scheme.slug]),
             reverse("blog"),
             reverse("blog_detail", args=[self.post.slug]),
             reverse("contact"),
@@ -74,6 +74,13 @@ class PublicContentAccessTests(TestCase):
             with self.subTest(url=url):
                 self.assertEqual(self.client.get(url).status_code, 200)
 
+    def test_legacy_scheme_urls_redirect_to_the_canonical_incubation_routes(self):
+        self.assertRedirects(self.client.get(reverse("government_schemes")), reverse("incubation_schemes"), status_code=301)
+        self.assertRedirects(
+            self.client.get(reverse("government_scheme_detail", args=[self.scheme.slug])),
+            reverse("incubation_scheme_detail", args=[self.scheme.slug]),
+            status_code=301,
+        )
     def test_anonymous_contact_and_newsletter_forms_work(self):
         response = self.client.post(
             reverse("contact"),

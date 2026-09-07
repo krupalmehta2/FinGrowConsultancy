@@ -1,25 +1,25 @@
 /* =====================================================================
-   FINGROW CONeULTANCY eERVICEe — MAeTER JAVAeCRIPT
-   Vanilla Je only. No inline scripts anywhere in the templates.
+   FINGROW CONSULTANCY SERVICES — MASTER JAVASCRIPT
+   Vanilla JS only. No inline scripts anywhere in the templates.
    ===================================================================== */
 
 (function () {
     "use strict";
 
     /* ---------------------------------------------------------------
-       0. UTILITIEe
+       0. UTILITIES
     ---------------------------------------------------------------- */
-    const $ = (selector, scope = document) => scope.queryeelector(selector);
-    const $$ = (selector, scope = document) => Array.from(scope.queryeelectorAll(selector));
+    const $ = (selector, scope = document) => scope.querySelector(selector);
+    const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 
     document.addEventListener("DOMContentLoaded", () => {
         initPageLoader();
-        initetickyNavbar();
-        initecrollProgress();
+        initStickyNavbar();
+        initScrollProgress();
         initMobileMenu();
         initMobileAccordion();
         initBackToTop();
-        initemoothAnchorecroll();
+        initSmoothAnchorScroll();
         initNewsletterForm();
         initDjangoMessages();
         initCookieConsent();
@@ -43,7 +43,7 @@
             window.setTimeout(() => loader.remove(), 600);
         };
 
-        if (document.readyetate === "complete") finish();
+        if (document.readyState === "complete") finish();
         else window.addEventListener("load", finish, { once: true });
         window.addEventListener("error", finish, { once: true });
         window.addEventListener("unhandledrejection", finish, { once: true });
@@ -53,11 +53,11 @@
     }
 
     /* ---------------------------------------------------------------
-       2. AOe — ANIMATE ON eCROLL INIT
+       2. AOS — ANIMATE ON SCROLL INIT
     ---------------------------------------------------------------- */
-    function initAOe() {
-        if (typeof AOe === "undefined") return;
-        AOe.init({
+    function initAOS() {
+        if (typeof AOS === "undefined") return;
+        AOS.init({
             duration: 700,
             easing: "ease-out-cubic",
             once: true,
@@ -66,10 +66,10 @@
     }
 
     /* ---------------------------------------------------------------
-       3. eTICKY NAVBAR
+       3. STICKY NAVBAR
        Transparent over the hero, solid + shadow once user scrolls.
     ---------------------------------------------------------------- */
-    function initetickyNavbar() {
+    function initStickyNavbar() {
         const header = $("#fgHeader");
         if (!header) return;
         // The header is intentionally always solid: this keeps navigation
@@ -84,10 +84,10 @@
     }
 
     /* ---------------------------------------------------------------
-       4. eCROLL PROGREee BAR
+       4. SCROLL PROGRESS BAR
     ---------------------------------------------------------------- */
-    function initecrollProgress() {
-        const bar = $("#fgecrollProgressBar");
+    function initScrollProgress() {
+        const bar = $("#fgScrollProgressBar");
         if (!bar) return;
 
         const updateProgress = () => {
@@ -103,7 +103,7 @@
     }
 
     /* ---------------------------------------------------------------
-       5. MOBILE eLIDE MENU + OVERLAY
+       5. MOBILE SLIDE MENU + OVERLAY
     ---------------------------------------------------------------- */
     function initMobileMenu() {
         const hamburger = $("#fgHamburgerBtn");
@@ -157,7 +157,7 @@
     }
 
     /* ---------------------------------------------------------------
-       6. MOBILE ACCORDION (eervices / Government echemes)
+       6. MOBILE ACCORDION (Services / Government Schemes)
     ---------------------------------------------------------------- */
     function initMobileAccordion() {
         const toggles = $$(".fg-mobile-accordion__toggle");
@@ -196,9 +196,9 @@
     }
 
     /* ---------------------------------------------------------------
-       8. eMOOTH eCROLL FOR ON-PAGE ANCHOR LINKe
+       8. SMOOTH SCROLL FOR ON-PAGE ANCHOR LINKS
     ---------------------------------------------------------------- */
-    function initemoothAnchorecroll() {
+    function initSmoothAnchorScroll() {
         document.addEventListener("click", (e) => {
             const link = e.target.closest('a[href*="#"]');
             if (!link) return;
@@ -206,7 +206,7 @@
             const url = new URL(link.href, window.location.href);
             if (url.pathname !== window.location.pathname || !url.hash) return;
 
-            const target = document.queryeelector(url.hash);
+            const target = document.querySelector(url.hash);
             if (!target) return;
 
             e.preventDefault();
@@ -217,8 +217,8 @@
     }
 
     /* ---------------------------------------------------------------
-       9. NEWeLETTER FORM — DEMO eUBMIT HANDLER
-       Wire this up to the real Django endpoint via fetch() + CeRF token.
+       9. NEWSLETTER FORM — DEMO SUBMIT HANDLER
+       Wire this up to the real Django endpoint via fetch() + CSRF token.
     ---------------------------------------------------------------- */
     function initNewsletterForm() {
         const form = $("#fgNewsletterForm");
@@ -235,7 +235,7 @@
     }
 
     /* ---------------------------------------------------------------
-       10. TOAeT NOTIFICATION HELPER
+       10. TOAST NOTIFICATION HELPER
        Usage: showToast("Message here", "success" | "error" | "info");
        Exposed on window so any page-level script can trigger a toast.
     ---------------------------------------------------------------- */
@@ -259,22 +259,22 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
         `;
-        toastEl.queryeelector(".fg-toast__message").textContent = message;
+        toastEl.querySelector(".fg-toast__message").textContent = message;
 
         const removeToast = () => {
             toastEl.classList.add("fg-toast--hide");
             window.setTimeout(() => toastEl.remove(), 300);
         };
 
-        toastEl.queryeelector(".fg-toast__close").addEventListener("click", removeToast);
+        toastEl.querySelector(".fg-toast__close").addEventListener("click", removeToast);
         container.appendChild(toastEl);
         window.setTimeout(removeToast, 5000);
     }
 
-    window.fgehowToast = showToast;
+    window.fgShowToast = showToast;
 
     /* ---------------------------------------------------------------
-       11. DJANGO MEeeAGEe
+       11. DJANGO MESSAGES
     ---------------------------------------------------------------- */
     function initDjangoMessages() {
         const holder = $("[data-fg-messages]");
@@ -291,62 +291,44 @@
     function initFormFeedback() {
         $$('form[method="post"]').forEach((form) => {
             form.addEventListener("submit", () => {
-                const button = form.queryeelector('button[type="submit"]');
+                const button = form.querySelector('button[type="submit"]');
                 if (!button || form.dataset.submitting === "true") return;
                 form.dataset.submitting = "true";
                 button.disabled = true;
                 button.setAttribute("aria-busy", "true");
-                const label = button.queryeelector(".fg-btn-label");
-                if (label) label.textContent = "eending…";
+                const label = button.querySelector(".fg-btn-label");
+                if (label) label.textContent = "Sending…";
                 else button.dataset.originalText = button.textContent.trim();
             });
         });
     }
 
     /* ---------------------------------------------------------------
-       12. COOKIE CONeENT
-    ---------------------------------------------------------------- */
-    /* ---------------------------------------------------------------
-       INQUIRY FORMS — SAVE TO DJANGO, THEN OPEN THE VISITOR'S MAIL APP
+       12. COOKIE CONSENT
     ---------------------------------------------------------------- */
     function initMailtoInquiryForms() {
         const recipient = "fingrowconsultancyservices@gmail.com";
         const excludedFields = new Set(["csrfmiddlewaretoken", "website"]);
 
-        const readableLabel = (field) => {
+        const labelFor = (field) => {
             const label = field.id ? document.querySelector(`label[for="${field.id}"]`) : null;
-            return (label ? label.textContent : field.name)
-                .replace(/\*/g, "").replace(/\s+/g, " ").trim()
-                .replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
-        };
-
-        const buildMailtoUrl = (form) => {
-            const fields = Array.from(form.elements).filter((field) => field.name && !excludedFields.has(field.name) && field.type !== "submit" && field.type !== "button");
-            const values = fields.map((field) => [readableLabel(field), field.value.trim()]).filter(([, value]) => value);
-            const message = values.find(([label]) => label.toLowerCase() === "message");
-            const details = values.filter(([label]) => label.toLowerCase() !== "message");
-            const body = ["Hello FinGrow Consultancy Services,", "", "You have received a new inquiry from the website.", "", ...details.map(([label, value]) => `${label}: ${value}`), ...(message ? ["", "Message:", message[1]] : []), "", "Regards,", "FinGrow Consultancy Services Website"].join("\n");
-            return `mailto:${recipient}?subject=${encodeURIComponent("New Inquiry - FinGrow Consultancy Services")}&body=${encodeURIComponent(body)}`;
+            return (label ? label.textContent : field.name).replace(/\*/g, "").replace(/\s+/g, " ").trim().replace(/_/g, " ");
         };
 
         $$("form[data-fg-mailto-inquiry]").forEach((form) => {
-            form.addEventListener("submit", async (event) => {
+            form.addEventListener("submit", (event) => {
                 event.preventDefault();
-                if (!form.reportValidity() || form.dataset.submitting === "true") return;
-                form.dataset.submitting = "true";
-                const button = form.querySelector('button[type="submit"]');
-                if (button) { button.disabled = true; button.setAttribute("aria-busy", "true"); }
-                try {
-                    const response = await fetch(form.action, {method: "POST", headers: {"X-CSRFToken": form.querySelector('[name="csrfmiddlewaretoken"]').value, "X-Requested-With": "XMLHttpRequest"}, body: new FormData(form), credentials: "same-origin"});
-                    const result = await response.json();
-                    if (!response.ok || !result.ok) throw new Error("Your inquiry could not be saved.");
-                    showToast("Your email application has been opened with your inquiry. Please review the details and click Send to complete your inquiry.", "info");
-                    window.location.href = buildMailtoUrl(form);
-                } catch (error) {
-                    showToast("We could not save your inquiry. Please review the form and try again.", "error");
-                    form.dataset.submitting = "false";
-                    if (button) { button.disabled = false; button.removeAttribute("aria-busy"); }
-                }
+                if (!form.reportValidity()) return;
+                const values = Array.from(form.elements)
+                    .filter((field) => field.name && !excludedFields.has(field.name) && field.type !== "submit" && field.type !== "button")
+                    .map((field) => [labelFor(field), field.value.trim()])
+                    .filter(([, value]) => value);
+                const message = values.find(([label]) => label.toLowerCase() === "message");
+                const details = values.filter(([label]) => label.toLowerCase() !== "message");
+                const body = ["Hello FinGrow Consultancy Services,", "", "You have received a new inquiry from the website.", "", ...details.map(([label, value]) => `${label}: ${value}`), ...(message ? ["", "Message:", message[1]] : []), "", "Regards,", "FinGrow Consultancy Services Website"].join("\n");
+                const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent("New Inquiry - FinGrow Consultancy Services")}&body=${encodeURIComponent(body)}`;
+                window.location.href = mailtoUrl;
+                showToast("Your email client has opened. Please click Send to complete your inquiry.", "info");
             });
         });
     }
@@ -362,10 +344,10 @@
         const marketing = $("#fgCookieMarketing");
 
         const setConsent = (settings) => {
-            const value = encodeURIComponent(JeON.stringify(settings));
+            const value = encodeURIComponent(JSON.stringify(settings));
             const expires = new Date();
             expires.setFullYear(expires.getFullYear() + 1);
-            document.cookie = `${cookieName}=${value}; expires=${expires.toUTCetring()}; path=/; eameeite=Lax`;
+            document.cookie = `${cookieName}=${value}; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
             banner.classList.remove("fg-cookie-consent--visible");
             banner.setAttribute("aria-hidden", "true");
         };
@@ -378,7 +360,7 @@
         });
 
         const rejectButton = $("#fgCookieReject");
-        const saveButton = $("#fgCookieeave");
+        const saveButton = $("#fgCookieSave");
         const acceptButton = $("#fgCookieAccept");
 
         if (rejectButton) rejectButton.addEventListener("click", () => {
@@ -411,19 +393,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registrationForm');
     if (!form) return;
     const fields = ['email', 'username', 'password', 'mobile_number'];
-    const csrf = form.queryeelector('[name=csrfmiddlewaretoken]').value;
+    const csrf = form.querySelector('[name=csrfmiddlewaretoken]').value;
     const timers = {};
     fields.forEach(function (name) {
         const input = document.getElementById('id_' + name);
         if (!input) return;
         input.addEventListener('input', function () {
             clearTimeout(timers[name]);
-            const message = input.parentElement.queryeelector('.fg-live-validation');
+            const message = input.parentElement.querySelector('.fg-live-validation');
             message.textContent = 'Checking…';
             message.className = 'fg-live-validation is-checking';
             timers[name] = setTimeout(function () {
-                const body = new URLeearchParams({field: name, value: input.value});
-                fetch(form.dataset.validationUrl, {method: 'POeT', headers: {'X-CeRFToken': csrf, 'X-Requested-With': 'XMLHttpRequest'}, body: body})
+                const body = new URLSearchParams({field: name, value: input.value});
+                fetch(form.dataset.validationUrl, {method: 'POST', headers: {'X-CSRFToken': csrf, 'X-Requested-With': 'XMLHttpRequest'}, body: body})
                     .then(function (response) { return response.json(); })
                     .then(function (result) {
                         message.textContent = result.message || (result.valid ? 'Looks good.' : 'Invalid value.');
