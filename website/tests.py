@@ -52,13 +52,6 @@ class PublicContentAccessTests(TestCase):
             reverse("home"),
             reverse("about"),
             reverse("process"),
-            reverse("services"),
-            reverse("service_category", args=[self.category.slug]),
-            reverse("service_detail", args=[self.service.slug]),
-            reverse("incubation_schemes"),
-            reverse("incubation_scheme_detail", args=[self.scheme.slug]),
-            reverse("blog"),
-            reverse("blog_detail", args=[self.post.slug]),
             reverse("contact"),
             reverse("privacy_policy"),
             reverse("terms"),
@@ -79,12 +72,12 @@ class PublicContentAccessTests(TestCase):
                 self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_legacy_scheme_urls_redirect_to_the_canonical_incubation_routes(self):
-        self.assertRedirects(self.client.get(reverse("government_schemes")), reverse("incubation_schemes"), status_code=301)
-        self.assertRedirects(
-            self.client.get(reverse("government_scheme_detail", args=[self.scheme.slug])),
-            reverse("incubation_scheme_detail", args=[self.scheme.slug]),
-            status_code=301,
-        )
+        response = self.client.get(reverse("government_schemes"), follow=False)
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response["Location"], reverse("incubation_schemes"))
+        response = self.client.get(reverse("government_scheme_detail", args=[self.scheme.slug]), follow=False)
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(response["Location"], reverse("incubation_scheme_detail", args=[self.scheme.slug]))
     def test_anonymous_contact_and_newsletter_forms_work(self):
         response = self.client.post(
             reverse("contact"),
@@ -131,12 +124,14 @@ class InquiryNotificationTests(TestCase):
         self.scheme = GovernmentScheme.objects.create(title="Growth scheme", slug="growth-scheme-notify", short_description="Funding guidance")
         self.post = BlogPost.objects.create(title="Planning guide", slug="planning-guide-notify", short_description="Guide", content="Content", author="FinGrow")
         self.data = {"name": "Visitor", "phone": "9999999999", "email": "visitor@example.com", "subject": "Consultation", "message": "Please contact me."}
+        self.user = User.objects.create_user(username="inquiry-user", email="inquiry@example.com", password="safe-test-password")
 
     def _post(self, url, **headers):
         return self.client.post(url, self.data, **headers)
 
     @patch("website.views.send_inquiry_notification", return_value=True)
     def test_general_service_and_incubation_inquiries_save_and_notify(self, notify):
+        self.client.force_login(self.user)
         cases = [
             (reverse("contact"), "General", "Contact Us"),
             (reverse("service_detail", args=[self.service.slug]), "Service", self.service.title),
@@ -188,6 +183,7 @@ class InquiryNotificationTests(TestCase):
 
     @patch("website.views.send_inquiry_notification", return_value=True)
     def test_ajax_success_and_blog_source(self, notify):
+        self.client.force_login(self.user)
         response = self._post(reverse("blog_detail", args=[self.post.slug]), HTTP_X_REQUESTED_WITH="XMLHttpRequest")
         self.assertEqual(response.status_code, 201)
         self.assertTrue(response.json()["ok"])
@@ -206,14 +202,16 @@ class AuthenticationAndAdminAjaxTests(TestCase):
             username="admin", email="admin@example.com", password="safe-test-password"
         )
 
-    def test_successful_login_sets_a_non_sliding_twelve_hour_session_and_last_login(self):
+    def test_successful_login_uses_browser_session_and_updates_last_login(self):
         self.assertIsNone(self.user.last_login)
         response = self.client.post(reverse("login"), {"email": self.user.email, "password": "safe-test-password"})
         self.assertRedirects(response, reverse("home"))
         self.user.refresh_from_db()
         self.assertIsNotNone(self.user.last_login)
-        self.assertEqual(self.client.session.get("_session_expiry"), 43200)
-        self.assertFalse(settings.SESSION_EXPIRE_AT_BROWSER_CLOSE)
+        cookie = response.cookies[settings.SESSION_COOKIE_NAME]
+        self.assertEqual(cookie["max-age"], "")
+        self.assertEqual(cookie["expires"], "")
+        self.assertTrue(self.client.session.get_expire_at_browser_close())
         self.assertFalse(settings.SESSION_SAVE_EVERY_REQUEST)
 
     def test_failed_login_does_not_update_last_login_and_logout_invalidates_session(self):
@@ -255,3 +253,51 @@ class AuthenticationAndAdminAjaxTests(TestCase):
         response = self.client.get(reverse("admin_dashboard_stats"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["total_users"], 2)
+@override_settings(SECURE_SSL_REDIRECT=False)
+class ProtectedPageAccessTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(username="protected-user", email="protected@example.com", password="safe-test-password")
+        cls.category = ServiceCategory.objects.create(name="Protected advisory", slug="protected-advisory")
+        cls.service = Service.objects.create(title="Protected service", slug="protected-service", category=cls.category, short_description="Guidance")
+        cls.scheme = GovernmentScheme.objects.create(title="Protected scheme", slug="protected-scheme", short_description="Funding")
+        cls.post = BlogPost.objects.create(title="Protected post", slug="protected-post", short_description="Guide", content="Content", author="FinGrow")
+
+    def protected_urls(self):
+        return [
+            reverse("services"), reverse("service_category", args=[self.category.slug]), reverse("service_detail", args=[self.service.slug]),
+            reverse("incubation_schemes"), reverse("incubation_scheme_detail", args=[self.scheme.slug]),
+            reverse("blog"), reverse("blog_detail", args=[self.post.slug]),
+        ]
+
+    def test_home_and_contact_are_public(self):
+        self.assertEqual(self.client.get(reverse("home")).status_code, 200)
+        self.assertEqual(self.client.get(reverse("contact")).status_code, 200)
+
+    def test_protected_content_redirects_anonymous_users_to_login(self):
+        for url in self.protected_urls():
+            with self.subTest(url=url):
+                response = self.client.get(url)
+                self.assertRedirects(response, f"{reverse('login')}?next={url}")
+
+    def test_authenticated_browser_session_accesses_all_protected_content(self):
+        self.client.post(reverse("login"), {"email": self.user.email, "password": "safe-test-password"})
+        for url in self.protected_urls():
+            with self.subTest(url=url):
+                self.assertEqual(self.client.get(url).status_code, 200)
+
+    def test_login_returns_to_the_original_protected_page(self):
+        target = reverse("incubation_schemes")
+        response = self.client.get(target)
+        self.assertRedirects(response, f"{reverse('login')}?next={target}")
+        response = self.client.post(f"{reverse('login')}?next={target}", {"email": self.user.email, "password": "safe-test-password"})
+        self.assertRedirects(response, target)
+
+    def test_logout_reprotects_content_but_not_public_pages(self):
+        self.client.force_login(self.user)
+        self.client.get(reverse("logout"))
+        for url in self.protected_urls():
+            with self.subTest(url=url):
+                self.assertRedirects(self.client.get(url), f"{reverse('login')}?next={url}")
+        self.assertEqual(self.client.get(reverse("home")).status_code, 200)
+        self.assertEqual(self.client.get(reverse("contact")).status_code, 200)

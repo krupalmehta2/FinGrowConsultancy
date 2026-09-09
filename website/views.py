@@ -78,9 +78,9 @@ def _safe_next(request):
     return target if target and url_has_allowed_host_and_scheme(target, {request.get_host()}, request.is_secure()) else "home"
 
 def _start_authenticated_session(request, user):
-    """Create one non-sliding, twelve-hour Django session after a successful login."""
+    """Start Django authentication using the browser-session cookie policy."""
     login(request, user)  # Emits user_logged_in, updating User.last_login.
-    request.session.set_expiry(settings.SESSION_COOKIE_AGE)
+    request.session.set_expiry(0)
 
 
 def register(request):
@@ -144,14 +144,17 @@ def validate_registration_field(request):
 def process(request):
     return render(request, "process.html")
 
+@login_required
 def services(request):
     return render(request, "services.html", {"categories": ServiceCategory.objects.filter(is_active=True).order_by("display_order", "name")})
 
+@login_required
 def service_category(request, slug):
     category = get_object_or_404(ServiceCategory, slug=slug, is_active=True)
     return render(request, "service_category.html", {"category": category, "services": category.services.filter(active=True).order_by("display_order", "title")})
 
 
+@login_required
 def service_detail(request, slug):
     service = get_object_or_404(Service, slug=slug, active=True)
     form = ContactInquiryForm()
@@ -175,11 +178,13 @@ def service_detail(request, slug):
         },
     )
 
+@login_required
 def incubation_schemes(request):
     schemes = GovernmentScheme.objects.filter(active=True)
     return render(request, "government_schemes.html", {"schemes": schemes})
 
 
+@login_required
 def incubation_scheme_detail(request, slug):
     scheme = get_object_or_404(GovernmentScheme, slug=slug, active=True)
     form = ContactInquiryForm()
@@ -201,6 +206,7 @@ def incubation_scheme_detail(request, slug):
         },
     )
 
+@login_required
 def blog(request):
     posts = BlogPost.objects.filter(active=True)
     return render(request, "blog.html", {"posts": posts, "linkedin_posts": LinkedInPost.objects.all()})
@@ -234,6 +240,7 @@ def linkedin_disconnect(request):
     return redirect("admin:index")
 
 
+@login_required
 def blog_detail(request, slug):
     post = get_object_or_404(BlogPost, slug=slug, active=True)
     form = ContactInquiryForm()
