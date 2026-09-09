@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from unittest.mock import MagicMock, patch
 
 from django.core.cache import cache
-from django.test import TestCase, override_settings
+from django.conf import settings
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
 from .models import (
@@ -194,3 +195,63 @@ class InquiryNotificationTests(TestCase):
         self.assertEqual(inquiry.page_type, "Blog")
         self.assertEqual(inquiry.page_title, self.post.title)
         notify.assert_called_once_with(inquiry)
+
+@override_settings(SECURE_SSL_REDIRECT=False)
+class AuthenticationAndAdminAjaxTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="member", email="member@example.com", password="safe-test-password"
+        )
+        self.admin = User.objects.create_superuser(
+            username="admin", email="admin@example.com", password="safe-test-password"
+        )
+
+    def test_successful_login_sets_a_non_sliding_twelve_hour_session_and_last_login(self):
+        self.assertIsNone(self.user.last_login)
+        response = self.client.post(reverse("login"), {"email": self.user.email, "password": "safe-test-password"})
+        self.assertRedirects(response, reverse("home"))
+        self.user.refresh_from_db()
+        self.assertIsNotNone(self.user.last_login)
+        self.assertEqual(self.client.session.get("_session_expiry"), 43200)
+        self.assertFalse(settings.SESSION_EXPIRE_AT_BROWSER_CLOSE)
+        self.assertFalse(settings.SESSION_SAVE_EVERY_REQUEST)
+
+    def test_failed_login_does_not_update_last_login_and_logout_invalidates_session(self):
+        self.client.post(reverse("login"), {"email": self.user.email, "password": "incorrect"})
+        self.user.refresh_from_db()
+        self.assertIsNone(self.user.last_login)
+        self.client.post(reverse("login"), {"email": self.user.email, "password": "safe-test-password"})
+        self.client.get(reverse("logout"))
+        self.assertNotIn("_auth_user_id", self.client.session)
+        response = self.client.get(reverse("linkedin_connect"))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse("login"), response["Location"])
+
+    def test_admin_ajax_users_filters_and_never_login_value(self):
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("admin:auth_user_ajax_users"), {"q": "member", "is_active": "1"})
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertEqual(len(payload["users"]), 1)
+        self.assertEqual(payload["users"][0]["last_login"], "Never")
+        self.assertEqual(self.client.get(reverse("admin:auth_user_ajax_users"), {"is_active": "bad"}).status_code, 400)
+
+    def test_admin_ajax_denies_normal_users_and_enforces_csrf_for_status_update(self):
+        self.client.force_login(self.user)
+        self.assertEqual(self.client.get(reverse("admin:auth_user_ajax_users")).status_code, 302)
+        csrf_client = Client(enforce_csrf_checks=True)
+        csrf_client.force_login(self.admin)
+        status_url = reverse("admin:auth_user_ajax_user_status", args=[self.user.pk])
+        self.assertEqual(csrf_client.post(status_url, data='{"is_active": false}', content_type="application/json").status_code, 403)
+        csrf_client.get(reverse("admin:auth_user_changelist"))
+        token = csrf_client.cookies["csrftoken"].value
+        response = csrf_client.post(status_url, data='{"is_active": false}', content_type="application/json", HTTP_X_CSRFTOKEN=token)
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertFalse(self.user.is_active)
+
+    def test_dashboard_statistics_endpoint_is_staff_only(self):
+        self.client.force_login(self.admin)
+        response = self.client.get(reverse("admin_dashboard_stats"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["total_users"], 2)

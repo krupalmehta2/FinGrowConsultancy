@@ -1,0 +1,16 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block result_list %}
+<div id="fg-user-ajax" data-list-url="{% url 'admin:auth_user_ajax_users' %}" data-status-url="{% url 'admin:auth_user_ajax_user_status' 0 %}" data-current-user-id="{{ user.pk }}" data-csrf-token="{{ csrf_token }}">
+ <div class="fg-user-ajax-controls">
+  <label>Active <select data-user-filter="is_active"><option value="">All</option><option value="1">Active</option><option value="0">Inactive</option></select></label>
+  <label>Staff <select data-user-filter="is_staff"><option value="">All</option><option value="1">Staff</option><option value="0">Non-staff</option></select></label>
+  <label>Superuser <select data-user-filter="is_superuser"><option value="">All</option><option value="1">Superuser</option><option value="0">Normal user</option></select></label>
+  <label>Last login <select data-user-filter="last_login"><option value="">Any time</option><option value="today">Today</option><option value="never">Never</option></select></label>
+  <label>Date joined <select data-user-filter="date_joined"><option value="">Any time</option><option value="today">Today</option></select></label>
+  <button type="button" class="button" data-refresh-users>Refresh last-login data</button>
+ </div>
+ <p class="help" aria-live="polite" data-user-ajax-message></p>
+ {{ block.super }}
+</div>
+{% endblock %}

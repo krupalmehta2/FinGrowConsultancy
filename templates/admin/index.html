@@ -3,6 +3,11 @@
 
 {% block title %}Dashboard | {{ admin_company.company_name|default:'FinGrow Consultancy Services' }}{% endblock %}
 
+{% block extrahead %}
+{{ block.super }}
+<script src="{% static 'admin/js/fingrow-dashboard.js' %}" defer></script>
+{% endblock %}
+
 {% block content %}
 <div class="fg-admin-welcome">
     <div>
@@ -11,6 +16,17 @@
         <p>Manage your website content, enquiries and brand settings from one place.</p>
     </div>
     {% if admin_company.logo %}<img src="{{ admin_company.logo.url }}" alt="{{ admin_company.company_name }}" class="fg-admin-logo">{% endif %}
+</div>
+
+<div class="fg-admin-panel" id="fg-user-stats" data-stats-url="{% url 'admin_dashboard_stats' %}">
+ <div class="fg-admin-panel__head"><div><span class="fg-admin-eyebrow">User activity</span><h2>Account statistics</h2></div><button type="button" class="button" data-refresh-stats>Refresh</button></div>
+ <p aria-live="polite" data-stats-message></p>
+ <div class="fg-admin-cards">
+  <div class="fg-admin-card fg-admin-card--navy"><span class="fg-admin-card__label">Total Users</span><strong data-stat="total_users">{{ admin_counts.total_users }}</strong></div>
+  <div class="fg-admin-card fg-admin-card--green"><span class="fg-admin-card__label">Active Users</span><strong data-stat="active_users">{{ admin_counts.active_users }}</strong></div>
+  <div class="fg-admin-card fg-admin-card--orange"><span class="fg-admin-card__label">Inactive Users</span><strong data-stat="inactive_users">{{ admin_counts.inactive_users }}</strong></div>
+  <div class="fg-admin-card fg-admin-card--blue"><span class="fg-admin-card__label">Today's Logins</span><strong data-stat="todays_logins">{{ admin_counts.todays_logins }}</strong></div>
+ </div>
 </div>
 
 <div class="fg-admin-cards">
@@ -59,4 +75,3 @@
     {% for app in app_list %}{% for model in app.models %}<a href="{{ model.admin_url }}"><span>{{ model.name }}</span><small>Open management</small></a>{% endfor %}{% endfor %}
 </div>
 {% endblock %}
-

@@ -22,6 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path("admin/ajax/dashboard-stats/", website_views.admin_dashboard_stats, name="admin_dashboard_stats"),
     path("integrations/linkedin/connect/", website_views.linkedin_connect, name="linkedin_connect"),
     path("integrations/linkedin/callback/", website_views.linkedin_admin_callback, name="linkedin_admin_callback"),
     path("integrations/linkedin/disconnect/", website_views.linkedin_disconnect, name="linkedin_disconnect"),

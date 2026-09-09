@@ -8,10 +8,12 @@ from django.core.validators import URLValidator
 from django.utils.html import escape
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_GET
+from django.utils import timezone
 import logging
 
 from .forms import ContactInquiryForm, LoginForm, RegistrationForm
@@ -75,6 +77,11 @@ def _safe_next(request):
     target = request.GET.get("next")
     return target if target and url_has_allowed_host_and_scheme(target, {request.get_host()}, request.is_secure()) else "home"
 
+def _start_authenticated_session(request, user):
+    """Create one non-sliding, twelve-hour Django session after a successful login."""
+    login(request, user)  # Emits user_logged_in, updating User.last_login.
+    request.session.set_expiry(settings.SESSION_COOKIE_AGE)
+
 
 def register(request):
     if request.user.is_authenticated:
@@ -82,7 +89,7 @@ def register(request):
     form = RegistrationForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         user = form.save()
-        login(request, user)
+        _start_authenticated_session(request, user)
         messages.success(request, "Registration successful. You are now signed in.")
         return redirect(_safe_next(request))
     return render(request, "register.html", {"form": form})
@@ -93,7 +100,7 @@ def user_login(request):
         return redirect("home")
     form = LoginForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
-        login(request, form.get_user())
+        _start_authenticated_session(request, form.get_user())
         return redirect(_safe_next(request))
     return render(request, "login.html", {"form": form})
 
@@ -101,6 +108,20 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect("home")
+
+@require_GET
+@login_required
+@user_passes_test(lambda user: user.is_staff)
+def admin_dashboard_stats(request):
+    """Return non-sensitive dashboard counters to staff users only."""
+    today = timezone.localdate()
+    return JsonResponse({
+        "total_users": User.objects.count(),
+        "active_users": User.objects.filter(is_active=True).count(),
+        "inactive_users": User.objects.filter(is_active=False).count(),
+        "todays_logins": User.objects.filter(last_login__date=today).count(),
+    })
+
 
 def validate_registration_field(request):
     if request.method != "POST":
