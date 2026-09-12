@@ -23,6 +23,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/ajax/dashboard-stats/", website_views.admin_dashboard_stats, name="admin_dashboard_stats"),
+    path("users/", admin.site.admin_view(website_views.user_list), {"user_filter": "all"}, name="users_list"),
+    path("users/active/", admin.site.admin_view(website_views.user_list), {"user_filter": "active"}, name="active_users_list"),
+    path("users/inactive/", admin.site.admin_view(website_views.user_list), {"user_filter": "inactive"}, name="inactive_users_list"),
+    path("users/today-logins/", admin.site.admin_view(website_views.user_list), {"user_filter": "today-logins"}, name="today_logins_list"),
     path("integrations/linkedin/connect/", website_views.linkedin_connect, name="linkedin_connect"),
     path("integrations/linkedin/callback/", website_views.linkedin_admin_callback, name="linkedin_admin_callback"),
     path("integrations/linkedin/disconnect/", website_views.linkedin_disconnect, name="linkedin_disconnect"),

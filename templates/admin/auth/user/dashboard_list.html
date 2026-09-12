@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+<div id="changelist">
+    <div class="results">
+        <table id="result_list">
+            <thead>
+                <tr>
+                    <th scope="col">User</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Last Login</th>
+                    <th scope="col">Date Joined</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for listed_user in users %}
+                <tr>
+                    <th scope="row">{{ listed_user.get_full_name|default:listed_user.username }}</th>
+                    <td>{{ listed_user.email|default:"—" }}</td>
+                    <td><span class="fg-status {% if listed_user.is_active %}fg-status--active{% else %}fg-status--inactive{% endif %}">{% if listed_user.is_active %}Active{% else %}Inactive{% endif %}</span></td>
+                    <td>{% if listed_user.last_login %}{{ listed_user.last_login|date:"DATETIME_FORMAT" }}{% else %}Never{% endif %}</td>
+                    <td>{{ listed_user.date_joined|date:"DATETIME_FORMAT" }}</td>
+                    <td><a href="{% url 'admin:auth_user_change' listed_user.pk %}">{% if can_change_users %}Edit{% else %}View{% endif %}</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6">No users found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

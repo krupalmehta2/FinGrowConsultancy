@@ -1,3 +1,6 @@
+from django.contrib.auth.models import User
+from django.utils import timezone
+
 from .models import BlogPost, ContactInquiry, CustomerProfile, GovernmentScheme, LinkedInConnection, NewsletterSubscriber, Service, ServiceCategory, WebsiteSettings
 
 
@@ -32,6 +35,10 @@ def admin_dashboard(request):
             "customers": CustomerProfile.objects.count(),
             "subscribers": NewsletterSubscriber.objects.count(),
             "linkedin_connection": LinkedInConnection.objects.first(),
+            "total_users": User.objects.count(),
+            "active_users": User.objects.filter(is_active=True).count(),
+            "inactive_users": User.objects.filter(is_active=False).count(),
+            "todays_logins": User.objects.filter(last_login__date=timezone.localdate()).count(),
         },
         "recent_inquiries": ContactInquiry.objects.order_by("-created_at")[:5],
     }

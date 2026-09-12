@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.core.cache import cache
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.validators import URLValidator
 from django.utils.html import escape
 from django.urls import reverse
@@ -121,6 +121,40 @@ def admin_dashboard_stats(request):
         "inactive_users": User.objects.filter(is_active=False).count(),
         "todays_logins": User.objects.filter(last_login__date=today).count(),
     })
+
+def user_list(request, user_filter="all"):
+    """Render one of the staff-only dashboard user lists."""
+    from django.contrib import admin
+
+    user_admin = admin.site._registry[User]
+    if not user_admin.has_view_permission(request):
+        raise PermissionDenied
+
+    titles = {
+        "all": "Users List",
+        "active": "Active Users",
+        "inactive": "Inactive Users",
+        "today-logins": "Today's Logins",
+    }
+    if user_filter not in titles:
+        raise PermissionDenied
+
+    users = User.objects.all()
+    if user_filter == "active":
+        users = users.filter(is_active=True)
+    elif user_filter == "inactive":
+        users = users.filter(is_active=False)
+    elif user_filter == "today-logins":
+        users = users.filter(last_login__date=timezone.localdate())
+
+    context = admin.site.each_context(request)
+    context.update({
+        "title": titles[user_filter],
+        "page_title": titles[user_filter],
+        "users": users.order_by("username"),
+        "can_change_users": user_admin.has_change_permission(request),
+    })
+    return render(request, "admin/auth/user/dashboard_list.html", context)
 
 
 def validate_registration_field(request):
