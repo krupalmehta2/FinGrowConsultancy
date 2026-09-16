@@ -9,7 +9,7 @@ from django.utils import formats, timezone
 from django.urls import path
 from django.db.models import Q
 
-from .models import BlogPost, ContactInquiry, GovernmentScheme, NewsletterSubscriber, Service, ServiceCategory, WebsiteSettings
+from .models import BlogPost, ContactInquiry, CustomerProfile, GovernmentScheme, NewsletterSubscriber, Service, ServiceCategory, WebsiteSettings
 
 admin.site.site_header = "FinGrow Administration"
 admin.site.site_title = "FinGrow Admin"
@@ -169,16 +169,25 @@ class NewsletterSubscriberAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 
 
+class CustomerProfileInline(admin.StackedInline):
+    model = CustomerProfile
+    fields = ("full_name", "mobile_number", "city")
+    extra = 0
+    max_num = 1
+    can_delete = False
+
+
 @admin.register(User)
 class FinGrowUserAdmin(UserAdmin):
     list_display = (
-        "username", "email", "first_name", "last_name", "is_active",
+        "username", "email", "first_name", "last_name", "contact_number", "city", "is_active",
         "is_staff", "is_superuser", "date_joined", "last_login_display",
     )
     list_filter = ("is_active", "is_staff", "is_superuser", "last_login", "date_joined")
     search_fields = ("username", "email", "first_name", "last_name")
     ordering = ("username",)
     change_list_template = "admin/auth/user/change_list.html"
+    inlines = (CustomerProfileInline,)
 
     class Media:
         js = ("admin/js/fingrow-users.js",)
@@ -221,7 +230,17 @@ class FinGrowUserAdmin(UserAdmin):
             queryset = queryset.filter(date_joined__date=timezone.localdate())
         elif date_joined not in {None, ""}:
             raise ValueError("Invalid date_joined filter.")
-        return queryset.order_by(*self.get_ordering(request))
+        return queryset.select_related("customer_profile").order_by(*self.get_ordering(request))
+
+    @admin.display(description="Contact Number")
+    def contact_number(self, obj):
+        profile = obj._state.fields_cache.get("customer_profile")
+        return profile.mobile_number if profile else ""
+
+    @admin.display(description="City")
+    def city(self, obj):
+        profile = obj._state.fields_cache.get("customer_profile")
+        return profile.city if profile else ""
 
     @admin.display(description="Last login", ordering="last_login")
     def last_login_display(self, obj):
@@ -243,6 +262,8 @@ class FinGrowUserAdmin(UserAdmin):
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
+                "contact_number": self.contact_number(user),
+                "city": self.city(user),
                 "is_active": user.is_active,
                 "is_staff": user.is_staff,
                 "is_superuser": user.is_superuser,

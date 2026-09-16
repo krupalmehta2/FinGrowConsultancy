@@ -139,7 +139,7 @@ def user_list(request, user_filter="all"):
     if user_filter not in titles:
         raise PermissionDenied
 
-    users = User.objects.all()
+    users = User.objects.select_related("customer_profile")
     if user_filter == "active":
         users = users.filter(is_active=True)
     elif user_filter == "inactive":

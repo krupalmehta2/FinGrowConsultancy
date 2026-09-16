@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+from django.core.validators import RegexValidator
 
 from .models import ContactInquiry, CustomerProfile
 
@@ -9,6 +10,8 @@ class RegistrationForm(forms.Form):
     input_attrs = {"class": "fg-auth-input"}
     full_name = forms.CharField(max_length=150, widget=forms.TextInput(attrs={**input_attrs, "autocomplete": "name", "required": True}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={**input_attrs, "autocomplete": "email", "required": True}))
+    mobile_number = forms.CharField(label="Contact Number", max_length=30, required=False, validators=[RegexValidator(r"^\+?[0-9][0-9\s().-]{6,28}$", "Enter a valid contact number.")], widget=forms.TextInput(attrs={**input_attrs, "autocomplete": "tel", "inputmode": "tel"}))
+    city = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={**input_attrs, "autocomplete": "address-level2"}))
     password = forms.CharField(min_length=8, widget=forms.PasswordInput(attrs={**input_attrs, "autocomplete": "new-password", "required": True}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={**input_attrs, "autocomplete": "new-password", "required": True}))
 
@@ -31,7 +34,7 @@ class RegistrationForm(forms.Form):
 
     def save(self):
         user = User.objects.create_user(username=self.cleaned_data["email"], email=self.cleaned_data["email"], password=self.cleaned_data["password"])
-        CustomerProfile.objects.create(user=user, full_name=self.cleaned_data["full_name"])
+        CustomerProfile.objects.create(user=user, full_name=self.cleaned_data["full_name"], mobile_number=self.cleaned_data["mobile_number"], city=self.cleaned_data["city"])
         return user
 
 

@@ -9,6 +9,8 @@
                 <tr>
                     <th scope="col">User</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Contact Number</th>
+                    <th scope="col">City</th>
                     <th scope="col">Status</th>
                     <th scope="col">Last Login</th>
                     <th scope="col">Date Joined</th>
@@ -18,15 +20,16 @@
             <tbody>
                 {% for listed_user in users %}
                 <tr>
-                    <th scope="row">{{ listed_user.get_full_name|default:listed_user.username }}</th>
-                    <td>{{ listed_user.email|default:"—" }}</td>
+                    <th scope="row">{{ listed_user.get_full_name|default:listed_user.username }}</th>                    <td>{{ listed_user.email|default:"â€”" }}</td>
+                    <td>{{ listed_user.customer_profile.mobile_number|default:"â€”" }}</td>
+                    <td>{{ listed_user.customer_profile.city|default:"â€”" }}</td>
                     <td><span class="fg-status {% if listed_user.is_active %}fg-status--active{% else %}fg-status--inactive{% endif %}">{% if listed_user.is_active %}Active{% else %}Inactive{% endif %}</span></td>
                     <td>{% if listed_user.last_login %}{{ listed_user.last_login|date:"DATETIME_FORMAT" }}{% else %}Never{% endif %}</td>
                     <td>{{ listed_user.date_joined|date:"DATETIME_FORMAT" }}</td>
                     <td><a href="{% url 'admin:auth_user_change' listed_user.pk %}">{% if can_change_users %}Edit{% else %}View{% endif %}</a></td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="6">No users found.</td></tr>
+                <tr><td colspan="8">No users found.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
