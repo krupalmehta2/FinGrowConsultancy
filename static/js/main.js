@@ -396,7 +396,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registrationForm');
     if (!form) return;
-    const fields = ['email', 'username', 'password', 'mobile_number'];
+    const fields = ['email', 'mobile_number'];
     const csrf = form.querySelector('[name=csrfmiddlewaretoken]').value;
     const timers = {};
     fields.forEach(function (name) {

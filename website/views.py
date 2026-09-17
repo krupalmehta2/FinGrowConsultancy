@@ -171,6 +171,11 @@ def validate_registration_field(request):
                 valid, message = False, "This email address is already registered."
         except ValidationError:
             valid, message = False, "Enter a valid email address."
+    elif field == "mobile_number":
+        try:
+            RegistrationForm.base_fields["mobile_number"].clean(value)
+        except ValidationError as error:
+            valid, message = False, error.messages[0]
     else:
         valid, message = False, "Unknown field."
     return JsonResponse({"valid": valid, "message": message})

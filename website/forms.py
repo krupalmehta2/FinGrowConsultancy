@@ -10,7 +10,7 @@ class RegistrationForm(forms.Form):
     input_attrs = {"class": "fg-auth-input"}
     full_name = forms.CharField(max_length=150, widget=forms.TextInput(attrs={**input_attrs, "autocomplete": "name", "required": True}))
     email = forms.EmailField(widget=forms.EmailInput(attrs={**input_attrs, "autocomplete": "email", "required": True}))
-    mobile_number = forms.CharField(label="Contact Number", max_length=30, required=False, validators=[RegexValidator(r"^\+?[0-9][0-9\s().-]{6,28}$", "Enter a valid contact number.")], widget=forms.TextInput(attrs={**input_attrs, "autocomplete": "tel", "inputmode": "tel"}))
+    mobile_number = forms.CharField(label="Contact Number", max_length=30, validators=[RegexValidator(r"^\+?[0-9][0-9\s().-]{6,28}$", "Enter a valid contact number.")], widget=forms.TextInput(attrs={**input_attrs, "autocomplete": "tel", "inputmode": "tel", "required": True}))
     city = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={**input_attrs, "autocomplete": "address-level2"}))
     password = forms.CharField(min_length=8, widget=forms.PasswordInput(attrs={**input_attrs, "autocomplete": "new-password", "required": True}))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={**input_attrs, "autocomplete": "new-password", "required": True}))
